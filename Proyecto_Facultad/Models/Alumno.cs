@@ -33,13 +33,13 @@ public partial class Alumno
 
     public string? CodigoFrater { get; set; }
 
-    public bool? Becado { get; set; }
+    public bool Becado { get; set; }
 
-    public bool? Retiro { get; set; }
+    public bool Retiro { get; set; }
 
-    public bool? ReunionesEnConfianza { get; set; }
+    public bool ReunionesEnConfianza { get; set; }
 
-    public bool? Otros { get; set; }
+    public bool Otros { get; set; }
 
     public bool EstatusAlumno { get; set; }
 }

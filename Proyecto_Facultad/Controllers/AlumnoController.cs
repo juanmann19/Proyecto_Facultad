@@ -53,7 +53,7 @@ namespace Proyecto_Facultad.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdAlumno,PrimerNombreAlumno,SegundoNombreAlumno,OtrosNombresAlumno,SegundoApellidoAlumno,ApellidoCasado,FechaNacimiento,FechaBautizo,Direccion,Telefono,NumeroCelula,EstadoCivil,CodigoFrater,Becado,Retiro,ReunionesEnConfianza,Otros,EstatusAlumno")] Alumno alumno)
+        public async Task<IActionResult> Create([Bind("PrimerNombreAlumno,SegundoNombreAlumno,OtrosNombresAlumno,SegundoApellidoAlumno,ApellidoCasado,FechaNacimiento,FechaBautizo,Direccion,Telefono,NumeroCelula,EstadoCivil,CodigoFrater,Becado,Retiro,ReunionesEnConfianza,Otros,EstatusAlumno")] Alumno alumno)
         {
             if (ModelState.IsValid)
             {

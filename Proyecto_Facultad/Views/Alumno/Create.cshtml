@@ -1,7 +1,4 @@
-﻿@model Alumno
-
-
-
+﻿@model Proyecto_Facultad.Models.Alumno
 
 <div class="container">
     <h2 class="text-primary">Añadir Alumno</h2>
@@ -91,35 +88,45 @@
                 <span asp-validation-for="CodigoFrater" class="text-danger"></span>
             </div>
             <div class="col-md-6">
-                <label asp-for="Becado" class="form-label"></label>
-                <input asp-for="Becado" class="form-check-input" type="checkbox" value="true" checked="@Model.Becado.GetValueOrDefault()" />
-                <span asp-validation-for="Becado" class="text-danger"></span>
+                <div class="form-check">
+                    <input asp-for="Becado" class="form-check-input" type="checkbox" />
+                    <label asp-for="Becado" class="form-check-label"></label>
+                    <span asp-validation-for="Becado" class="text-danger"></span>
+                </div>
             </div>
         </div>
 
         <div class="row mb-3">
             <div class="col-md-6">
-                <label asp-for="Retiro" class="form-label"></label>
-                <input asp-for="Retiro" class="form-check-input" type="checkbox" value="true" checked="@Model.Retiro.GetValueOrDefault()" />
-                <span asp-validation-for="Retiro" class="text-danger"></span>
+                <div class="form-check">
+                    <input asp-for="Retiro" class="form-check-input" type="checkbox" />
+                    <label asp-for="Retiro" class="form-check-label"></label>
+                    <span asp-validation-for="Retiro" class="text-danger"></span>
+                </div>
             </div>
             <div class="col-md-6">
-                <label asp-for="ReunionesEnConfianza" class="form-label"></label>
-                <input asp-for="ReunionesEnConfianza" class="form-check-input" type="checkbox" value="true" checked="@Model.ReunionesEnConfianza.GetValueOrDefault()" />
-                <span asp-validation-for="ReunionesEnConfianza" class="text-danger"></span>
+                <div class="form-check">
+                    <input asp-for="ReunionesEnConfianza" class="form-check-input" type="checkbox" />
+                    <label asp-for="ReunionesEnConfianza" class="form-check-label"></label>
+                    <span asp-validation-for="ReunionesEnConfianza" class="text-danger"></span>
+                </div>
             </div>
         </div>
 
         <div class="row mb-3">
             <div class="col-md-6">
-                <label asp-for="Otros" class="form-label"></label>
-                <input asp-for="Otros" class="form-check-input" type="checkbox" value="true" checked="@Model.Otros.GetValueOrDefault()" />
-                <span asp-validation-for="Otros" class="text-danger"></span>
+                <div class="form-check">
+                    <input asp-for="Otros" class="form-check-input" type="checkbox" />
+                    <label asp-for="Otros" class="form-check-label"></label>
+                    <span asp-validation-for="Otros" class="text-danger"></span>
+                </div>
             </div>
             <div class="col-md-6">
-                <label asp-for="EstatusAlumno" class="form-label"></label>
-                <input asp-for="EstatusAlumno" class="form-check-input" type="checkbox" value="true" checked="@Model.EstatusAlumno" />
-                <span asp-validation-for="EstatusAlumno" class="text-danger"></span>
+                <div class="form-check">
+                    <input asp-for="EstatusAlumno" class="form-check-input" type="checkbox" />
+                    <label asp-for="EstatusAlumno" class="form-check-label"></label>
+                    <span asp-validation-for="EstatusAlumno" class="text-danger"></span>
+                </div>
             </div>
         </div>
 
@@ -128,8 +135,6 @@
         </div>
     </form>
 </div>
-
-
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
