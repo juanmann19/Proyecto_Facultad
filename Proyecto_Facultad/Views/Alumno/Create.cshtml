@@ -76,7 +76,10 @@
             </div>
             <div class="col-md-6">
                 <label asp-for="EstadoCivil" class="form-label"></label>
-                <input asp-for="EstadoCivil" class="form-control" />
+                <select asp-for="EstadoCivil" class="form-control" />
+                <option value="Soltero">Soltero</option>
+                <option value="Casado">Casado</option>
+                </select>
                 <span asp-validation-for="EstadoCivil" class="text-danger"></span>
             </div>
         </div>

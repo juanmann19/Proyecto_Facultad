@@ -53,17 +53,27 @@ namespace Proyecto_Facultad.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PrimerNombreAlumno,SegundoNombreAlumno,OtrosNombresAlumno,SegundoApellidoAlumno,ApellidoCasado,FechaNacimiento,FechaBautizo,Direccion,Telefono,NumeroCelula,EstadoCivil,CodigoFrater,Becado,Retiro,ReunionesEnConfianza,Otros,EstatusAlumno")] Alumno alumno)
+        public async Task<IActionResult> Create([Bind("PrimerNombreAlumno,SegundoNombreAlumno,OtrosNombresAlumno,PrimerApellidoAlumno,SegundoApellidoAlumno,ApellidoCasado,FechaNacimiento,FechaBautizo,Direccion,Telefono,NumeroCelula,EstadoCivil,CodigoFrater,Becado,Retiro,ReunionesEnConfianza,Otros,EstatusAlumno")] Alumno alumno)
         {
+            //Validacion de que no existe un codigo frater
+            var existingAlumno = await _context.Alumnos.FirstOrDefaultAsync(a =>
+            a.CodigoFrater == alumno.CodigoFrater);
+
+            if (existingAlumno != null) 
+            {
+                // Agregar un error de validación si el código está duplicado
+                ModelState.AddModelError("CodigoFrater", "El Código Frater ya está en uso.");
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(alumno);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(alumno);
         }
-
         // GET: Alumno/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
