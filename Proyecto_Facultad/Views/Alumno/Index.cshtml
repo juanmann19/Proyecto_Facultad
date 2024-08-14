@@ -1,0 +1,72 @@
+﻿@model List<Alumno>
+
+@{
+    // Función para calcular la edad a partir de la fecha de nacimiento
+    int? CalcularEdad(DateOnly? fechaNacimiento)
+    {
+        if (fechaNacimiento == null)
+        {
+            return null;
+        }
+
+        var hoy = DateOnly.FromDateTime(DateTime.Today);
+        var edad = hoy.Year - fechaNacimiento.Value.Year;
+
+        // Ajustar la edad si el cumpleaños de este año aún no ha pasado
+        if (fechaNacimiento.Value.Month > hoy.Month ||
+            (fechaNacimiento.Value.Month == hoy.Month && fechaNacimiento.Value.Day > hoy.Day))
+        {
+            edad--;
+        }
+
+        return edad;
+    }
+}
+<div class="container-fluid pt-4">
+    <div class="row mb-3">
+        <div class="col-6">
+            <h2 class="text-primary">Listado de Alumnos</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Alumno" asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Añadir a un alumno
+            </a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    
+                    <!-- Trae solo los campos necesarios, no todos-->
+                    <th>Primer Nombre</th>
+                    <th>Primer Apellido</th>
+                    <th>Edad</th>
+                    <th>Código Frater</th>
+                    <th>Fecha de Bautizo</th>
+                    <th>Estatus</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in Model.OrderBy(u => u.PrimerNombreAlumno))
+                {
+                    <tr>
+                        <td>@obj.PrimerNombreAlumno</td>
+                        <td>@obj.PrimerApellidoAlumno</td> <!-- Suponiendo que SegundoApellidoAlumno es el primer apellido -->
+                        <td>@(CalcularEdad(obj.FechaNacimiento)?.ToString() ?? "No disponible")</td>
+                        <td>@obj.CodigoFrater</td>
+                        <td>@(obj.FechaBautizo.HasValue ? obj.FechaBautizo.Value.ToString("dd/MM/yyyy") : "No disponible")</td>
+                        <td>@(obj.EstatusAlumno ? "Activo" : "Inactivo")</td>
+                        <td>
+                            <a href="/Alumno/Edit/@obj.IdAlumno" class="btn btn-sm btn-primary">Editar</a>
+                            <a href="/Alumno/Details/@obj.IdAlumno" class="btn btn-sm btn-info">Detalles</a>
+                            <a href="/Alumno/Delete/@obj.IdAlumno" class="btn btn-sm btn-danger">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
