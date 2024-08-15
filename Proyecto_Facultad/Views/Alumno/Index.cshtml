@@ -60,9 +60,14 @@
                         <td>@(obj.FechaBautizo.HasValue ? obj.FechaBautizo.Value.ToString("dd/MM/yyyy") : "No disponible")</td> *@
                         <td>@(obj.EstatusAlumno ? "Activo" : "Inactivo")</td>
                         <td>
-                            <a href="/Alumno/Edit/@obj.IdAlumno" class="btn btn-sm btn-primary">Editar</a>
-                            <a href="/Alumno/Details/@obj.IdAlumno" class="btn btn-sm btn-info">Detalles</a>
-                            <a href="/Alumno/Delete/@obj.IdAlumno" class="btn btn-sm btn-danger">Eliminar</a>
+                            <div class="w-100 btn-group" role="group">
+                                <a asp-controller="Alumno" asp-action="Edit" asp-route-id="@obj.IdAlumno" class="btn btn-primary mx-2">
+                                    <i class="bi bi-pencil-fill"></i>Edit
+                                </a>
+                                <a asp-controller="Alumno" asp-action="Desactivar" asp-route-id="@obj.IdAlumno" class="btn btn-danger mx-2">
+                                    <i class="bi bi-trash-fill"></i>Delete
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 }

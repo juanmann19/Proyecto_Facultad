@@ -1,0 +1,144 @@
+﻿@model Proyecto_Facultad.Models.Alumno
+
+<div class="container">
+    <h2 class="text-primary">Añadir Alumno</h2>
+    <form asp-action="Edit" method="post">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="PrimerNombreAlumno" class="form-label"></label>
+                <input asp-for="PrimerNombreAlumno" class="form-control" />
+                <span asp-validation-for="PrimerNombreAlumno" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="SegundoNombreAlumno" class="form-label"></label>
+                <input asp-for="SegundoNombreAlumno" class="form-control" />
+                <span asp-validation-for="SegundoNombreAlumno" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="OtrosNombresAlumno" class="form-label"></label>
+                <input asp-for="OtrosNombresAlumno" class="form-control" />
+                <span asp-validation-for="OtrosNombresAlumno" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="PrimerApellidoAlumno" class="form-label"></label>
+                <input asp-for="PrimerApellidoAlumno" class="form-control" />
+                <span asp-validation-for="PrimerApellidoAlumno" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="SegundoApellidoAlumno" class="form-label"></label>
+                <input asp-for="SegundoApellidoAlumno" class="form-control" />
+                <span asp-validation-for="SegundoApellidoAlumno" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="ApellidoCasado" class="form-label"></label>
+                <input asp-for="ApellidoCasado" class="form-control" />
+                <span asp-validation-for="ApellidoCasado" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="FechaNacimiento" class="form-label"></label>
+                <input asp-for="FechaNacimiento" class="form-control" type="date" />
+                <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="FechaBautizo" class="form-label"></label>
+                <input asp-for="FechaBautizo" class="form-control" type="date" />
+                <span asp-validation-for="FechaBautizo" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="Direccion" class="form-label"></label>
+                <input asp-for="Direccion" class="form-control" />
+                <span asp-validation-for="Direccion" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Telefono" class="form-label"></label>
+                <input asp-for="Telefono" class="form-control" />
+                <span asp-validation-for="Telefono" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="NumeroCelula" class="form-label"></label>
+                <input asp-for="NumeroCelula" class="form-control" />
+                <span asp-validation-for="NumeroCelula" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="EstadoCivil" class="form-label"></label>
+                <select asp-for="EstadoCivil" class="form-control" />
+                <option value="Soltero">Soltero</option>
+                <option value="Casado">Casado</option>
+                </select>
+                <span asp-validation-for="EstadoCivil" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="CodigoFrater" class="form-label"></label>
+                <input asp-for="CodigoFrater" class="form-control" />
+                <span asp-validation-for="CodigoFrater" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <div class="form-check">
+                    <input asp-for="Becado" class="form-check-input" type="checkbox" />
+                    <label asp-for="Becado" class="form-check-label"></label>
+                    <span asp-validation-for="Becado" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="form-check">
+                    <input asp-for="Retiro" class="form-check-input" type="checkbox" />
+                    <label asp-for="Retiro" class="form-check-label"></label>
+                    <span asp-validation-for="Retiro" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-check">
+                    <input asp-for="ReunionesEnConfianza" class="form-check-input" type="checkbox" />
+                    <label asp-for="ReunionesEnConfianza" class="form-check-label"></label>
+                    <span asp-validation-for="ReunionesEnConfianza" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="form-check">
+                    <input asp-for="Otros" class="form-check-input" type="checkbox" />
+                    <label asp-for="Otros" class="form-check-label"></label>
+                    <span asp-validation-for="Otros" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-check">
+                    <input asp-for="EstatusAlumno" class="form-check-input" type="checkbox" />
+                    <label asp-for="EstatusAlumno" class="form-check-label"></label>
+                    <span asp-validation-for="EstatusAlumno" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
