@@ -53,7 +53,7 @@ namespace Proyecto_Facultad.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PrimerNombreAlumno,SegundoNombreAlumno,OtrosNombresAlumno,PrimerApellidoAlumno,SegundoApellidoAlumno,ApellidoCasado,FechaNacimiento,FechaBautizo,Direccion,Telefono,NumeroCelula,EstadoCivil,CodigoFrater,Becado,Retiro,ReunionesEnConfianza,Otros,EstatusAlumno")] Alumno alumno)
+        public async Task<IActionResult> Create([Bind("IdAlumno,PrimerNombreAlumno,SegundoNombreAlumno,OtrosNombresAlumno,PrimerApellidoAlumno,SegundoApellidoAlumno,ApellidoCasado,FechaNacimiento,FechaBautizo,Direccion,Telefono,NumeroCelula,EstadoCivil,CodigoFrater,Becado,Retiro,ReunionesEnConfianza,Otros,EstatusAlumno")] Alumno alumno)
         {
             //Validacion de que no existe un codigo frater
             var existingAlumno = await _context.Alumnos.FirstOrDefaultAsync(a =>
@@ -95,11 +95,20 @@ namespace Proyecto_Facultad.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdAlumno,PrimerNombreAlumno,SegundoNombreAlumno,OtrosNombresAlumno,SegundoApellidoAlumno,ApellidoCasado,FechaNacimiento,FechaBautizo,Direccion,Telefono,NumeroCelula,EstadoCivil,CodigoFrater,Becado,Retiro,ReunionesEnConfianza,Otros,EstatusAlumno")] Alumno alumno)
+        public async Task<IActionResult> Edit(int id, [Bind("IdAlumno,PrimerNombreAlumno,SegundoNombreAlumno,OtrosNombresAlumno,PrimerApellidoAlumno,SegundoApellidoAlumno,ApellidoCasado,FechaNacimiento,FechaBautizo,Direccion,Telefono,NumeroCelula,EstadoCivil,CodigoFrater,Becado,Retiro,ReunionesEnConfianza,Otros,EstatusAlumno")] Alumno alumno)
         {
             if (id != alumno.IdAlumno)
             {
                 return NotFound();
+            }
+
+            var existingAlumno = await _context.Alumnos.FirstOrDefaultAsync(a =>
+            a.CodigoFrater == alumno.CodigoFrater);
+
+            if (existingAlumno != null)
+            {
+                // Agregar un error de validación si el código está duplicado
+                ModelState.AddModelError("CodigoFrater", "El Código Frater ya está en uso.");
             }
 
             if (ModelState.IsValid)
@@ -124,41 +133,74 @@ namespace Proyecto_Facultad.Controllers
             }
             return View(alumno);
         }
-
-        // GET: Alumno/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        [HttpPost]
+        public async Task<IActionResult> Deactivate(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var alumno = await _context.Alumnos
-                .FirstOrDefaultAsync(m => m.IdAlumno == id);
+            var alumno = await _context.Alumnos.FindAsync(id);
             if (alumno == null)
             {
                 return NotFound();
             }
 
-            return View(alumno);
-        }
+            // Cambiar el estatus
+            alumno.EstatusAlumno = !alumno.EstatusAlumno;
 
-        // POST: Alumno/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var alumno = await _context.Alumnos.FindAsync(id);
-            if (alumno != null)
+            try
             {
-                _context.Alumnos.Remove(alumno);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!AlumnoExists(alumno.IdAlumno))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+            //return View(alumno);
+
         }
 
-        private bool AlumnoExists(int id)
+            //Codigo para hacer delete comentado puesto que solo se desactivan estudiantes mediante el campo Activo = 0.
+            //// GET: Alumno/Delete/5
+            //public async Task<IActionResult> Delete(int? id)
+            //{
+            //    if (id == null)
+            //    {
+            //        return NotFound();
+            //    }
+
+            //    var alumno = await _context.Alumnos
+            //        .FirstOrDefaultAsync(m => m.IdAlumno == id);
+            //    if (alumno == null)
+            //    {
+            //        return NotFound();
+            //    }
+
+            //    return View(alumno);
+            //}
+
+            //// POST: Alumno/Delete/5
+            //[HttpPost, ActionName("Delete")]
+            //[ValidateAntiForgeryToken]
+            //public async Task<IActionResult> DeleteConfirmed(int id)
+            //{
+            //    var alumno = await _context.Alumnos.FindAsync(id);
+            //    if (alumno != null)
+            //    {
+            //        _context.Alumnos.Remove(alumno);
+            //    }
+
+            //    await _context.SaveChangesAsync();
+            //    return RedirectToAction(nameof(Index));
+            //}
+
+            private bool AlumnoExists(int id)
         {
             return _context.Alumnos.Any(e => e.IdAlumno == id);
         }
