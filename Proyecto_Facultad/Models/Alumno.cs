@@ -39,7 +39,8 @@ public partial class Alumno
 
 
     [DisplayName("Fecha de Nacimiento")]
-    [Range(typeof(DateTime), "01/01/1922", "12/31/2022", ErrorMessage = "La fecha debe estar entre el 1 de enero de 1900 y el 31 de diciembre de 2022.")]
+    //Validacion de rangos de fecha queda pendiente
+    //[Range(typeof(DateTime), "01/01/1922", "31/12/2022", ErrorMessage = "La fecha debe estar entre el 1 de enero de 1900 y el 31 de diciembre de 2022.")]
 
     [Required(ErrorMessage = "La fecha de nacimiento es obligatoria")]
     public DateOnly FechaNacimiento { get; set; }

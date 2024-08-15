@@ -1,7 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using Proyecto_Facultad.Models;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//Abajo Culture-Info (Para validación de rangos de fechas?)
+//var cultureInfo = new CultureInfo("es-ES");
+//CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+//CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
