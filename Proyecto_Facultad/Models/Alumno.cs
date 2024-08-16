@@ -13,20 +13,20 @@ public partial class Alumno
     [DisplayName("Primer Nombre")]
     [Required(ErrorMessage = "El primer nombre es obligatorio")]
     public string PrimerNombreAlumno { get; set; } = null!;
-    
-    
-    
+
+
+
     [DisplayName("Segundo Nombre")]
     public string? SegundoNombreAlumno { get; set; }
-    
-    
+
+
     [DisplayName("Otros Nombres")]
     public string? OtrosNombresAlumno { get; set; }
-    
-    
+
+
     [DisplayName("Primer Apellido")]
     [Required(ErrorMessage = "El primer apellido es obligatorio")]
-     public string PrimerApellidoAlumno { get; set; } = null!;
+    public string PrimerApellidoAlumno { get; set; } = null!;
 
 
     [DisplayName("Segundo Apellido")]
@@ -89,4 +89,11 @@ public partial class Alumno
 
     [DisplayName("Estatus Alumno")]
     public bool EstatusAlumno { get; set; }
+
+
+    public virtual ICollection<AsistenciaAlumno> AsistenciaAlumnos { get; set; } = new List<AsistenciaAlumno>();
+
+    public virtual ICollection<Mesa> Mesas { get; set; } = new List<Mesa>();
+
+    public virtual ICollection<Notum> Nota { get; set; } = new List<Notum>();
 }

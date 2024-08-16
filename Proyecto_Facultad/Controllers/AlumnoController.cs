@@ -102,8 +102,8 @@ namespace Proyecto_Facultad.Controllers
                 return NotFound();
             }
 
-            var existingAlumno = await _context.Alumnos.FirstOrDefaultAsync(a =>
-            a.CodigoFrater == alumno.CodigoFrater);
+            var existingAlumno = await _context.Alumnos
+            .FirstOrDefaultAsync(a => a.CodigoFrater == alumno.CodigoFrater && a.IdAlumno != alumno.IdAlumno); //valida que el id no exista, al mismo tiempo que el cod.frater no se repita en 2 usuarios sino solo 1
 
             if (existingAlumno != null)
             {

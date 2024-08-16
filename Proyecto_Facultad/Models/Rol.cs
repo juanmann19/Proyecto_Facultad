@@ -7,7 +7,7 @@ public partial class Rol
 {
     public int IdRol { get; set; }
 
-    public string? NombreRol { get; set; }
+    public string NombreRol { get; set; } = null!;
 
     public virtual ICollection<ModulosRole> ModulosRoles { get; set; } = new List<ModulosRole>();
 

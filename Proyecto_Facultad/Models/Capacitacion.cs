@@ -7,9 +7,9 @@ public partial class Capacitacion
 {
     public int IdCapacitacion { get; set; }
 
-    public DateOnly? FechaCapacitacion { get; set; }
+    public DateOnly FechaCapacitacion { get; set; }
 
-    public int? IdStaff { get; set; }
+    public int IdStaff { get; set; }
 
-    public virtual Staff? IdStaffNavigation { get; set; }
+    public virtual Staff IdStaffNavigation { get; set; } = null!;
 }

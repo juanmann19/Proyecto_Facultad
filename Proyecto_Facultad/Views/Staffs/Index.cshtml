@@ -1,0 +1,73 @@
+﻿@* @model List<Staff> *@
+
+@model IEnumerable<Proyecto_Facultad.Models.Staff>
+
+<div class="container-fluid pt-4">
+    <div class="row mb-3">
+        <div class="col-6">
+            <h2 class="text-primary">Lista de Personal</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Staffs" asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Agregar nuevo personal
+            </a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Primer Nombre</th>
+                    <th>Segundo Nombre</th>
+                    <th>Primer Apellido</th>
+                    <th>Segundo Apellido</th>
+                    <th>Apellido Casado</th>
+                    <th>DPI</th>
+                    <th>Fecha de Nacimiento</th>
+                    <th>Fecha de Bautizo</th>
+                    <th>Dirección</th>
+                    <th>Teléfono</th>
+                    <th>Número de Célula</th>
+                    <th>Nivel Aprobado</th>
+                    <th>Estado Civil</th>
+                    <th>Estatus</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var staff in Model.OrderBy(s => s.PrimerNombreStaff))
+                {
+                    <tr>
+                        <td>@staff.PrimerNombreStaff</td>
+                        <td>@staff.SegundoNombreStaff</td>
+                        <td>@staff.PrimerApellidoStaff</td>
+                        <td>@staff.SegundoApellidoStaff</td>
+                        <td>@staff.ApellidoCasado</td>
+                        <td>@staff.Dpi</td>
+                        <td>@staff.FechaNacimiento.ToString("dd/MM/yyyy")</td>
+                        <td>@(staff.FechaBautizo.HasValue ? staff.FechaBautizo.Value.ToString("dd/MM/yyyy") : "No disponible")</td>
+                        <td>@staff.Direccion</td>
+                        <td>@staff.Telefono</td>
+                        <td>@staff.NumeroCelula</td>
+                        <td>@staff.NivelAprobado</td>
+                        <td>@staff.EstadoCivil</td>
+                        <td>@(staff.EstatusStaff ? "Activo" : "Inactivo")</td>
+                        <td>
+                            <div class="btn-group w-100" role="group">
+                                <a asp-controller="Staffs" asp-action="Edit" asp-route-id="@staff.IdStaff" class="btn btn-primary flex-grow-1">
+                                    <i class="bi bi-pencil-fill"></i> Editar
+                                </a>
+                                <form asp-action="Deactivate" method="post" class="flex-grow-1">
+                                    <button type="submit" asp-controller="Staffs" asp-action="Deactivate" asp-route-id="@staff.IdStaff" class="btn btn-danger w-100">
+                                        <i class="bi bi-trash-fill"></i> Activar/Desactivar
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

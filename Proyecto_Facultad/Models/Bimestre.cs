@@ -7,7 +7,7 @@ public partial class Bimestre
 {
     public int IdBimestre { get; set; }
 
-    public string? NombreBimestre { get; set; }
+    public string NombreBimestre { get; set; } = null!;
 
     public virtual ICollection<AsistenciaStaff> AsistenciaStaffs { get; set; } = new List<AsistenciaStaff>();
 

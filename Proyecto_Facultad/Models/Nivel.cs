@@ -7,7 +7,7 @@ public partial class Nivel
 {
     public int IdNivel { get; set; }
 
-    public string? NombreNivel { get; set; }
+    public string NombreNivel { get; set; } = null!;
 
     public virtual ICollection<Mesa> Mesas { get; set; } = new List<Mesa>();
 }
