@@ -27,34 +27,34 @@ public partial class Staff
 
 
     [DisplayName("Primer Nombre")]
-    [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ]+$", ErrorMessage = "El primer nombre solo puede contener letras")]
+    [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ]+$", ErrorMessage = "Campo solo puede contener letras")]
     [Required(ErrorMessage = "El primer Nombre es Obligatorio")]
     public string PrimerNombreStaff { get; set; } = null!;
 
 
     [DisplayName("Segundo Nombre")]
-    [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ]+$", ErrorMessage = "El primer nombre solo puede contener letras")]
+    [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ]+$", ErrorMessage = "Campo solo puede contener letras")]
 
     public string? SegundoNombreStaff { get; set; }
 
 
     [DisplayName("Otros Nombres")]
-    [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ\s]+$", ErrorMessage = "El primer nombre solo puede contener letras")]
+    [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ\s]+$", ErrorMessage = "Campo solo puede contener letras")]
     public string? OtrosNombresStaff { get; set; }
 
     [DisplayName("Primer Apellido")]
-    [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ]+$", ErrorMessage = "El primer nombre solo puede contener letras")]
+    [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ]+$", ErrorMessage = "Campo solo puede contener letras")]
     [Required(ErrorMessage = "El primer apellido es obligatorio")]
     public string PrimerApellidoStaff { get; set; } = null!;
 
 
     [DisplayName("Segundo Apellido")]
-    [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ]+$", ErrorMessage = "El primer nombre solo puede contener letras")]
+    [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ]+$", ErrorMessage = "Campo solo puede contener letras")]
     public string? SegundoApellidoStaff { get; set; }
 
 
     [DisplayName("Apellido Casado")]
-    [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ]+$", ErrorMessage = "El primer nombre solo puede contener letras")]
+    [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ]+$", ErrorMessage = "Campo solo puede contener letras")]
     public string? ApellidoCasado { get; set; }
 
 

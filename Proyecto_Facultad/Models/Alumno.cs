@@ -29,29 +29,29 @@ namespace Proyecto_Facultad.Models
 
         [DisplayName("Primer Nombre")]
         [Required(ErrorMessage = "El primer nombre es obligatorio")]
-        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ]+$", ErrorMessage = "El primer nombre solo puede contener letras")]
+        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ]+$", ErrorMessage = "Campo solo puede contener letras")]
         
         public string PrimerNombreAlumno { get; set; } = null!;
 
         [DisplayName("Segundo Nombre")]
-        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ]+$", ErrorMessage = "El primer nombre solo puede contener letras")]
+        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ]+$", ErrorMessage = "Campo solo puede contener letras")]
         public string? SegundoNombreAlumno { get; set; }
 
         [DisplayName("Otros Nombres")]
-        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ\s]+$", ErrorMessage = "El primer nombre solo puede contener letras")]
+        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ\s]+$", ErrorMessage = "Campo solo puede contener letras")]
         public string? OtrosNombresAlumno { get; set; }
 
         [DisplayName("Primer Apellido")]
-        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ]+$", ErrorMessage = "El primer nombre solo puede contener letras")]
+        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ]+$", ErrorMessage = "Campo solo puede contener letras")]
         [Required(ErrorMessage = "El primer apellido es obligatorio")]
         public string PrimerApellidoAlumno { get; set; } = null!;
 
         [DisplayName("Segundo Apellido")]
-        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ]+$", ErrorMessage = "El primer nombre solo puede contener letras")]
+        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ]+$", ErrorMessage = "Campo solo puede contener letras")]
         public string? SegundoApellidoAlumno { get; set; }
 
         [DisplayName("Apellido Conyugal")]
-        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ]+$", ErrorMessage = "El primer nombre solo puede contener letras")]
+        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ]+$", ErrorMessage = "Campo solo puede contener letras")]
         public string? ApellidoCasado { get; set; }
 
         [DisplayName("Fecha de Nacimiento")]
