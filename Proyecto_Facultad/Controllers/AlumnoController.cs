@@ -69,6 +69,7 @@ namespace Proyecto_Facultad.Controllers
             {
                 _context.Add(alumno);
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Dato cargado correctamente";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -117,6 +118,7 @@ namespace Proyecto_Facultad.Controllers
                 {
                     _context.Update(alumno);
                     await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Datos actualizados correctamente";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -126,6 +128,7 @@ namespace Proyecto_Facultad.Controllers
                     }
                     else
                     {
+                        TempData["ErrorMessage"] = "Se produjo un error al cambiar el estatus.";
                         throw;
                     }
                 }
@@ -139,6 +142,7 @@ namespace Proyecto_Facultad.Controllers
             var alumno = await _context.Alumnos.FindAsync(id);
             if (alumno == null)
             {
+                TempData["ErrorMessage"] = "El alumno no se encontró.";
                 return NotFound();
             }
 
@@ -148,12 +152,16 @@ namespace Proyecto_Facultad.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = alumno.EstatusAlumno ? "Alumno activado correctamente" : "Alumno desactivado correctamente";
+            
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!AlumnoExists(alumno.IdAlumno))
                 {
+                    TempData["ErrorMessage"] = "Error al actualizar el estatus del alumno.";
                     return NotFound();
+                    
                 }
                 else
                 {
