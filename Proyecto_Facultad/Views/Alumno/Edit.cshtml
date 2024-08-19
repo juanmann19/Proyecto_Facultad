@@ -45,14 +45,14 @@
 
     <div class="row mb-3">
         <div class="col-md-6">
-            <label asp-for="FechaNacimiento" class="form-label"></label>
-            <input asp-for="FechaNacimiento" class="form-control" type="date" />
-            <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
+                <label asp-for="FechaNacimiento" class="form-label"></label>
+                <input id="fechaNacimiento" asp-for="FechaNacimiento" class="form-control" type="date" />
+                <span id="fechaNacimientoError" class="text-danger"></span>
         </div>
         <div class="col-md-6">
-            <label asp-for="FechaBautizo" class="form-label"></label>
-            <input asp-for="FechaBautizo" class="form-control" type="date" />
-            <span asp-validation-for="FechaBautizo" class="text-danger"></span>
+                <label asp-for="FechaBautizo" class="form-label"></label>
+                <input id="fechaBautizo" asp-for="FechaBautizo" class="form-control" type="date" />
+                <span id="fechaBautizoError" class="text-danger"></span>
         </div>
     </div>
 
@@ -64,7 +64,7 @@
         </div>
         <div class="col-md-6">
             <label asp-for="Telefono" class="form-label"></label>
-            <input asp-for="Telefono" class="form-control" />
+             <input asp-for="Telefono" class="form-control" maxlength="8" minlength="8" pattern="\d{8}" title="El teléfono debe contener 8 dígitos sin guiones." />
             <span asp-validation-for="Telefono" class="text-danger"></span>
         </div>
     </div>
@@ -144,7 +144,48 @@
 </div>
 
 @section scripts {
-@{
     <partial name="_ValidationScriptsPartial" />
-}
+    <script>
+        document.querySelector('form').addEventListener('submit', function (event) {
+    var fechaNacimientoInput = document.getElementById('fechaNacimiento');
+    var fechaNacimientoError = document.getElementById('fechaNacimientoError');
+    var fechaBautizoInput = document.getElementById('fechaBautizo');
+    var fechaBautizoError = document.getElementById('fechaBautizoError');
+    var telefonoInput = document.getElementById('telefono');
+    var telefonoError = document.getElementById('telefonoError');
+
+    var fechaNacimiento = new Date(fechaNacimientoInput.value);
+    var fechaBautizo = new Date(fechaBautizoInput.value);
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    var valid = true;
+
+    if (fechaNacimiento > today) {
+        fechaNacimientoError.textContent = "La fecha de nacimiento no puede ser mayor que la fecha actual.";
+        valid = false;
+    } else {
+        fechaNacimientoError.textContent = "";
+    }
+
+    if (fechaBautizo && fechaBautizo > today) {
+        fechaBautizoError.textContent = "La fecha de bautizo no puede ser mayor que la fecha actual.";
+        valid = false;
+    } else {
+        fechaBautizoError.textContent = "";
+    }
+
+    var telefono = telefonoInput.value;
+    if (telefono.length !== 8) {
+        telefonoError.textContent = "El teléfono debe tener exactamente 8 dígitos.";
+        valid = false;
+    } else {
+        telefonoError.textContent = "";
+    }
+
+    if (!valid) {
+        event.preventDefault(); 
+    }
+});
+    </script>
 }

@@ -77,6 +77,7 @@ namespace Proyecto_Facultad.Controllers
                     {
                         _context.Add(staff);
                         await _context.SaveChangesAsync();
+                        TempData["SuccessMessage"] = "Creado correctamente";
                         return RedirectToAction(nameof(Index));
                     }
                 }
@@ -120,6 +121,7 @@ namespace Proyecto_Facultad.Controllers
                 {
                     _context.Update(staff);
                     await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Actualizado correctamente";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -128,7 +130,9 @@ namespace Proyecto_Facultad.Controllers
                         return NotFound();
                     }
                     else
-                    {
+                    {   
+
+                    TempData["ErrorMessage"] = "Se produjo un error al actualizar.";
                         throw;
                     }
                 }
@@ -153,6 +157,8 @@ namespace Proyecto_Facultad.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = staff.EstatusStaff ? "Staff activado correctamente" : "Staff desactivado correctamente";
+   
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -162,6 +168,7 @@ namespace Proyecto_Facultad.Controllers
                 }
                 else
                 {
+                    TempData["ErrorMessage"] = "Se produjo un error al cambiar el estatus.";
                     throw;
                 }
             }
