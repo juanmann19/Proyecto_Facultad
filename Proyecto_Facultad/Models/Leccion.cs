@@ -7,11 +7,11 @@ public partial class Leccion
 {
     public int IdLeccion { get; set; }
 
-    public string NombreLeccion { get; set; } = null!;
+    public string NombreLeccion { get; set; }
 
     public int IdLibro { get; set; }
 
     public virtual ICollection<AsistenciaStaff> AsistenciaStaffs { get; set; } = new List<AsistenciaStaff>();
 
-    public virtual Libro IdLibroNavigation { get; set; } = null!;
+    public virtual Libro IdLibroNavigation { get; set; }
 }

@@ -19,11 +19,11 @@ public partial class AsistenciaStaff
 
     public virtual ICollection<AsistenciaAlumno> AsistenciaAlumnos { get; set; } = new List<AsistenciaAlumno>();
 
-    public virtual Bimestre IdBimestreNavigation { get; set; } = null!;
+    public virtual Bimestre IdBimestreNavigation { get; set; }
 
-    public virtual Leccion IdLeccionNavigation { get; set; } = null!;
+    public virtual Leccion IdLeccionNavigation { get; set; }
 
-    public virtual Mesa IdMesaNavigation { get; set; } = null!;
+    public virtual Mesa IdMesaNavigation { get; set; }
 
-    public virtual Staff IdStaffNavigation { get; set; } = null!;
+    public virtual Staff IdStaffNavigation { get; set; }
 }
