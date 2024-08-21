@@ -9,6 +9,7 @@ public partial class Usuario
 {
     public int IdUsuario { get; set; }
 
+
     [DisplayName("Nombre Usuario")]
     [RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "Campo puede contener letras y numeros")]
     [Required(ErrorMessage = "El Nombre de usuario es Obligatorio")]
@@ -19,12 +20,11 @@ public partial class Usuario
     [Required(ErrorMessage = "La contraseña es Obligatoria")]
     public string ContrasenaUsuario { get; set; } = null!;
 
-
     [DisplayName("Rol ")]
     [Required(ErrorMessage = "El rol es obligatorio")]
     public int IdRol { get; set; }
 
-    public virtual Rol IdRolNavigation { get; set; } = null!;
+    public virtual Rol IdRolNavigation { get; set; }
 
     public virtual ICollection<Staff> Staff { get; set; } = new List<Staff>();
     public void SetPassword(string password)

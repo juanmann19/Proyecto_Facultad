@@ -11,5 +11,5 @@ public partial class Capacitacion
 
     public int IdStaff { get; set; }
 
-    public virtual Staff IdStaffNavigation { get; set; } = null!;
+    public virtual Staff IdStaffNavigation { get; set; }
 }

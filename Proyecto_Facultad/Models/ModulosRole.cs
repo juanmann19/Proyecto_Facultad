@@ -11,7 +11,7 @@ public partial class ModulosRole
 
     public int IdModulo { get; set; }
 
-    public virtual Modulo IdModuloNavigation { get; set; } = null!;
+    public virtual Modulo IdModuloNavigation { get; set; }
 
-    public virtual Rol IdRolNavigation { get; set; } = null!;
+    public virtual Rol IdRolNavigation { get; set; }
 }

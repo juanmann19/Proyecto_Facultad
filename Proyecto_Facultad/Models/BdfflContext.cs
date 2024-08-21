@@ -25,8 +25,6 @@ public partial class BdfflContext : DbContext
 
     public virtual DbSet<Capacitacion> Capacitacions { get; set; }
 
-    public virtual DbSet<Horario> Horarios { get; set; }
-
     public virtual DbSet<Jornadum> Jornada { get; set; }
 
     public virtual DbSet<Leccion> Leccions { get; set; }
@@ -51,7 +49,9 @@ public partial class BdfflContext : DbContext
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=(local); DataBase=BDFFL;TrustServerCertificate=True; Trusted_Connection=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -85,6 +85,7 @@ public partial class BdfflContext : DbContext
                 .HasMaxLength(20)
                 .HasColumnName("Codigo_Frater");
             entity.Property(e => e.Direccion)
+                .IsRequired()
                 .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.EstadoCivil)
@@ -101,10 +102,12 @@ public partial class BdfflContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("Otros_nombres_alumno");
             entity.Property(e => e.PrimerApellidoAlumno)
+                .IsRequired()
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("PrimerApellido_alumno");
             entity.Property(e => e.PrimerNombreAlumno)
+                .IsRequired()
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("PrimerNombre_alumno");
@@ -184,6 +187,7 @@ public partial class BdfflContext : DbContext
 
             entity.Property(e => e.IdBimestre).HasColumnName("id_bimestre");
             entity.Property(e => e.NombreBimestre)
+                .IsRequired()
                 .HasMaxLength(50)
                 .HasColumnName("nombre_bimestre");
         });
@@ -204,30 +208,17 @@ public partial class BdfflContext : DbContext
                 .HasConstraintName("FK__Capacitac__id_st__795DFB40");
         });
 
-        modelBuilder.Entity<Horario>(entity =>
-        {
-            entity.HasKey(e => e.IdHorario).HasName("PK__Horario__C5836D6938BC96F9");
-
-            entity.ToTable("Horario");
-
-            entity.Property(e => e.IdHorario).HasColumnName("id_horario");
-            entity.Property(e => e.DiaHorario)
-                .HasMaxLength(50)
-                .HasColumnName("dia_horario");
-            entity.Property(e => e.NombreHorario)
-                .HasMaxLength(50)
-                .HasColumnName("nombre_horario");
-        });
-
         modelBuilder.Entity<Jornadum>(entity =>
         {
             entity.HasKey(e => e.IdJornada).HasName("PK__Jornada__6BD46D1AB0FC920B");
 
             entity.Property(e => e.IdJornada).HasColumnName("id_jornada");
             entity.Property(e => e.DiaJornada)
+                .IsRequired()
                 .HasMaxLength(50)
                 .HasColumnName("Dia_jornada");
             entity.Property(e => e.HorarioJornada)
+                .IsRequired()
                 .HasMaxLength(50)
                 .HasColumnName("Horario_jornada");
             entity.Property(e => e.IdSede).HasColumnName("id_sede");
@@ -247,6 +238,7 @@ public partial class BdfflContext : DbContext
             entity.Property(e => e.IdLeccion).HasColumnName("id_leccion");
             entity.Property(e => e.IdLibro).HasColumnName("id_libro");
             entity.Property(e => e.NombreLeccion)
+                .IsRequired()
                 .HasMaxLength(50)
                 .HasColumnName("nombre_leccion");
 
@@ -264,6 +256,7 @@ public partial class BdfflContext : DbContext
 
             entity.Property(e => e.IdLibro).HasColumnName("id_libro");
             entity.Property(e => e.NombreLibro)
+                .IsRequired()
                 .HasMaxLength(50)
                 .HasColumnName("nombre_libro");
         });
@@ -280,8 +273,6 @@ public partial class BdfflContext : DbContext
 
             entity.HasIndex(e => e.IdAlumno, "IDX_id_alumno");
 
-            entity.HasIndex(e => e.IdHorario, "IDX_id_horario");
-
             entity.HasIndex(e => e.IdStaff, "IDX_id_staff");
 
             entity.Property(e => e.IdMesa).HasColumnName("id_mesa");
@@ -289,7 +280,6 @@ public partial class BdfflContext : DbContext
             entity.Property(e => e.EstadoMesa).HasColumnName("Estado_mesa");
             entity.Property(e => e.FechaInicio).HasColumnName("Fecha_inicio");
             entity.Property(e => e.IdAlumno).HasColumnName("id_alumno");
-            entity.Property(e => e.IdHorario).HasColumnName("id_horario");
             entity.Property(e => e.IdJornada).HasColumnName("id_jornada");
             entity.Property(e => e.IdNivel).HasColumnName("id_nivel");
             entity.Property(e => e.IdStaff).HasColumnName("id_staff");
@@ -298,11 +288,6 @@ public partial class BdfflContext : DbContext
                 .HasForeignKey(d => d.IdAlumno)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Mesa__id_alumno__65570293");
-
-            entity.HasOne(d => d.IdHorarioNavigation).WithMany(p => p.Mesas)
-                .HasForeignKey(d => d.IdHorario)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Mesa__id_horario__68336F3E");
 
             entity.HasOne(d => d.IdJornadaNavigation).WithMany(p => p.Mesas)
                 .HasForeignKey(d => d.IdJornada)
@@ -328,6 +313,7 @@ public partial class BdfflContext : DbContext
 
             entity.Property(e => e.IdModulo).HasColumnName("id_modulo");
             entity.Property(e => e.NombreModulo)
+                .IsRequired()
                 .HasMaxLength(50)
                 .HasColumnName("nombre_modulo");
         });
@@ -359,6 +345,7 @@ public partial class BdfflContext : DbContext
 
             entity.Property(e => e.IdNivel).HasColumnName("id_nivel");
             entity.Property(e => e.NombreNivel)
+                .IsRequired()
                 .HasMaxLength(50)
                 .HasColumnName("Nombre_nivel");
         });
@@ -396,6 +383,7 @@ public partial class BdfflContext : DbContext
 
             entity.Property(e => e.IdRol).HasColumnName("id_rol");
             entity.Property(e => e.NombreRol)
+                .IsRequired()
                 .HasMaxLength(50)
                 .HasColumnName("nombre_rol");
         });
@@ -408,6 +396,7 @@ public partial class BdfflContext : DbContext
 
             entity.Property(e => e.IdSede).HasColumnName("id_sede");
             entity.Property(e => e.NombreSede)
+                .IsRequired()
                 .HasMaxLength(50)
                 .HasColumnName("nombre_sede");
         });
@@ -435,6 +424,7 @@ public partial class BdfflContext : DbContext
                 .HasMaxLength(25)
                 .HasColumnName("DPI");
             entity.Property(e => e.EstadoCivil)
+                .IsRequired()
                 .HasMaxLength(20)
                 .HasColumnName("Estado_civil");
             entity.Property(e => e.EstatusStaff).HasColumnName("Estatus_staff");
@@ -442,18 +432,22 @@ public partial class BdfflContext : DbContext
             entity.Property(e => e.FechaNacimiento).HasColumnName("Fecha_nacimiento");
             entity.Property(e => e.IdUsuario).HasColumnName("id_usuario");
             entity.Property(e => e.NivelAprobado)
+                .IsRequired()
                 .HasMaxLength(50)
                 .HasColumnName("Nivel_aprobado");
             entity.Property(e => e.NumeroCelula)
+                .IsRequired()
                 .HasMaxLength(20)
                 .HasColumnName("Numero_celula");
             entity.Property(e => e.OtrosNombresStaff)
                 .HasMaxLength(50)
                 .HasColumnName("Otros_nombres_staff");
             entity.Property(e => e.PrimerApellidoStaff)
+                .IsRequired()
                 .HasMaxLength(50)
                 .HasColumnName("PrimerApellido_staff");
             entity.Property(e => e.PrimerNombreStaff)
+                .IsRequired()
                 .HasMaxLength(50)
                 .HasColumnName("PrimerNombre_staff");
             entity.Property(e => e.SegundoApellidoStaff)
@@ -476,10 +470,12 @@ public partial class BdfflContext : DbContext
 
             entity.Property(e => e.IdUsuario).HasColumnName("id_usuario");
             entity.Property(e => e.ContrasenaUsuario)
+                .IsRequired()
                 .HasMaxLength(50)
                 .HasColumnName("contrasena_usuario");
             entity.Property(e => e.IdRol).HasColumnName("id_rol");
             entity.Property(e => e.NombreUsuario)
+                .IsRequired()
                 .HasMaxLength(50)
                 .HasColumnName("Nombre_usuario");
 

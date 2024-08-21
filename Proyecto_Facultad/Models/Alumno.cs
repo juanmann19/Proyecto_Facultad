@@ -4,8 +4,8 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Proyecto_Facultad.Models
-{   
-    
+{
+
     public class FechaNoFuturaAttribute : ValidationAttribute
     {
         public override bool IsValid(object value)
@@ -14,7 +14,7 @@ namespace Proyecto_Facultad.Models
             {
                 return fecha <= DateOnly.FromDateTime(DateTime.Now);
             }
-            return true; 
+            return true;
         }
 
         public override string FormatErrorMessage(string name)
@@ -30,7 +30,7 @@ namespace Proyecto_Facultad.Models
         [DisplayName("Primer Nombre")]
         [Required(ErrorMessage = "El primer nombre es obligatorio")]
         [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ]+$", ErrorMessage = "Campo solo puede contener letras")]
-        
+
         public string PrimerNombreAlumno { get; set; } = null!;
 
         [DisplayName("Segundo Nombre")]
@@ -70,7 +70,7 @@ namespace Proyecto_Facultad.Models
         [DisplayName("Teléfono")]
         [StringLength(8, MinimumLength = 8, ErrorMessage = "El teléfono debe tener 8 dígitos.")]
         [RegularExpression(@"^\d{8}$", ErrorMessage = "El teléfono debe contener exactamente 8 dígitos sin guiones.")]
-        
+
         public string? Telefono { get; set; }
 
         [DisplayName("Número de Celula")]

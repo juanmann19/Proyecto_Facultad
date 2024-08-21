@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Proyecto_Facultad.Models;
 
 public partial class Staff
-{   
+{
     public class FechaNoFuturaAttribute : ValidationAttribute
     {
         public override bool IsValid(object value)
@@ -15,7 +15,7 @@ public partial class Staff
             {
                 return fecha <= DateOnly.FromDateTime(DateTime.Now);
             }
-            return true; 
+            return true;
         }
 
         public override string FormatErrorMessage(string name)
@@ -84,7 +84,7 @@ public partial class Staff
     [DisplayName("Teléfono")]
     [StringLength(8, MinimumLength = 8, ErrorMessage = "El teléfono debe tener 8 dígitos.")]
     [RegularExpression(@"^\d{8}$", ErrorMessage = "El teléfono debe contener exactamente 8 dígitos sin guiones.")]
-            
+
     public string? Telefono { get; set; }
 
 

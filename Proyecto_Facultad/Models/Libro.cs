@@ -8,6 +8,7 @@ namespace Proyecto_Facultad.Models;
 public partial class Libro
 {
     public int IdLibro { get; set; }
+
     
     [DisplayName("Nombre Libro")]
     [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ0-9 ]+$", ErrorMessage = "Campo puede contener letras y numeros")]

@@ -9,10 +9,12 @@ public partial class Leccion
 {
     public int IdLeccion { get; set; }
 
+
     [DisplayName("Nombre Leccion")]
     [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ0-9 ]+$", ErrorMessage = "Campo puede contener letras y numeros")]
     [Required(ErrorMessage = "El Nombre de Lección es Obligatorio")]
     public string NombreLeccion { get; set; } = null!;
+
 
     
     [DisplayName("Codigo Libro")]
@@ -22,5 +24,5 @@ public partial class Leccion
 
     public virtual ICollection<AsistenciaStaff> AsistenciaStaffs { get; set; } = new List<AsistenciaStaff>();
 
-    public virtual Libro IdLibroNavigation { get; set; } = null!;
+    public virtual Libro IdLibroNavigation { get; set; }
 }
