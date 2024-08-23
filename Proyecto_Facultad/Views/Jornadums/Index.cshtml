@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Proyecto_Facultad.Models.Jornadum>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Jornadas</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Crear Nueva Jornada</a>
+</p>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Día de la Jornada</th>
+                <th>Horario</th>
+                <th>Sede</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OrderBy(j => j.DiaJornada))
+            {
+                <tr>
+                    <td>@item.DiaJornada</td>
+                    <td>@item.HorarioJornada</td>
+                    <td>@item.IdSedeNavigation.NombreSede</td>
+                    <td>
+                        <div class="btn-group w-100" role="group">
+                            <a asp-action="Edit" asp-controller="Jornadums" asp-route-id="@item.IdJornada" class="btn btn-primary flex-grow-1">
+                              <i class="bi bi-pencil-fill"></i> Editar
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
