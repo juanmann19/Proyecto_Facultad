@@ -9,22 +9,23 @@ using Proyecto_Facultad.Models;
 
 namespace Proyecto_Facultad.Controllers
 {
-    public class NivelsController : Controller
+    public class CapacitacionController : Controller
     {
         private readonly BdfflContext _context;
 
-        public NivelsController(BdfflContext context)
+        public CapacitacionController(BdfflContext context)
         {
             _context = context;
         }
 
-        // GET: Nivels
+        // GET: Capacitacion
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Nivels.ToListAsync());
+            var bdfflContext = _context.Capacitacions.Include(c => c.IdStaffNavigation);
+            return View(await bdfflContext.ToListAsync());
         }
 
-        // GET: Nivels/Details/5
+        // GET: Capacitacion/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,41 +33,44 @@ namespace Proyecto_Facultad.Controllers
                 return NotFound();
             }
 
-            var nivel = await _context.Nivels
-                .FirstOrDefaultAsync(m => m.IdNivel == id);
-            if (nivel == null)
+            var capacitacion = await _context.Capacitacions
+                .Include(c => c.IdStaffNavigation)
+                .FirstOrDefaultAsync(m => m.IdCapacitacion == id);
+            if (capacitacion == null)
             {
                 return NotFound();
             }
 
-            return View(nivel);
+            return View(capacitacion);
         }
 
-        // GET: Nivels/Create
+        // GET: Capacitacion/Create
         public IActionResult Create()
         {
+            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "PrimerNombreStaff");
             return View();
         }
 
-        // POST: Nivels/Create
+        // POST: Capacitacion/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdNivel,NombreNivel")] Nivel nivel)
+        public async Task<IActionResult> Create([Bind("IdCapacitacion,FechaCapacitacion,IdStaff")] Capacitacion capacitacion)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(nivel);
+                _context.Add(capacitacion);
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Dato cargado correctamente";
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "PrimerNombreStaff", capacitacion.IdStaff);
             TempData["ErrorMessage"] = "Se produjo un error al guardar los datos.";
-            return View(nivel);
+            return View(capacitacion);
         }
 
-        // GET: Nivels/Edit/5
+        // GET: Capacitacion/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -74,22 +78,23 @@ namespace Proyecto_Facultad.Controllers
                 return NotFound();
             }
 
-            var nivel = await _context.Nivels.FindAsync(id);
-            if (nivel == null)
+            var capacitacion = await _context.Capacitacions.FindAsync(id);
+            if (capacitacion == null)
             {
                 return NotFound();
             }
-            return View(nivel);
+            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "PrimerNombreStaff", capacitacion.IdStaff);
+            return View(capacitacion);
         }
 
-        // POST: Nivels/Edit/5
+        // POST: Capacitacion/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdNivel,NombreNivel")] Nivel nivel)
+        public async Task<IActionResult> Edit(int id, [Bind("IdCapacitacion,FechaCapacitacion,IdStaff")] Capacitacion capacitacion)
         {
-            if (id != nivel.IdNivel)
+            if (id != capacitacion.IdCapacitacion)
             {
                 return NotFound();
             }
@@ -98,15 +103,14 @@ namespace Proyecto_Facultad.Controllers
             {
                 try
                 {
-                    _context.Update(nivel);
+                    _context.Update(capacitacion);
                     await _context.SaveChangesAsync();
                     TempData["SuccessMessage"] = "Datos actualizados correctamente";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!NivelExists(nivel.IdNivel))
+                    if (!CapacitacionExists(capacitacion.IdCapacitacion))
                     {
-
                         return NotFound();
                     }
                     else
@@ -117,10 +121,11 @@ namespace Proyecto_Facultad.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(nivel);
+            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "PrimerNombreStaff", capacitacion.IdStaff);
+            return View(capacitacion);
         }
 
-        // GET: Nivels/Delete/5
+        // GET: Capacitacion/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -128,34 +133,35 @@ namespace Proyecto_Facultad.Controllers
                 return NotFound();
             }
 
-            var nivel = await _context.Nivels
-                .FirstOrDefaultAsync(m => m.IdNivel == id);
-            if (nivel == null)
+            var capacitacion = await _context.Capacitacions
+                .Include(c => c.IdStaffNavigation)
+                .FirstOrDefaultAsync(m => m.IdCapacitacion == id);
+            if (capacitacion == null)
             {
                 return NotFound();
             }
 
-            return View(nivel);
+            return View(capacitacion);
         }
 
-        // POST: Nivels/Delete/5
+        // POST: Capacitacion/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var nivel = await _context.Nivels.FindAsync(id);
-            if (nivel != null)
+            var capacitacion = await _context.Capacitacions.FindAsync(id);
+            if (capacitacion != null)
             {
-                _context.Nivels.Remove(nivel);
+                _context.Capacitacions.Remove(capacitacion);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool NivelExists(int id)
+        private bool CapacitacionExists(int id)
         {
-            return _context.Nivels.Any(e => e.IdNivel == id);
+            return _context.Capacitacions.Any(e => e.IdCapacitacion == id);
         }
     }
 }
