@@ -31,7 +31,7 @@
 
                     <!-- Trae solo los campos necesarios, no todos-->
                     <th>Fecha de la capacitacion</th>
-                    <th>Mestro asignado</th>
+                    <th>Maestro asignado</th>
                 </tr>
             </thead>
             <tbody>
@@ -39,7 +39,7 @@
                 {
                     <tr>
                         <td>@obj.FechaCapacitacion.ToString("dd/MM/yyyy")</td>
-                        <td>@obj.IdStaff </td>
+                        <td>@obj.IdStaffNavigation?.PrimerNombreStaff </td>
                         <td>
                             <div class="btn-group w-100" role="group">
                                 <a asp-controller="Capacitacion" asp-action="Edit" asp-route-id="@obj.IdCapacitacion" class="btn btn-primary flex-grow-1">

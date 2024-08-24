@@ -59,8 +59,10 @@ namespace Proyecto_Facultad.Controllers
             {
                 _context.Add(nivel);
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Dato cargado correctamente";
                 return RedirectToAction(nameof(Index));
             }
+            TempData["ErrorMessage"] = "Se produjo un error al guardar los datos.";
             return View(nivel);
         }
 
@@ -98,15 +100,18 @@ namespace Proyecto_Facultad.Controllers
                 {
                     _context.Update(nivel);
                     await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Datos actualizados correctamente";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!NivelExists(nivel.IdNivel))
                     {
+
                         return NotFound();
                     }
                     else
                     {
+                        TempData["ErrorMessage"] = "Se produjo un error al actualizar los datos.";
                         throw;
                     }
                 }

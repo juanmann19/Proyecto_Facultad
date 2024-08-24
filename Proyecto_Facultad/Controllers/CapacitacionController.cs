@@ -47,7 +47,7 @@ namespace Proyecto_Facultad.Controllers
         // GET: Capacitacion/Create
         public IActionResult Create()
         {
-            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "EstadoCivil");
+            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "PrimerNombreStaff");
             return View();
         }
 
@@ -62,9 +62,11 @@ namespace Proyecto_Facultad.Controllers
             {
                 _context.Add(capacitacion);
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Dato cargado correctamente";
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "EstadoCivil", capacitacion.IdStaff);
+            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "PrimerNombreStaff", capacitacion.IdStaff);
+            TempData["ErrorMessage"] = "Se produjo un error al guardar los datos.";
             return View(capacitacion);
         }
 
@@ -81,7 +83,7 @@ namespace Proyecto_Facultad.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "EstadoCivil", capacitacion.IdStaff);
+            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "PrimerNombreStaff", capacitacion.IdStaff);
             return View(capacitacion);
         }
 
@@ -103,6 +105,7 @@ namespace Proyecto_Facultad.Controllers
                 {
                     _context.Update(capacitacion);
                     await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Datos actualizados correctamente";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -112,12 +115,13 @@ namespace Proyecto_Facultad.Controllers
                     }
                     else
                     {
+                        TempData["ErrorMessage"] = "Se produjo un error al actualizar los datos.";
                         throw;
                     }
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "EstadoCivil", capacitacion.IdStaff);
+            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "PrimerNombreStaff", capacitacion.IdStaff);
             return View(capacitacion);
         }
 

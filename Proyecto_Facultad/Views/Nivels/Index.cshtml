@@ -1,29 +1,5 @@
 ﻿@model List<Nivel>
 
-@{
-/*
-        // Función para calcular la edad a partir de la fecha de nacimiento
-        int? CalcularEdad(DateOnly? fechaNacimiento)
-            {
-            if (fechaNacimiento == null)
-                {
-            return null;
-            }
-
-            var hoy = DateOnly.FromDateTime(DateTime.Today);
-            var edad = hoy.Year - fechaNacimiento.Value.Year;
-
-            // Ajustar la edad si el cumpleaños de este año aún no ha pasado
-            if (fechaNacimiento.Value.Month > hoy.Month ||
-                (fechaNacimiento.Value.Month == hoy.Month && fechaNacimiento.Value.Day > hoy.Day))
-                {
-                        edad--;
-            }
-
-        return edad;
-    }*/
-}
-
 <div class="container-fluid pt-4">
     @if (TempData["SuccessMessage"] != null)
     {
@@ -65,16 +41,12 @@
                         <td>@obj.NombreNivel</td>
                    
                         <td>
-                            <div class="btn-group w-100" role="group">
-                                <a asp-controller="Nivels" asp-action="Edit" asp-route-id="@obj.NombreNivel" class="btn btn-primary flex-grow-1">
+                            <div class="btn-group w-50" role="group">
+                                <a asp-controller="Nivels" asp-action="Edit" asp-route-id="@obj.IdNivel" class="btn btn-primary flex-grow-1">
                                     <i class="bi bi-pencil-fill"></i> Editar
                                 </a>
                                 
-                                <form asp-action="Deactivate" method="post" class="flex-grow-1">
-                                    <button type="submit" asp-controller="Nivels" asp-action="Deactivate" asp-route-id="@obj.NombreNivel" class="btn btn-danger w-100">
-                                        <i class="bi bi-trash-fill"></i> Activar/Desactivar
-                                    </button> 
-                                </form>
+                             
                             </div>
 
                         </td>
