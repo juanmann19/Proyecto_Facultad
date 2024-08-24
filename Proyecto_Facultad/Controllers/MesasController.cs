@@ -52,6 +52,7 @@ namespace Proyecto_Facultad.Controllers
             {
                 _context.Add(mesa);
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Datos cargados correctamente";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["IdAlumno"] = new SelectList(_context.Alumnos, "IdAlumno", "PrimerNombreAlumno", mesa.IdAlumno);
