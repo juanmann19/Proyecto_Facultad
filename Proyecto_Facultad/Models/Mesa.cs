@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace Proyecto_Facultad.Models;
 
 public partial class Mesa
 {
+  
     public int IdMesa { get; set; }
 
     public DateOnly FechaInicio { get; set; }

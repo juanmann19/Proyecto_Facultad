@@ -42,8 +42,10 @@ namespace Proyecto_Facultad.Controllers
             {
                 _context.Add(sede);
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Dato cargado correctamente";
                 return RedirectToAction(nameof(Index));
             }
+            TempData["SuccessMessage"] = "Se produjo un error al guardar los datos";
             return View(sede);
         }
 
@@ -81,6 +83,7 @@ namespace Proyecto_Facultad.Controllers
                 {
                     _context.Update(sede);
                     await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Dato actualizados correctamente";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -90,6 +93,7 @@ namespace Proyecto_Facultad.Controllers
                     }
                     else
                     {
+                        TempData["SuccessMessage"] = "Se produjo un error";
                         throw;
                     }
                 }

@@ -41,9 +41,11 @@ namespace Proyecto_Facultad.Controllers
             {
                 _context.Add(jornadum);
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Dato cargado correctamente";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["IdSede"] = new SelectList(_context.Sedes, "IdSede", "NombreSede", jornadum.IdSede);
+            TempData["ErrorMessage"] = "Se produjo un error al guardar los datos.";
             return View(jornadum);
         }
 
@@ -80,6 +82,7 @@ namespace Proyecto_Facultad.Controllers
                 {
                     _context.Update(jornadum);
                     await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Dato actualizados correctamente";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -87,8 +90,10 @@ namespace Proyecto_Facultad.Controllers
                     {
                         return NotFound();
                     }
+                    
                     else
                     {
+                        TempData["ErrorMessage"] = "Se produjo un error al actualizar los datos.";
                         throw;
                     }
                 }
