@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-
-
 namespace Proyecto_Facultad.Models;
 
 public partial class Libro

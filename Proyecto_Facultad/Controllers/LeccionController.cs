@@ -53,7 +53,7 @@ namespace Proyecto_Facultad.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("NombreLeccion,IdLibro")] Leccion leccion)
+        public async Task<IActionResult> Create([Bind("Descripcion,IdLibro")] Leccion leccion)
         {
 
             try
@@ -88,7 +88,7 @@ public async Task<IActionResult> Edit(int? id)
 // POST: Leccion/Edit/5
 [HttpPost]
 [ValidateAntiForgeryToken]
-public async Task<IActionResult> Edit(int id, [Bind("IdLeccion,NombreLeccion,IdLibro")] Leccion leccion)
+public async Task<IActionResult> Edit(int id, [Bind("IdLeccion,Descripcion,IdLibro")] Leccion leccion)
 {
     if (id != leccion.IdLeccion)
     {

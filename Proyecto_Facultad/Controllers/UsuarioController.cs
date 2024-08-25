@@ -52,7 +52,7 @@ namespace Proyecto_Facultad.Controllers
         // POST: usuario/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("NombreUsuario, ContrasenaUsuario, IdRol")] Usuario usuario)
+        public async Task<IActionResult> Create([Bind("NombreUsuario, ContrasenaUsuario, IdRol,EstadoUsuario")] Usuario usuario)
         {
             if (ModelState.IsValid)
             {
@@ -89,7 +89,7 @@ namespace Proyecto_Facultad.Controllers
         // POST: Usuario/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdUsuario,NombreUsuario, ContrasenaUsuario, IdRol")] Usuario usuario)
+        public async Task<IActionResult> Edit(int id, [Bind("IdUsuario,NombreUsuario, ContrasenaUsuario, IdRol, EstadoUsuario")] Usuario usuario)
         {
             if (id != usuario.IdUsuario)
             {
