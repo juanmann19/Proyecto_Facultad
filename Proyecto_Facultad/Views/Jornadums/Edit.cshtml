@@ -1,0 +1,37 @@
+﻿@model Proyecto_Facultad.Models.Jornadum
+
+<div class="container">
+    <h2 class="text-primary pt-3">Editar Jornada</h2>
+    <form asp-controller="Jornadums" asp-action="Edit" method="post">
+        <div class="row mb-3">
+            <input type="hidden" asp-for="IdJornada" />
+            <div class="col-md-6">
+                <label asp-for="DiaJornada" class="form-label"></label>
+                <input asp-for="DiaJornada" class="form-control" />
+                <span asp-validation-for="DiaJornada" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="HorarioJornada" class="form-label"></label>
+                <input asp-for="HorarioJornada" class="form-control" />
+                <span asp-validation-for="HorarioJornada" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="IdSede" class="form-label"></label>
+                <select asp-for="IdSede" class="form-control" asp-items="ViewBag.IdSede"></select>
+                <span asp-validation-for="IdSede" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group d-flex">
+            <button type="submit" class="btn btn-success flex-fill me-2">Guardar</button>
+            <a asp-action="Index" asp-controller="Jornadums" class="btn btn-danger flex-fill">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

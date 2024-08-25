@@ -483,3 +483,4 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+/Proyecto_Facultad/wwwroot/images/logo.png

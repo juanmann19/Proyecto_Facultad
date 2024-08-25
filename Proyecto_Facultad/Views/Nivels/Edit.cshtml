@@ -1,0 +1,26 @@
+﻿@model Proyecto_Facultad.Models.Nivel
+
+<div class="container">
+    <h2 class="text-primary pt-3">Editar nivel</h2>
+    <form asp-controller="Nivels" asp-action="Edit" method="post">
+        <div class="row mb-3">
+            <input type="hidden" asp-for="IdNivel" />
+            <div class="col-md-6">
+                <label asp-for="NombreNivel" class="form-label"></label>
+                <input asp-for="NombreNivel" class="form-control" />
+                <span asp-validation-for="NombreNivel" class="text-danger"></span>
+            </div>
+        </div>
+        <div>
+            <div class="form-group d-flex">
+                <button type="submit" class="btn btn-success flex-fill me-2">Guardar</button>
+                <a asp-action="Index" asp-controller="Nivels" class="btn btn-danger flex-fill">Cancelar</a>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+@section scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
