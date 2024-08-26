@@ -1,106 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 
-namespace Proyecto_Facultad.Models
+namespace Proyecto_Facultad.Models;
+
+public partial class Alumno
 {
+    public int IdAlumno { get; set; }
 
-    public class FechaNoFuturaAttribute : ValidationAttribute
-    {
-        public override bool IsValid(object value)
-        {
-            if (value is DateOnly fecha)
-            {
-                return fecha <= DateOnly.FromDateTime(DateTime.Now);
-            }
-            return true;
-        }
+    public string PrimerNombreAlumno { get; set; }
 
-        public override string FormatErrorMessage(string name)
-        {
-            return $"La fecha {name} no puede ser mayor que la fecha actual.";
-        }
-    }
+    public string SegundoNombreAlumno { get; set; }
 
-    public partial class Alumno
-    {
-        public int IdAlumno { get; set; }
+    public string OtrosNombresAlumno { get; set; }
 
-        [DisplayName("Primer Nombre")]
-        [Required(ErrorMessage = "El primer nombre es obligatorio")]
-        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ]+$", ErrorMessage = "Campo solo puede contener letras")]
+    public string PrimerApellidoAlumno { get; set; }
 
-        public string PrimerNombreAlumno { get; set; } = null!;
+    public string SegundoApellidoAlumno { get; set; }
 
-        [DisplayName("Segundo Nombre")]
-        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ]+$", ErrorMessage = "Campo solo puede contener letras")]
-        public string? SegundoNombreAlumno { get; set; }
+    public string ApellidoCasado { get; set; }
 
-        [DisplayName("Otros Nombres")]
-        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ\s]+$", ErrorMessage = "Campo solo puede contener letras")]
-        public string? OtrosNombresAlumno { get; set; }
+    public DateOnly FechaNacimientoAlumno { get; set; }
 
-        [DisplayName("Primer Apellido")]
-        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ]+$", ErrorMessage = "Campo solo puede contener letras")]
-        [Required(ErrorMessage = "El primer apellido es obligatorio")]
-        public string PrimerApellidoAlumno { get; set; } = null!;
+    public DateOnly? FechaBautizoAlumno { get; set; }
 
-        [DisplayName("Segundo Apellido")]
-        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ]+$", ErrorMessage = "Campo solo puede contener letras")]
-        public string? SegundoApellidoAlumno { get; set; }
+    public string Direccion { get; set; }
 
-        [DisplayName("Apellido Conyugal")]
-        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ]+$", ErrorMessage = "Campo solo puede contener letras")]
-        public string? ApellidoCasado { get; set; }
+    public string Telefono { get; set; }
 
-        [DisplayName("Fecha de Nacimiento")]
-        [Required(ErrorMessage = "La fecha de nacimiento es obligatoria")]
-        [FechaNoFutura(ErrorMessage = "La fecha de nacimiento no puede ser mayor que la fecha actual.")]
-        public DateOnly FechaNacimiento { get; set; }
+    public int? Dpi { get; set; }
 
-        [DisplayName("Fecha de Bautizo")]
-        [FechaNoFutura(ErrorMessage = "La fecha de bautizo no puede ser mayor que la fecha actual.")]
-        public DateOnly? FechaBautizo { get; set; }
+    public string Nit { get; set; }
 
-        [DisplayName("Dirección")]
-        [Required(ErrorMessage = "La dirección es obligatoria")]
-        public string Direccion { get; set; } = null!;
+    public int? EstadoCivil { get; set; }
 
-        [DisplayName("Teléfono")]
-        [StringLength(8, MinimumLength = 8, ErrorMessage = "El teléfono debe tener 8 dígitos.")]
-        [RegularExpression(@"^\d{8}$", ErrorMessage = "El teléfono debe contener exactamente 8 dígitos sin guiones.")]
+    public string Genero { get; set; }
 
-        public string? Telefono { get; set; }
+    public string NumeroCelula { get; set; }
 
-        [DisplayName("Número de Celula")]
-        public string? NumeroCelula { get; set; }
+    public string CodigoFrater { get; set; }
 
-        [DisplayName("Estado Civil")]
-        public string? EstadoCivil { get; set; }
+    public bool? Becado { get; set; }
 
-        [DisplayName("Código Frater")]
-        public string? CodigoFrater { get; set; }
+    public bool? Retiro { get; set; }
 
-        [DisplayName("Becado")]
-        public bool Becado { get; set; }
+    public bool? ReunionesEnConfianza { get; set; }
 
-        [DisplayName("Retiro")]
-        public bool Retiro { get; set; }
+    public bool? Otros { get; set; }
 
-        [DisplayName("Reuniones en Confianza")]
-        public bool ReunionesEnConfianza { get; set; }
+    public bool EstatusAlumno { get; set; }
 
-        [DisplayName("Otros")]
-        public bool Otros { get; set; }
+    public virtual ICollection<AsignacionAlumno> AsignacionAlumnos { get; set; } = new List<AsignacionAlumno>();
 
-        [DisplayName("Estatus Alumno")]
-        public bool EstatusAlumno { get; set; }
-
-        public virtual ICollection<AsistenciaAlumno> AsistenciaAlumnos { get; set; } = new List<AsistenciaAlumno>();
-
-        public virtual ICollection<Mesa> Mesas { get; set; } = new List<Mesa>();
-
-        public virtual ICollection<Notum> Nota { get; set; } = new List<Notum>();
-    }
+    public virtual ICollection<AsistenciaAlumno> AsistenciaAlumnos { get; set; } = new List<AsistenciaAlumno>();
 }

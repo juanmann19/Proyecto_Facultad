@@ -1,22 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
 
 namespace Proyecto_Facultad.Models;
 
 public partial class Jornadum
 {
-    [DisplayName("Id Jornada")]
     public int IdJornada { get; set; }
 
-    [DisplayName("Dia Jornada")]
-    public string DiaJornada { get; set; }
+    public int DiaSemana { get; set; }
 
-    [DisplayName("Horario Jornada")]
-    public string HorarioJornada { get; set; }
+    public int Horario { get; set; }
 
-    [DisplayName("Id Sede")]
     public int IdSede { get; set; }
 
     public virtual Sede IdSedeNavigation { get; set; }

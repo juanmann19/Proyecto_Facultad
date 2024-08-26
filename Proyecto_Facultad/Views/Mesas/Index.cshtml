@@ -33,6 +33,11 @@
                     <th>Fecha Inicio</th>
                     <th>Año Asignación</th>
                     <th>Estado Mesa</th>
+                    <th>Alumno</th>
+                    <th>Jornada</th>
+                    <th>Nivel</th>
+                    <th>Staff</th>
+                    @* <th>Acciones</th> *@
                     <th>Alumno asignado</th>
                     <th>Jornada asignada</th>
                     <th>Nivel asignado</th>
@@ -52,13 +57,13 @@
                         <td>@obj.IdJornadaNavigation?.DiaJornada</td>
                         <td>@obj.IdNivelNavigation?.NombreNivel</td>
                         <td>@obj.IdStaffNavigation?.PrimerNombreStaff</td>
-                        <td>
+                        @* <td>
                             <div class="btn-group w-100" role="group">
                                 <a asp-controller="Mesa" asp-action="Edit" asp-route-id="@obj.IdMesa" class="btn btn-primary flex-grow-1">
                                     <i class="bi bi-pencil-fill"></i> Editar
                                 </a>
                             </div>
-                        </td>
+                        </td> *@
                     </tr>
                 }
             </tbody>
