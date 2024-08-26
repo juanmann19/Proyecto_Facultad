@@ -16,8 +16,8 @@ builder.Services.AddControllersWithViews();
 DotNetEnv.Env.Load();
 
 builder.Services.AddDbContext<BdfflContext>(options =>
-    //options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
-    options.UseSqlServer(Environment.GetEnvironmentVariable("SQL_STRING"))
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+    //options.UseSqlServer(Environment.GetEnvironmentVariable("SQL_STRING"))
 
     );
 

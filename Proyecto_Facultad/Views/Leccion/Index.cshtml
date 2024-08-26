@@ -35,10 +35,10 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var obj in Model.OrderBy(u => u.NombreLeccion))
+                @foreach (var obj in Model.OrderBy(u => u.Descripcion))
                 {
                     <tr>
-                        <td>@obj.NombreLeccion</td>
+                        <td>@obj.Descripcion</td>
                         <td>@obj.IdLibro</td>
                         <td>
                             <div class="btn-group w-100" role="group">
