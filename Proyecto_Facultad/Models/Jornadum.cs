@@ -7,9 +7,9 @@ public partial class Jornadum
 {
     public int IdJornada { get; set; }
 
-    public int DiaSemana { get; set; }
+    public string DiaSemana { get; set; }
 
-    public int Horario { get; set; }
+    public string Horario { get; set; }
 
     public int IdSede { get; set; }
 

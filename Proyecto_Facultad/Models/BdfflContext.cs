@@ -51,17 +51,13 @@ public partial class BdfflContext : DbContext
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=(local); DataBase=BDFFL;User Id=SA;Password=UMG@12345; TrustServerCertificate=True; Integrated Security=False; Trusted_Connection=false;");
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.UseCollation("Modern_Spanish_CI_AS");
-
         modelBuilder.Entity<Alumno>(entity =>
         {
-            entity.HasKey(e => e.IdAlumno).HasName("PK__Alumno__6D77A7F19DA09A72");
+            entity.HasKey(e => e.IdAlumno).HasName("PK__Alumno__6D77A7F182067B85");
 
             entity.ToTable("Alumno");
 
@@ -72,10 +68,6 @@ public partial class BdfflContext : DbContext
             entity.HasIndex(e => e.PrimerNombreAlumno, "IDX_Alumno_PrimerNombre");
 
             entity.HasIndex(e => e.CodigoFrater, "IDX_Staff_CodigoFrater");
-
-            entity.HasIndex(e => e.Dpi, "UQ__Alumno__C035891F2D305171").IsUnique();
-
-            entity.HasIndex(e => e.CodigoFrater, "UQ__Alumno__F8C2B3A9CEC12585").IsUnique();
 
             entity.Property(e => e.IdAlumno).HasColumnName("id_alumno");
             entity.Property(e => e.ApellidoCasado)
@@ -90,8 +82,13 @@ public partial class BdfflContext : DbContext
                 .IsRequired()
                 .HasMaxLength(50)
                 .IsUnicode(false);
-            entity.Property(e => e.Dpi).HasColumnName("DPI");
-            entity.Property(e => e.EstadoCivil).HasColumnName("Estado_civil");
+            entity.Property(e => e.Dpi)
+                .HasMaxLength(15)
+                .HasColumnName("DPI");
+            entity.Property(e => e.EstadoCivil)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("Estado_civil");
             entity.Property(e => e.EstatusAlumno)
                 .HasDefaultValue(true)
                 .HasColumnName("Estatus_alumno");
@@ -103,7 +100,6 @@ public partial class BdfflContext : DbContext
                 .HasColumnName("genero");
             entity.Property(e => e.Nit)
                 .HasMaxLength(15)
-                .IsUnicode(false)
                 .HasColumnName("NIT");
             entity.Property(e => e.NumeroCelula)
                 .HasMaxLength(20)
@@ -135,7 +131,7 @@ public partial class BdfflContext : DbContext
 
         modelBuilder.Entity<AsignacionAlumno>(entity =>
         {
-            entity.HasKey(e => e.IdAsignacionalumnos).HasName("PK__Asignaci__7EB2BA60E5CB5F66");
+            entity.HasKey(e => e.IdAsignacionalumnos).HasName("PK__Asignaci__7EB2BA60EE7B8BB9");
 
             entity.Property(e => e.IdAsignacionalumnos).HasColumnName("id_asignacionalumnos");
             entity.Property(e => e.IdAlumno).HasColumnName("id_alumno");
@@ -144,17 +140,17 @@ public partial class BdfflContext : DbContext
             entity.HasOne(d => d.IdAlumnoNavigation).WithMany(p => p.AsignacionAlumnos)
                 .HasForeignKey(d => d.IdAlumno)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Asignacio__id_al__4E88ABD4");
+                .HasConstraintName("FK__Asignacio__id_al__1EA48E88");
 
             entity.HasOne(d => d.IdMesaNavigation).WithMany(p => p.AsignacionAlumnos)
                 .HasForeignKey(d => d.IdMesa)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Asignacio__id_me__4F7CD00D");
+                .HasConstraintName("FK__Asignacio__id_me__1F98B2C1");
         });
 
         modelBuilder.Entity<AsignacionMaestro>(entity =>
         {
-            entity.HasKey(e => e.IdAsignacionmaestros).HasName("PK__Asignaci__8E62ABC71B803354");
+            entity.HasKey(e => e.IdAsignacionmaestros).HasName("PK__Asignaci__8E62ABC7B9E7BB81");
 
             entity.Property(e => e.IdAsignacionmaestros).HasColumnName("id_asignacionmaestros");
             entity.Property(e => e.IdMesa).HasColumnName("id_mesa");
@@ -163,17 +159,17 @@ public partial class BdfflContext : DbContext
             entity.HasOne(d => d.IdMesaNavigation).WithMany(p => p.AsignacionMaestros)
                 .HasForeignKey(d => d.IdMesa)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Asignacio__id_me__6FE99F9F");
+                .HasConstraintName("FK__Asignacio__id_me__37703C52");
 
             entity.HasOne(d => d.IdStaffNavigation).WithMany(p => p.AsignacionMaestros)
                 .HasForeignKey(d => d.IdStaff)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Asignacio__id_st__6EF57B66");
+                .HasConstraintName("FK__Asignacio__id_st__367C1819");
         });
 
         modelBuilder.Entity<AsistenciaAlumno>(entity =>
         {
-            entity.HasKey(e => e.IdAsistenciaAlumno).HasName("PK__Asistenc__0FD56E6DEF23811C");
+            entity.HasKey(e => e.IdAsistenciaAlumno).HasName("PK__Asistenc__0FD56E6D69E51D4E");
 
             entity.ToTable("AsistenciaAlumno");
 
@@ -189,17 +185,17 @@ public partial class BdfflContext : DbContext
             entity.HasOne(d => d.IdAlumnoNavigation).WithMany(p => p.AsistenciaAlumnos)
                 .HasForeignKey(d => d.IdAlumno)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Asistenci__id_al__787EE5A0");
+                .HasConstraintName("FK__Asistenci__id_al__40058253");
 
             entity.HasOne(d => d.IdAsistenciaStaffNavigation).WithMany(p => p.AsistenciaAlumnos)
                 .HasForeignKey(d => d.IdAsistenciaStaff)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Asistenci__id_as__797309D9");
+                .HasConstraintName("FK__Asistenci__id_as__40F9A68C");
         });
 
         modelBuilder.Entity<AsistenciaStaff>(entity =>
         {
-            entity.HasKey(e => e.IdAsistenciaStaff).HasName("PK__Asistenc__4E497B3569E1460B");
+            entity.HasKey(e => e.IdAsistenciaStaff).HasName("PK__Asistenc__4E497B3560D80BC0");
 
             entity.ToTable("AsistenciaStaff");
 
@@ -224,26 +220,26 @@ public partial class BdfflContext : DbContext
             entity.HasOne(d => d.IdBimestreNavigation).WithMany(p => p.AsistenciaStaffs)
                 .HasForeignKey(d => d.IdBimestre)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Asistenci__id_bi__75A278F5");
+                .HasConstraintName("FK__Asistenci__id_bi__3D2915A8");
 
             entity.HasOne(d => d.IdLeccionNavigation).WithMany(p => p.AsistenciaStaffs)
                 .HasForeignKey(d => d.IdLeccion)
-                .HasConstraintName("FK__Asistenci__id_le__74AE54BC");
+                .HasConstraintName("FK__Asistenci__id_le__3C34F16F");
 
             entity.HasOne(d => d.IdMesaNavigation).WithMany(p => p.AsistenciaStaffs)
                 .HasForeignKey(d => d.IdMesa)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Asistenci__id_me__73BA3083");
+                .HasConstraintName("FK__Asistenci__id_me__3B40CD36");
 
             entity.HasOne(d => d.IdStaffNavigation).WithMany(p => p.AsistenciaStaffs)
                 .HasForeignKey(d => d.IdStaff)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Asistenci__id_st__72C60C4A");
+                .HasConstraintName("FK__Asistenci__id_st__3A4CA8FD");
         });
 
         modelBuilder.Entity<AvanceMesa>(entity =>
         {
-            entity.HasKey(e => e.IdAvancemesa).HasName("PK__AvanceMe__8E5E875A6EF244D4");
+            entity.HasKey(e => e.IdAvancemesa).HasName("PK__AvanceMe__8E5E875A30A4AC5F");
 
             entity.ToTable("AvanceMesa");
 
@@ -257,32 +253,32 @@ public partial class BdfflContext : DbContext
             entity.HasOne(d => d.IdBimestreNavigation).WithMany(p => p.AvanceMesas)
                 .HasForeignKey(d => d.IdBimestre)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__AvanceMes__id_bi__534D60F1");
+                .HasConstraintName("FK__AvanceMes__id_bi__236943A5");
 
             entity.HasOne(d => d.IdLeccionNavigation).WithMany(p => p.AvanceMesas)
                 .HasForeignKey(d => d.IdLeccion)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__AvanceMes__id_le__5535A963");
+                .HasConstraintName("FK__AvanceMes__id_le__25518C17");
 
             entity.HasOne(d => d.IdLibroNavigation).WithMany(p => p.AvanceMesas)
                 .HasForeignKey(d => d.IdLibro)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__AvanceMes__id_li__5441852A");
+                .HasConstraintName("FK__AvanceMes__id_li__245D67DE");
 
             entity.HasOne(d => d.IdMesaNavigation).WithMany(p => p.AvanceMesas)
                 .HasForeignKey(d => d.IdMesa)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__AvanceMes__id_me__5629CD9C");
+                .HasConstraintName("FK__AvanceMes__id_me__2645B050");
 
             entity.HasOne(d => d.IdNivelNavigation).WithMany(p => p.AvanceMesas)
                 .HasForeignKey(d => d.IdNivel)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__AvanceMes__id_ni__52593CB8");
+                .HasConstraintName("FK__AvanceMes__id_ni__22751F6C");
         });
 
         modelBuilder.Entity<Bimestre>(entity =>
         {
-            entity.HasKey(e => e.IdBimestre).HasName("PK__Bimestre__7F19856530FF1686");
+            entity.HasKey(e => e.IdBimestre).HasName("PK__Bimestre__7F1985655CDDCED9");
 
             entity.ToTable("Bimestre");
 
@@ -295,7 +291,7 @@ public partial class BdfflContext : DbContext
 
         modelBuilder.Entity<Capacitacion>(entity =>
         {
-            entity.HasKey(e => e.IdCapacitacion).HasName("PK__Capacita__FA471D9B32F5E2DE");
+            entity.HasKey(e => e.IdCapacitacion).HasName("PK__Capacita__FA471D9B0657B481");
 
             entity.ToTable("Capacitacion");
 
@@ -306,27 +302,34 @@ public partial class BdfflContext : DbContext
             entity.HasOne(d => d.IdStaffNavigation).WithMany(p => p.Capacitacions)
                 .HasForeignKey(d => d.IdStaff)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Capacitac__id_st__7C4F7684");
+                .HasConstraintName("FK__Capacitac__id_st__43D61337");
         });
 
         modelBuilder.Entity<Jornadum>(entity =>
         {
-            entity.HasKey(e => e.IdJornada).HasName("PK__Jornada__6BD46D1ADC6A2F10");
+            entity.HasKey(e => e.IdJornada).HasName("PK__Jornada__6BD46D1A55E1D257");
 
             entity.Property(e => e.IdJornada).HasColumnName("id_jornada");
-            entity.Property(e => e.DiaSemana).HasColumnName("dia_semana");
-            entity.Property(e => e.Horario).HasColumnName("horario");
+            entity.Property(e => e.DiaSemana)
+                .IsRequired()
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .HasColumnName("dia_semana");
+            entity.Property(e => e.Horario)
+                .IsRequired()
+                .HasMaxLength(10)
+                .HasColumnName("horario");
             entity.Property(e => e.IdSede).HasColumnName("id_sede");
 
             entity.HasOne(d => d.IdSedeNavigation).WithMany(p => p.Jornada)
                 .HasForeignKey(d => d.IdSede)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Jornada__id_sede__403A8C7D");
+                .HasConstraintName("FK__Jornada__id_sede__10566F31");
         });
 
         modelBuilder.Entity<Leccion>(entity =>
         {
-            entity.HasKey(e => e.IdLeccion).HasName("PK__Leccion__2015E24CB9798241");
+            entity.HasKey(e => e.IdLeccion).HasName("PK__Leccion__2015E24C54B9FF41");
 
             entity.ToTable("Leccion");
 
@@ -341,12 +344,12 @@ public partial class BdfflContext : DbContext
             entity.HasOne(d => d.IdLibroNavigation).WithMany(p => p.Leccions)
                 .HasForeignKey(d => d.IdLibro)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Leccion__id_libr__46E78A0C");
+                .HasConstraintName("FK__Leccion__id_libr__17036CC0");
         });
 
         modelBuilder.Entity<Libro>(entity =>
         {
-            entity.HasKey(e => e.IdLibro).HasName("PK__Libro__EC09C24E6E7ED795");
+            entity.HasKey(e => e.IdLibro).HasName("PK__Libro__EC09C24EE6929BD1");
 
             entity.ToTable("Libro");
 
@@ -359,7 +362,7 @@ public partial class BdfflContext : DbContext
 
         modelBuilder.Entity<Mesa>(entity =>
         {
-            entity.HasKey(e => e.IdMesa).HasName("PK__Mesa__68A1E159F37038ED");
+            entity.HasKey(e => e.IdMesa).HasName("PK__Mesa__68A1E15914A14284");
 
             entity.ToTable("Mesa");
 
@@ -379,17 +382,17 @@ public partial class BdfflContext : DbContext
             entity.HasOne(d => d.IdJornadaNavigation).WithMany(p => p.Mesas)
                 .HasForeignKey(d => d.IdJornada)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Mesa__id_jornada__4BAC3F29");
+                .HasConstraintName("FK__Mesa__id_jornada__1BC821DD");
 
             entity.HasOne(d => d.IdSedeNavigation).WithMany(p => p.Mesas)
                 .HasForeignKey(d => d.IdSede)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Mesa__id_sede__4AB81AF0");
+                .HasConstraintName("FK__Mesa__id_sede__1AD3FDA4");
         });
 
         modelBuilder.Entity<Nivel>(entity =>
         {
-            entity.HasKey(e => e.IdNivel).HasName("PK__Nivel__9CAF1C53004669C7");
+            entity.HasKey(e => e.IdNivel).HasName("PK__Nivel__9CAF1C532F5C60CE");
 
             entity.ToTable("Nivel");
 
@@ -402,7 +405,7 @@ public partial class BdfflContext : DbContext
 
         modelBuilder.Entity<Nota>(entity =>
         {
-            entity.HasKey(e => e.IdNota).HasName("PK__Notas__26991D8C1B63B6FD");
+            entity.HasKey(e => e.IdNota).HasName("PK__Notas__26991D8CA0FB796E");
 
             entity.Property(e => e.IdNota).HasColumnName("id_nota");
             entity.Property(e => e.IdAsignacionalumnos).HasColumnName("id_asignacionalumnos");
@@ -412,17 +415,17 @@ public partial class BdfflContext : DbContext
             entity.HasOne(d => d.IdAsignacionalumnosNavigation).WithMany(p => p.Nota)
                 .HasForeignKey(d => d.IdAsignacionalumnos)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Notas__id_asigna__5CD6CB2B");
+                .HasConstraintName("FK__Notas__id_asigna__29221CFB");
 
             entity.HasOne(d => d.IdBimestreNavigation).WithMany(p => p.Nota)
                 .HasForeignKey(d => d.IdBimestre)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Notas__id_bimest__5DCAEF64");
+                .HasConstraintName("FK__Notas__id_bimest__2A164134");
         });
 
         modelBuilder.Entity<Rol>(entity =>
         {
-            entity.HasKey(e => e.IdRol).HasName("PK__Rol__6ABCB5E04B0280F6");
+            entity.HasKey(e => e.IdRol).HasName("PK__Rol__6ABCB5E0E5CFF244");
 
             entity.ToTable("Rol");
 
@@ -435,7 +438,7 @@ public partial class BdfflContext : DbContext
 
         modelBuilder.Entity<Sede>(entity =>
         {
-            entity.HasKey(e => e.IdSede).HasName("PK__Sede__D693504BC43AE382");
+            entity.HasKey(e => e.IdSede).HasName("PK__Sede__D693504B6566EBCF");
 
             entity.ToTable("Sede");
 
@@ -453,17 +456,13 @@ public partial class BdfflContext : DbContext
 
         modelBuilder.Entity<Staff>(entity =>
         {
-            entity.HasKey(e => e.IdStaff).HasName("PK__Staff__12FEDA3C0FC71C9D");
+            entity.HasKey(e => e.IdStaff).HasName("PK__Staff__12FEDA3CD0D1A5F9");
 
             entity.HasIndex(e => e.SegundoApellidoStaff, "IDX_Staff_PrimerApellido");
 
             entity.HasIndex(e => e.PrimerNombreStaff, "IDX_Staff_PrimerNombre");
 
             entity.HasIndex(e => e.IdUsuario, "IX_Staff_Usuario");
-
-            entity.HasIndex(e => e.Dpi, "UQ__Staff__C035891FCF63D80E").IsUnique();
-
-            entity.HasIndex(e => e.CodigoFrater, "UQ__Staff__F8C2B3A9CA6D3785").IsUnique();
 
             entity.Property(e => e.IdStaff).HasColumnName("id_staff");
             entity.Property(e => e.ApellidoCasado)
@@ -473,7 +472,9 @@ public partial class BdfflContext : DbContext
                 .HasMaxLength(20)
                 .HasColumnName("Codigo_Frater");
             entity.Property(e => e.Direccion).HasMaxLength(100);
-            entity.Property(e => e.Dpi).HasColumnName("DPI");
+            entity.Property(e => e.Dpi)
+                .HasMaxLength(15)
+                .HasColumnName("DPI");
             entity.Property(e => e.EstadoCivil)
                 .HasMaxLength(15)
                 .IsUnicode(false)
@@ -521,12 +522,14 @@ public partial class BdfflContext : DbContext
             entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.Staff)
                 .HasForeignKey(d => d.IdUsuario)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Staff__id_usuari__6C190EBB");
+                .HasConstraintName("FK__Staff__id_usuari__339FAB6E");
         });
 
         modelBuilder.Entity<Usuario>(entity =>
         {
-            entity.HasKey(e => e.IdUsuario).HasName("PK__Usuarios__4E3E04AD8D9E8CC0");
+            entity.HasKey(e => e.IdUsuario).HasName("PK__Usuarios__4E3E04ADF69494AD");
+
+            entity.HasIndex(e => e.IdRol, "IX_Usuarios_Rol");
 
             entity.Property(e => e.IdUsuario).HasColumnName("id_usuario");
             entity.Property(e => e.ContrasenaUsuario)
@@ -545,7 +548,7 @@ public partial class BdfflContext : DbContext
             entity.HasOne(d => d.IdRolNavigation).WithMany(p => p.Usuarios)
                 .HasForeignKey(d => d.IdRol)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Usuarios__id_rol__66603565");
+                .HasConstraintName("FK__Usuarios__id_rol__2FCF1A8A");
         });
 
         OnModelCreatingPartial(modelBuilder);

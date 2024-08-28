@@ -27,7 +27,7 @@ public partial class Staff
 
     public string Telefono { get; set; }
 
-    public int? Dpi { get; set; }
+    public string Dpi { get; set; }
 
     public string Nit { get; set; }
 
