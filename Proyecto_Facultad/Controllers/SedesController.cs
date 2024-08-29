@@ -36,16 +36,16 @@ namespace Proyecto_Facultad.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdSede,NombreSede")] Sede sede)
+        public async Task<IActionResult> Create([Bind("IdSede,NombreSede,Pais")] Sede sede)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(sede);
                 await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Dato cargado correctamente";
+                TempData["SuccessMessage"] = "Sede creada exitosamente.";
                 return RedirectToAction(nameof(Index));
             }
-            TempData["SuccessMessage"] = "Se produjo un error al guardar los datos";
+            TempData["ErrorMessage"] = "Error al crear la sede.";
             return View(sede);
         }
 
@@ -70,7 +70,7 @@ namespace Proyecto_Facultad.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdSede,NombreSede")] Sede sede)
+        public async Task<IActionResult> Edit(int id, [Bind("IdSede,NombreSede,Pais")] Sede sede)
         {
             if (id != sede.IdSede)
             {
@@ -83,7 +83,7 @@ namespace Proyecto_Facultad.Controllers
                 {
                     _context.Update(sede);
                     await _context.SaveChangesAsync();
-                    TempData["SuccessMessage"] = "Dato actualizados correctamente";
+                    TempData["SuccessMessage"] = "Datos actualizados correctamente";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -99,8 +99,10 @@ namespace Proyecto_Facultad.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            TempData["ErrorMessage"] = "Error al actualizar la sede.";
             return View(sede);
         }
+
         private bool SedeExists(int id)
         {
             return _context.Sedes.Any(e => e.IdSede == id);

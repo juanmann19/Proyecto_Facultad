@@ -7,32 +7,32 @@ namespace Proyecto_Facultad.Models;
 
 public partial class Mesa
 {
-  
+    [DisplayName ("Mesa")]
     public int IdMesa { get; set; }
 
-    public DateOnly FechaInicio { get; set; }
+    [DisplayName("Nombre Sede")]
+    public int IdSede { get; set; }
 
-    public int IdStaff { get; set; }
-
-    public int IdAlumno { get; set; }
-
+    [DisplayName("Jornada")]
     public int IdJornada { get; set; }
 
-    public int IdNivel { get; set; }
+    [DisplayName("Fecha de Inicio")]
+    public DateOnly FechaInicio { get; set; }
 
-    public int AnioAsignacion { get; set; }
+    [DisplayName("Fecha Fin")]
+    public DateOnly? FechaFin { get; set; }
 
     public bool EstadoMesa { get; set; }
 
+    public virtual ICollection<AsignacionAlumno> AsignacionAlumnos { get; set; } = new List<AsignacionAlumno>();
+
+    public virtual ICollection<AsignacionMaestro> AsignacionMaestros { get; set; } = new List<AsignacionMaestro>();
+
     public virtual ICollection<AsistenciaStaff> AsistenciaStaffs { get; set; } = new List<AsistenciaStaff>();
 
-    public virtual Alumno IdAlumnoNavigation { get; set; }
+    public virtual ICollection<AvanceMesa> AvanceMesas { get; set; } = new List<AvanceMesa>();
 
     public virtual Jornadum IdJornadaNavigation { get; set; }
 
-    public virtual Nivel IdNivelNavigation { get; set; }
-
-    public virtual Staff IdStaffNavigation { get; set; }
-
-    public virtual ICollection<Notum> Nota { get; set; } = new List<Notum>();
+    public virtual Sede NombreSedeNavigation { get; set; }
 }

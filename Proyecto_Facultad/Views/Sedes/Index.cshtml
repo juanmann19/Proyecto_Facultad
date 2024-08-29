@@ -15,6 +15,7 @@
             @TempData["ErrorMessage"]
         </div>
     }
+
     <div class="row mb-3">
         <div class="col-6">
             <h2 class="text-primary">Listado de Sedes</h2>
@@ -31,6 +32,7 @@
             <thead>
                 <tr>
                     <th>Nombre de la Sede</th>
+                    <th>País</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -40,10 +42,11 @@
                 {
                     <tr>
                         <td>@item.NombreSede</td>
+                        <td>@item.Pais</td>
                         <td>
                             <a asp-controller="Sedes" asp-action="Edit" asp-route-id="@item.IdSede" class="btn btn-primary w-100">
                                 <i class="bi bi-pencil-fill"></i> Editar
-                            </a>
+                            </a> 
                         </td>
                     </tr>
                 }

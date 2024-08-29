@@ -24,24 +24,6 @@ namespace Proyecto_Facultad.Controllers
             return View(await _context.Nivels.ToListAsync());
         }
 
-        // GET: Nivels/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var nivel = await _context.Nivels
-                .FirstOrDefaultAsync(m => m.IdNivel == id);
-            if (nivel == null)
-            {
-                return NotFound();
-            }
-
-            return View(nivel);
-        }
-
         // GET: Nivels/Create
         public IActionResult Create()
         {
@@ -59,10 +41,10 @@ namespace Proyecto_Facultad.Controllers
             {
                 _context.Add(nivel);
                 await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Dato cargado correctamente";
+                TempData["SuccessMessage"] = "Nivel creado exitosamente.";
                 return RedirectToAction(nameof(Index));
             }
-            TempData["ErrorMessage"] = "Se produjo un error al guardar los datos.";
+            TempData["ErrorMessage"] = "Error al crear el nivel.";
             return View(nivel);
         }
 
@@ -71,12 +53,14 @@ namespace Proyecto_Facultad.Controllers
         {
             if (id == null)
             {
+                TempData["ErrorMessage"] = "ID no válido.";
                 return NotFound();
             }
 
             var nivel = await _context.Nivels.FindAsync(id);
             if (nivel == null)
             {
+                TempData["ErrorMessage"] = "Nivel no encontrado.";
                 return NotFound();
             }
             return View(nivel);
@@ -91,6 +75,7 @@ namespace Proyecto_Facultad.Controllers
         {
             if (id != nivel.IdNivel)
             {
+                TempData["ErrorMessage"] = "ID no coincide.";
                 return NotFound();
             }
 
@@ -100,57 +85,25 @@ namespace Proyecto_Facultad.Controllers
                 {
                     _context.Update(nivel);
                     await _context.SaveChangesAsync();
-                    TempData["SuccessMessage"] = "Datos actualizados correctamente";
+                    TempData["SuccessMessage"] = "Datos actualizados correctamente.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!NivelExists(nivel.IdNivel))
                     {
-
+                        TempData["ErrorMessage"] = "Nivel no existe.";
                         return NotFound();
                     }
                     else
                     {
-                        TempData["ErrorMessage"] = "Se produjo un error al actualizar los datos.";
+                        TempData["ErrorMessage"] = "Se produjo un error al actualizar.";
                         throw;
                     }
                 }
                 return RedirectToAction(nameof(Index));
             }
+            TempData["ErrorMessage"] = "Error al actualizar el nivel.";
             return View(nivel);
-        }
-
-        // GET: Nivels/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var nivel = await _context.Nivels
-                .FirstOrDefaultAsync(m => m.IdNivel == id);
-            if (nivel == null)
-            {
-                return NotFound();
-            }
-
-            return View(nivel);
-        }
-
-        // POST: Nivels/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var nivel = await _context.Nivels.FindAsync(id);
-            if (nivel != null)
-            {
-                _context.Nivels.Remove(nivel);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
 
         private bool NivelExists(int id)

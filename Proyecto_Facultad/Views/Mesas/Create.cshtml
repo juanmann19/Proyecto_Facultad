@@ -2,57 +2,42 @@
 
 <div class="container">
     <h2 class="text-primary">Añadir Mesa</h2>
-    <form id="mesaForm" asp-action="Create" method="post">
-        <div class="row mb-3">
 
-            <label asp-for="FechaInicio" class="form-label"></label>
-            <input id="FechaInicio" asp-for="FechaInicio" class="form-control" type="date" />
-            <span id="FechaInicioError" class="text-danger"></span>
-            
-            <div class="col-md-6">
-                <label asp-for="AnioAsignacion" class="form-label"></label>
-                <input asp-for="AnioAsignacion" class="form-control" maxlength="4" minlength="4" pattern="\d{4}" title="El año debe contener 4 digitos" />
-                <span asp-validation-for="AnioAsignacion" class="text-danger"></span>
-            </div>
-
-        </div>
-
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label asp-for="IdStaff" class="form-label"></label>
-                <select asp-for="IdStaff" class="form-control" asp-items="ViewBag.IdStaff"></select>
-            </div>
-            <div class="col-md-6">
-                <label asp-for="IdAlumno" class="form-label"></label>
-                <select asp-for="IdAlumno" class="form-control" asp-items="ViewBag.IdAlumno"></select>
-                
-            </div>
-        </div>
-
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label asp-for="IdJornada" class="form-label"></label>
-                <select asp-for="IdJornada" class="form-control" asp-items="ViewBag.IdJornada"></select>
-            </div>
-            <div class="col-md-6">
-                <label asp-for="IdNivel" class="form-label"></label>
-                <select asp-for="IdNivel" class="form-control" asp-items="ViewBag.IdNivel"></select>
-            </div>
-        </div>
-
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <div class="form-check">
-                    <input asp-for="EstadoMesa" class="form-check-input" type="checkbox" />
-                    <label asp-for="EstadoMesa" class="form-check-label"></label>
-                    <span asp-validation-for="EstadoMesa" class="text-danger"></span>
+    <form asp-action="Create" method="post">
+       <div class="row mb-3">
+             <div class="col-md-6">
+                <label asp-for="IdSede" class="form-label"></label>
+                <select asp-for="IdSede" class="form-control" asp-items="ViewBag.NombreSede"></select>
                 </div>
             </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+              <label asp-for="IdJornada" class="control-label"></label>
+              <input asp-for="IdJornada" class="form-control"/>
+              <span asp-validation-for="IdJornada" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="FechaInicio" class="control-label"></label>
+                <input asp-for="FechaInicio" class="form-control" type="date" />
+                <span asp-validation-for="FechaInicio" class="Text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-mb-6">
+               <label asp-for="FechaFin" class="control-label"></label>
+                <input asp-for="FechaFin" class="form-control" type="date" />
+                <span asp-validation-for="FechaFin" class="text-danger"></span>
+             </div>
         </div>
 
         <div class="form-group d-flex">
             <button type="submit" class="btn btn-primary flex-fill me-2">Guardar</button>
-            <a asp-action="Index" asp-controller="Mesas" class="btn btn-danger flex-fill">Cancelar</a>
+            <a asp-action="Index" class="btn btn-danger flex-fill">Cancelar</a>
         </div>
     </form>
 </div>

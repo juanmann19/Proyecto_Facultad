@@ -15,13 +15,14 @@
             @TempData["ErrorMessage"]
         </div>
     }
+
     <div class="row mb-3">
         <div class="col-6">
             <h2 class="text-primary">Listado de Mesas</h2>
         </div>
         <div class="col-6 text-end">
             <a asp-controller="Mesas" asp-action="Create" class="btn btn-primary">
-                <i class="bi bi-plus-circle"></i> Agregar Mesa
+                <i class="bi bi-plus-circle"></i> Agregar mesa
             </a>
         </div>
     </div>
@@ -30,34 +31,29 @@
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Fecha Inicio</th>
-                    <th>Año Asignación</th>
-                    <th>Estado Mesa</th>
-                    <th>Alumno</th>
+                    <th>Fecha de Inicio</th>
+                    <th>Fecha de Fin</th>
+                    <th>Estado de la Mesa</th>
                     <th>Jornada</th>
-                    <th>Nivel</th>
-                    <th>Staff</th>
+                    <th>Nombre de la Sede</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var obj in Model.OrderBy(u => u.FechaInicio))
+                @foreach (var obj in Model)
 
                 {
                     <tr>
                         <td>@obj.FechaInicio</td>
-                        <td>@obj.AnioAsignacion</td>
+                        <td>@obj.FechaFin</td>
                         <td>@obj.EstadoMesa</td>
-                        <td>@obj.IdAlumnoNavigation?.PrimerNombreAlumno</td>
-                        <td>@obj.IdJornadaNavigation?.DiaJornada</td>
-                        <td>@obj.IdNivelNavigation?.NombreNivel</td>
-                        <td>@obj.IdStaffNavigation?.PrimerNombreStaff</td>
+                        <td>@obj.IdJornadaNavigation?.IdJornada</td>
+                        <td>@obj.NombreSedeNavigation?.NombreSede</td>
                         <td>
                             <div class="btn-group w-100" role="group">
-                                <a asp-controller="Mesa" asp-action="Edit" asp-route-id="@obj.IdMesa" class="btn btn-primary flex-grow-1">
-                                    <i class="bi bi-pencil-fill"></i> Editar
-                                </a>
-                            </div>
+                            <a asp-controller="Mesas" asp-action="Edit" asp-route-id="@obj.IdMesa" class="btn btn-primary w-100">
+                                <i class="bi bi-pencil-fill"></i> Editar
+                            </a>
                         </td>
                     </tr>
                 }

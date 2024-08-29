@@ -4,7 +4,7 @@ using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//Abajo Culture-Info (Para validación de rangos de fechas?)
+//Abajo Culture-Info (Para validaciï¿½n de rangos de fechas?)
 //var cultureInfo = new CultureInfo("es-ES");
 //CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
 //CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
@@ -13,8 +13,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+DotNetEnv.Env.Load();
+
 builder.Services.AddDbContext<BdfflContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+    //options.UseSqlServer(Environment.GetEnvironmentVariable("SQL_STRING"))
+
     );
 
 var app = builder.Build();

@@ -2,24 +2,28 @@
 
 <div class="container">
     <h2 class="text-primary">Añadir Jornada</h2>
-    <form id="jornadaForm" asp-action="Create" method="post">
+
+    <form asp-action="Create" method="post">
         <div class="row mb-3">
             <div class="col-md-6">
-                <label asp-for="DiaJornada" class="form-label"></label>
-                <input asp-for="DiaJornada" class="form-control" />
-                <span asp-validation-for="DiaJornada" class="text-danger"></span>
-            </div>
-            <div class="col-md-6">
-                <label asp-for="HorarioJornada" class="form-label"></label>
-                <input asp-for="HorarioJornada" class="form-control" />
-                <span asp-validation-for="HorarioJornada" class="text-danger"></span>
+                <label asp-for="DiaSemana" class="form-label"></label>
+                <input asp-for="DiaSemana" class="form-control" />
+                <span asp-validation-for="DiaSemana" class="text-danger"></span>
             </div>
         </div>
 
         <div class="row mb-3">
-            <div class="col-md-12">
+            <div class="col-md-6">
+                <label asp-for="Horario" class="form-label"></label>
+                <input asp-for="Horario" class="form-control" />
+                <span asp-validation-for="Horario" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
                 <label asp-for="IdSede" class="form-label"></label>
-                <input asp-for="IdSede" class="form-control" />
+                <select asp-for="IdSede" class="form-control"/>
                 <span asp-validation-for="IdSede" class="text-danger"></span>
             </div>
         </div>
@@ -33,42 +37,4 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script>
-        document.querySelector('#jornadaForm').addEventListener('submit', function (event) {
-            var diaJornadaInput = document.getElementById('DiaJornada');
-            var diaJornadaError = document.querySelector('[asp-validation-for="DiaJornada"]');
-            var horarioJornadaInput = document.getElementById('HorarioJornada');
-            var horarioJornadaError = document.querySelector('[asp-validation-for="HorarioJornada"]');
-            var idSedeInput = document.getElementById('IdSede');
-            var idSedeError = document.querySelector('[asp-validation-for="IdSede"]');
-
-            var valid = true;
-
-            if (!diaJornadaInput.value) {
-                diaJornadaError.textContent = "El día de la jornada es requerido.";
-                valid = false;
-            } else {
-                diaJornadaError.textContent = "";
-            }
-
-            if (!horarioJornadaInput.value) {
-                horarioJornadaError.textContent = "El horario de la jornada es requerido.";
-                valid = false;
-            } else {
-                horarioJornadaError.textContent = "";
-            }
-
-            if (!idSedeInput.value) {
-                idSedeError.textContent = "La sede es requerida.";
-                valid = false;
-            } else {
-                idSedeError.textContent = "";
-            }
-
-            if (!valid) {
-                event.preventDefault();
-            }
-        });
-    </script>
 }
-

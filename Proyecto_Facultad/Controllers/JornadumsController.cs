@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_Facultad.Models;
@@ -25,6 +25,25 @@ namespace Proyecto_Facultad.Controllers
             return View(await bdfflContext.ToListAsync());
         }
 
+        // GET: Jornadums/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var jornadum = await _context.Jornada
+                .Include(j => j.IdSedeNavigation)
+                .FirstOrDefaultAsync(m => m.IdJornada == id);
+            if (jornadum == null)
+            {
+                return NotFound();
+            }
+
+            return View(jornadum);
+        }
+
         // GET: Jornadums/Create
         public IActionResult Create()
         {
@@ -35,17 +54,17 @@ namespace Proyecto_Facultad.Controllers
         // POST: Jornadums/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdJornada,DiaJornada,HorarioJornada,IdSede")] Jornadum jornadum)
+        public async Task<IActionResult> Create([Bind("IdJornada,DiaSemana,Horario,IdSede")] Jornadum jornadum)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(jornadum);
                 await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Dato cargado correctamente";
+                TempData["SuccessMessage"] = "Jornada creada exitosamente.";
                 return RedirectToAction(nameof(Index));
             }
             ViewData["IdSede"] = new SelectList(_context.Sedes, "IdSede", "NombreSede", jornadum.IdSede);
-            TempData["ErrorMessage"] = "Se produjo un error al guardar los datos.";
+            TempData["ErrorMessage"] = "Se produjo un error al guardar los datos.";
             return View(jornadum);
         }
 
@@ -69,7 +88,7 @@ namespace Proyecto_Facultad.Controllers
         // POST: Jornadums/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdJornada,DiaJornada,HorarioJornada,IdSede")] Jornadum jornadum)
+        public async Task<IActionResult> Edit(int id, [Bind("IdJornada,DiaSemana,Horario,IdSede")] Jornadum jornadum)
         {
             if (id != jornadum.IdJornada)
             {
@@ -82,7 +101,7 @@ namespace Proyecto_Facultad.Controllers
                 {
                     _context.Update(jornadum);
                     await _context.SaveChangesAsync();
-                    TempData["SuccessMessage"] = "Dato actualizados correctamente";
+                    TempData["SuccessMessage"] = "Datos actualizados correctamente.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -90,15 +109,16 @@ namespace Proyecto_Facultad.Controllers
                     {
                         return NotFound();
                     }
-                    
+
                     else
                     {
-                        TempData["ErrorMessage"] = "Se produjo un error al actualizar los datos.";
+                        TempData["ErrorMessage"] = "Se produjo un error al actualizar la jornada.";
                         throw;
                     }
                 }
                 return RedirectToAction(nameof(Index));
             }
+            TempData["ErrorMessage"] = "Error al actualizar la jornada.";
             ViewData["IdSede"] = new SelectList(_context.Sedes, "IdSede", "NombreSede", jornadum.IdSede);
             return View(jornadum);
         }

@@ -9,13 +9,15 @@ public partial class AsistenciaStaff
 
     public int IdStaff { get; set; }
 
-    public int IdLeccion { get; set; }
-
     public DateOnly FechaClase { get; set; }
+
+    public int IdMesa { get; set; }
+
+    public int? IdLeccion { get; set; }
 
     public int IdBimestre { get; set; }
 
-    public int IdMesa { get; set; }
+    public string Ausencia { get; set; }
 
     public virtual ICollection<AsistenciaAlumno> AsistenciaAlumnos { get; set; } = new List<AsistenciaAlumno>();
 

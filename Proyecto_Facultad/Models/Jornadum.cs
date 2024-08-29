@@ -7,16 +7,15 @@ namespace Proyecto_Facultad.Models;
 
 public partial class Jornadum
 {
-    [DisplayName("Id Jornada")]
     public int IdJornada { get; set; }
 
-    [DisplayName("Dia Jornada")]
-    public string DiaJornada { get; set; }
+    [DisplayName("Dia de la Jornada")]
+    public int DiaSemana { get; set; }
 
-    [DisplayName("Horario Jornada")]
-    public string HorarioJornada { get; set; }
+    [DisplayName("Horario de la Jornada")]
+    public int Horario { get; set; }
 
-    [DisplayName("Id Sede")]
+    [DisplayName("Sede")]
     public int IdSede { get; set; }
 
     public virtual Sede IdSedeNavigation { get; set; }

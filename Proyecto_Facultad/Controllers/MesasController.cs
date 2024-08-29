@@ -21,23 +21,15 @@ namespace Proyecto_Facultad.Controllers
         // GET: Mesas
         public async Task<IActionResult> Index()
         {
-            var bdfflContext = _context.Mesas
-                .Include(m => m.IdAlumnoNavigation)
-                .Include(m => m.IdJornadaNavigation)
-                .Include(m => m.IdNivelNavigation)
-                .Include(m => m.IdStaffNavigation);
+            var bdfflContext = _context.Mesas.Include(m => m.IdJornadaNavigation).Include(m => m.NombreSedeNavigation);
             return View(await bdfflContext.ToListAsync());
         }
-
-
 
         // GET: Mesas/Create
         public IActionResult Create()
         {
-            ViewData["IdAlumno"] = new SelectList(_context.Alumnos, "IdAlumno", "PrimerNombreAlumno");
-            ViewData["IdJornada"] = new SelectList(_context.Jornada, "IdJornada", "DiaJornada");
-            ViewData["IdNivel"] = new SelectList(_context.Nivels, "IdNivel", "NombreNivel");
-            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "PrimerNombreStaff");
+            ViewData["IdJornada"] = new SelectList(_context.Jornada, "IdJornada", "IdJornada");
+            ViewData["NombreSede"] = new SelectList(_context.Sedes, "IdSede", "NombreSede");
             return View();
         }
 
@@ -46,7 +38,7 @@ namespace Proyecto_Facultad.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdMesa,FechaInicio,IdStaff,IdAlumno,IdJornada,IdNivel,AnioAsignacion,EstadoMesa")] Mesa mesa)
+        public async Task<IActionResult> Create([Bind("IdMesa,IdSede,IdJornada,FechaInicio,FechaFin,EstadoMesa")] Mesa mesa)
         {
             if (ModelState.IsValid)
             {
@@ -54,10 +46,8 @@ namespace Proyecto_Facultad.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdAlumno"] = new SelectList(_context.Alumnos, "IdAlumno", "PrimerNombreAlumno", mesa.IdAlumno);
-            ViewData["IdJornada"] = new SelectList(_context.Jornada, "IdJornada", "DiaJornada", mesa.IdJornada);
-            ViewData["IdNivel"] = new SelectList(_context.Nivels, "IdNivel", "NombreNivel", mesa.IdNivel);
-            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "PrimerNombreStaff", mesa.IdStaff);
+            ViewData["IdJornada"] = new SelectList(_context.Jornada, "IdJornada", "IdJornada", mesa.IdJornada);
+            ViewData["NombreSede"] = new SelectList(_context.Sedes, "IdSede", "NombreSede", mesa.IdSede);
             return View(mesa);
         }
 
@@ -74,16 +64,17 @@ namespace Proyecto_Facultad.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdAlumno"] = new SelectList(_context.Alumnos, "IdAlumno", "PrimerNombreAlumno", mesa.IdAlumno);
-            ViewData["IdJornada"] = new SelectList(_context.Jornada, "IdJornada", "DiaJornada", mesa.IdJornada);
-            ViewData["IdNivel"] = new SelectList(_context.Nivels, "IdNivel", "NombreNivel", mesa.IdNivel);
-            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "PrimerNombreStaff", mesa.IdStaff);
+            ViewData["IdJornada"] = new SelectList(_context.Jornada, "IdJornada", "IdJornada", mesa.IdJornada);
+            ViewData["NombreSede"] = new SelectList(_context.Sedes, "IdSede", "NombreSede", mesa.IdSede);
             return View(mesa);
         }
+
+        // POST: Mesas/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdMesa,FechaInicio,IdStaff,IdAlumno,IdJornada,IdNivel,AnioAsignacion,EstadoMesa")] Mesa mesa)
+        public async Task<IActionResult> Edit(int id, [Bind("IdMesa,IdSede,IdJornada,FechaInicio,FechaFin,EstadoMesa")] Mesa mesa)
         {
             if (id != mesa.IdMesa)
             {
@@ -110,14 +101,11 @@ namespace Proyecto_Facultad.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdAlumno"] = new SelectList(_context.Alumnos, "IdAlumno", "PrimerNombreAlumno", mesa.IdAlumno);
-            ViewData["IdJornada"] = new SelectList(_context.Jornada, "IdJornada", "DiaJornada", mesa.IdJornada);
-            ViewData["IdNivel"] = new SelectList(_context.Nivels, "IdNivel", "NombreNivel", mesa.IdNivel);
-            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "PrimerNombreStaff", mesa.IdStaff);
+            ViewData["IdJornada"] = new SelectList(_context.Jornada, "IdJornada", "IdJornada", mesa.IdJornada);
+            ViewData["NombreSede"] = new SelectList(_context.Sedes, "IdSede", "NombreSede", mesa.IdSede);
             return View(mesa);
         }
 
-       
         private bool MesaExists(int id)
         {
             return _context.Mesas.Any(e => e.IdMesa == id);

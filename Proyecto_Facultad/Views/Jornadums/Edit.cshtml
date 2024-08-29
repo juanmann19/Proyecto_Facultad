@@ -1,19 +1,25 @@
 ﻿@model Proyecto_Facultad.Models.Jornadum
 
 <div class="container">
+
     <h2 class="text-primary pt-3">Editar Jornada</h2>
     <form asp-controller="Jornadums" asp-action="Edit" method="post">
+        <div class="row mb-3"></div>
+        <input type="hidden" asp-for="IdJornada" />
+
         <div class="row mb-3">
-            <input type="hidden" asp-for="IdJornada" />
             <div class="col-md-6">
-                <label asp-for="DiaJornada" class="form-label"></label>
-                <input asp-for="DiaJornada" class="form-control" />
-                <span asp-validation-for="DiaJornada" class="text-danger"></span>
+                <label asp-for="DiaSemana" class="form-label"></label>
+                <input asp-for="DiaSemana" class="form-control" />
+                <span asp-validation-for="DiaSemana" class="text-danger"></span>
             </div>
+        </div>
+
+        <div class="row mb-3">
             <div class="col-md-6">
-                <label asp-for="HorarioJornada" class="form-label"></label>
-                <input asp-for="HorarioJornada" class="form-control" />
-                <span asp-validation-for="HorarioJornada" class="text-danger"></span>
+                <label asp-for="Horario" class="form-label"></label>
+                <input asp-for="Horario" class="form-control" />
+                <span asp-validation-for="Horario" class="text-danger"></span>
             </div>
         </div>
 
