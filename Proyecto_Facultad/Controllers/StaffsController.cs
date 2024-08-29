@@ -47,6 +47,7 @@ namespace Proyecto_Facultad.Controllers
         // GET: Staffs/Create
         public IActionResult Create()
         {
+            ViewBag.Usuarios = new SelectList(_context.Usuarios, "IdUsuario", "NombreUsuario");
             return View();
         }
 
@@ -55,8 +56,9 @@ namespace Proyecto_Facultad.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PrimerNombreStaff,SegundoNombreStaff,OtrosNombresStaff,PrimerApellidoStaff,SegundoApellidoStaff,ApellidoCasado,Dpi,FechaNacimiento,FechaBautizo,Direccion,Telefono,NumeroCelula,NivelAprobado,EstadoCivil,EstatusStaff,IdUsuario")] Staff staff)
+        public async Task<IActionResult> Create([Bind("IdStaff,PrimerNombreStaff,SegundoNombreStaff,OtrosNombresStaff,PrimerApellidoStaff,SegundoApellidoStaff,ApellidoCasado,FechaNacimientoStaff,FechaBautizoStaff,Direccion,Telefono,Dpi,Nit,EstadoCivil,Genero,NumeroCelula,NivelAprobado,CodigoFrater,EstatusStaff,IdUsuario")] Staff staff)
         {
+            ViewData["IdUsuario"] = new SelectList(_context.Usuarios, "IdUsuario", "ContrasenaUsuario", staff.IdUsuario);
             if (ModelState.IsValid)
             {
                 // Validar que el usuario existe
@@ -64,6 +66,7 @@ namespace Proyecto_Facultad.Controllers
                 if (usuario == null)
                 {
                     ModelState.AddModelError("IdUsuario", "El usuario especificado no existe.");
+
                 }
                 else
                 {
@@ -82,7 +85,6 @@ namespace Proyecto_Facultad.Controllers
                     }
                 }
             }
-
             return View(staff);
         }
 
@@ -99,7 +101,7 @@ namespace Proyecto_Facultad.Controllers
             {
                 return NotFound();
             }
-            //ViewData["IdUsuario"] = new SelectList(_context.Usuarios, "IdUsuario", "IdUsuario", staff.IdUsuario);
+            ViewBag.Usuarios = new SelectList(_context.Usuarios, "IdUsuario", "NombreUsuario");
             return View(staff);
         }
 
@@ -108,7 +110,7 @@ namespace Proyecto_Facultad.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdStaff,PrimerNombreStaff,SegundoNombreStaff,OtrosNombresStaff,PrimerApellidoStaff,SegundoApellidoStaff,ApellidoCasado,Dpi,FechaNacimiento,FechaBautizo,Direccion,Telefono,NumeroCelula,NivelAprobado,EstadoCivil,EstatusStaff,IdUsuario")] Staff staff)
+        public async Task<IActionResult> Edit(int id, [Bind("IdStaff,PrimerNombreStaff,SegundoNombreStaff,OtrosNombresStaff,PrimerApellidoStaff,SegundoApellidoStaff,ApellidoCasado,FechaNacimientoStaff,FechaBautizoStaff,Direccion,Telefono,Dpi,Nit,EstadoCivil,Genero,NumeroCelula,NivelAprobado,CodigoFrater,EstatusStaff,IdUsuario")] Staff staff)
         {
             if (id != staff.IdStaff)
             {
@@ -130,9 +132,9 @@ namespace Proyecto_Facultad.Controllers
                         return NotFound();
                     }
                     else
-                    {   
+                    {
 
-                    TempData["ErrorMessage"] = "Se produjo un error al actualizar.";
+                        TempData["ErrorMessage"] = "Se produjo un error al actualizar.";
                         throw;
                     }
                 }
@@ -141,47 +143,6 @@ namespace Proyecto_Facultad.Controllers
             //ViewData["IdUsuario"] = new SelectList(_context.Usuarios, "IdUsuario", "IdUsuario", staff.IdUsuario);
             return View(staff);
         }
-
-        [HttpPost]
-        public async Task<IActionResult> Deactivate(int? id)
-        {
-            var staff = await _context.Staff.FindAsync(id);
-            if (staff == null)
-            {
-                return NotFound();
-            }
-
-            // Cambiar el estatus
-            staff.EstatusStaff = !staff.EstatusStaff;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = staff.EstatusStaff ? "Staff activado correctamente" : "Staff desactivado correctamente";
-   
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!StaffExists(staff.IdStaff))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    TempData["ErrorMessage"] = "Se produjo un error al cambiar el estatus.";
-                    throw;
-                }
-            }
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        // Método auxiliar para verificar si un staff existe
-        private bool StaffExists(int id)
-        {
-            return _context.Staff.Any(e => e.IdStaff == id);
-        }
-
 
         // GET: Staffs/Delete/5
         //public async Task<IActionResult> Delete(int? id)
@@ -202,7 +163,7 @@ namespace Proyecto_Facultad.Controllers
         //    return View(staff);
         //}
 
-        //// POST: Staffs/Delete/5
+        // POST: Staffs/Delete/5
         //[HttpPost, ActionName("Delete")]
         //[ValidateAntiForgeryToken]
         //public async Task<IActionResult> DeleteConfirmed(int id)
@@ -217,6 +178,43 @@ namespace Proyecto_Facultad.Controllers
         //    return RedirectToAction(nameof(Index));
         //}
 
-        
+        [HttpPost]
+        public async Task<IActionResult> Deactivate(int? id)
+        {
+            var staff = await _context.Staff.FindAsync(id);
+            if (staff == null)
+            {
+                return NotFound();
+            }
+
+            // Cambiar el estatus
+            staff.EstatusStaff = !staff.EstatusStaff;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = staff.EstatusStaff ? "Staff activado correctamente" : "Staff desactivado correctamente";
+
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!StaffExists(staff.IdStaff))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Se produjo un error al cambiar el estatus.";
+                    throw;
+                }
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool StaffExists(int id)
+        {
+            return _context.Staff.Any(e => e.IdStaff == id);
+        }
     }
 }

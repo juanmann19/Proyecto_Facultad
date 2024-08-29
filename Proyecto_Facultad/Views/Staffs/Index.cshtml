@@ -1,6 +1,4 @@
-﻿@* @model List<Staff> *@
-
-@model IEnumerable<Proyecto_Facultad.Models.Staff>
+﻿@model IEnumerable<Proyecto_Facultad.Models.Staff>
 
 <div class="container-fluid pt-4">
     @if (TempData["SuccessMessage"] != null)
@@ -26,46 +24,76 @@
         </div>
     </div>
 
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped">
-            <thead>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Primer Nombre</th>
+                <th>Segundo Nombre</th>
+                <th>Otros Nombres</th>
+                <th>Primer Apellido</th>
+                <th>Segundo Apellido</th>
+                <th>Apellido Casado</th>
+                <th>Fecha Nacimiento</th>
+                <th>Fecha Bautizo</th>
+                <th>Dirección</th>
+                <th>Teléfono</th>
+                <th>DPI</th>
+                <th>NIT</th>
+                <th>Estado Civil</th>
+                <th>Genero</th>
+                <th>Número Celula</th>
+                <th>Nivel Aprobado</th>
+                <th>Código Frater</th>
+                <th>Estatus</th>
+                <th>Usuario</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var staff in Model)
+            {
                 <tr>
-                    <th>Primer Nombre</th>
-                    <th>Segundo Nombre</th>
-                    <th>Primer Apellido</th>
-                    <th>Segundo Apellido</th>
-                    <th>Apellido Casado</th>
-                    <th>DPI</th>
-                    <th>Fecha de Nacimiento</th>
-                    <th>Fecha de Bautizo</th>
-                    <th>Dirección</th>
-                    <th>Teléfono</th>
-                    <th>Número de Célula</th>
-                    <th>Nivel Aprobado</th>
-                    <th>Estado Civil</th>
-                    <th>Estatus</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var staff in Model.OrderBy(s => s.PrimerNombreStaff))
-                {
-                    <tr>
-                        <td>@staff.PrimerNombreStaff</td>
-                        <td>@staff.SegundoNombreStaff</td>
-                        <td>@staff.PrimerApellidoStaff</td>
-                        <td>@staff.SegundoApellidoStaff</td>
-                        <td>@staff.ApellidoCasado</td>
-                        <td>@staff.Dpi</td>
-                        <td>@staff.FechaNacimiento.ToString("dd/MM/yyyy")</td>
-                        <td>@(staff.FechaBautizo.HasValue ? staff.FechaBautizo.Value.ToString("dd/MM/yyyy") : "No disponible")</td>
-                        <td>@staff.Direccion</td>
-                        <td>@staff.Telefono</td>
-                        <td>@staff.NumeroCelula</td>
-                        <td>@staff.NivelAprobado</td>
-                        <td>@staff.EstadoCivil</td>
-                        <td>@(staff.EstatusStaff ? "Activo" : "Inactivo")</td>
-                        <td>
+                    <td>@staff.IdStaff</td>
+                    <td>@staff.PrimerNombreStaff</td>
+                    <td>@staff.SegundoNombreStaff</td>
+                    <td>@staff.OtrosNombresStaff</td>
+                    <td>@staff.PrimerApellidoStaff</td>
+                    <td>@staff.SegundoApellidoStaff</td>
+                    <td>@staff.ApellidoCasado</td>
+                    <td>@staff.FechaNacimientoStaff.ToShortDateString()</td>
+                    <td>
+                        @if (staff.FechaBautizoStaff.HasValue)
+                        {
+                            @staff.FechaBautizoStaff.Value.ToShortDateString()
+                        }
+                        else
+                        {
+                            <span>N/A</span>
+                        }
+                    </td>
+                    <td>@staff.Direccion</td>
+                    <td>@staff.Telefono</td>
+                    <td>@staff.Dpi</td>
+                    <td>@staff.Nit</td>
+                    <td>@staff.EstadoCivil</td>
+                    <td>@staff.Genero</td>
+                    <td>@staff.NumeroCelula</td>
+                    <td>@staff.NivelAprobado</td>
+                    <td>@staff.CodigoFrater</td>
+                    <td>
+                        @if (staff.EstatusStaff)
+                        {
+                            <span class="badge bg-success">Activo</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Inactivo</span>
+                        }
+                    </td>
+                    <td>@staff.IdUsuarioNavigation?.NombreUsuario</td> <!-- Asumiendo que el modelo Usuario tiene una propiedad NombreUsuario -->
+                    <td>
                             <div class="btn-group w-100" role="group">
                                 <a asp-controller="Staffs" asp-action="Edit" asp-route-id="@staff.IdStaff" class="btn btn-primary flex-grow-1">
                                     <i class="bi bi-pencil-fill"></i> Editar
@@ -76,10 +104,9 @@
                                     </button>
                                 </form>
                             </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
