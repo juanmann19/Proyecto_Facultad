@@ -19,12 +19,12 @@ namespace Proyecto_Facultad.Controllers
         public async Task<IActionResult> Index()
         {
             var mesas = await _context.Mesas
-                .Include(m => m.IdSedeNavigation)
+                .Include(m => m.NombreSedeNavigation)
                 .Include(m => m.IdJornadaNavigation)
                 .Select(m => new
             {
                 m.IdMesa,
-                SedeDescripcion = m.IdSedeNavigation.NombreSede,
+                SedeDescripcion = m.NombreSedeNavigation.NombreSede,
                 JornadaDescripcion = $"{m.IdJornadaNavigation.DiaSemana} {m.IdJornadaNavigation.Horario}",
                 m.FechaInicio,
                 FechaFin = m.FechaFin.HasValue ? m.FechaFin.Value.ToString("dd/MM/yyyy") : "N/A",
