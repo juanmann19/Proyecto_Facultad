@@ -1,0 +1,57 @@
+﻿@model List<Capacitacion>
+
+<div class="container-fluid pt-4">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+    <div class="row mb-3">
+        <div class="col-6">
+            <h2 class="text-primary">Listado de capacitaciones recibadas por los maestros</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Capacitacion" asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Agregar nueva capacitacion
+            </a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+
+                    <!-- Trae solo los campos necesarios, no todos-->
+                    <th>Fecha de la capacitacion</th>
+                    <th>Maestro asignado</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in Model.OrderBy(u => u.IdCapacitacion))
+                {
+                    <tr>
+                        <td>@obj.FechaCapacitacion.ToString("dd/MM/yyyy")</td>
+                        <td>@obj.IdStaffNavigation?.PrimerNombreStaff </td>
+                        <td>
+                            <div class="btn-group w-100" role="group">
+                                <a asp-controller="Capacitacion" asp-action="Edit" asp-route-id="@obj.IdCapacitacion" class="btn btn-primary flex-grow-1">
+                                    <i class="bi bi-pencil-fill"></i> Editar
+                                </a>
+                            </div>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
