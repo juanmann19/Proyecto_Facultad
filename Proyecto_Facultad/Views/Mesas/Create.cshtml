@@ -13,9 +13,8 @@
 
         <div class="row mb-3">
             <div class="col-md-6">
-              <label asp-for="IdJornada" class="control-label"></label>
-              <input asp-for="IdJornada" class="form-control"/>
-              <span asp-validation-for="IdJornada" class="text-danger"></span>
+                <label asp-for="IdJornada" class="form-label"></label>
+                <select asp-for="IdJornada" class="form-control" asp-items="ViewBag.DiaSemana"></select>
             </div>
         </div>
 

@@ -34,9 +34,10 @@
                     <th>Fecha de Inicio</th>
                     <th>Fecha de Fin</th>
                     <th>Estado de la Mesa</th>
-                    <th>Jornada</th>
+                    <th>Horario</th>
+                    <th>Dia de la semana</th>
                     <th>Nombre de la Sede</th>
-                    <th>Acciones</th>
+                    @* <th>Acciones</th> *@
                 </tr>
             </thead>
             <tbody>
@@ -47,13 +48,15 @@
                         <td>@obj.FechaInicio</td>
                         <td>@obj.FechaFin</td>
                         <td>@obj.EstadoMesa</td>
-                        <td>@obj.IdJornadaNavigation?.IdJornada</td>
+                        <td>@obj.IdJornadaNavigation?.Horario</td>
+                        <td>@obj.IdJornadaNavigation?.DiaSemana</td>
                         <td>@obj.NombreSedeNavigation?.NombreSede</td>
                         <td>
                             <div class="btn-group w-100" role="group">
                             <a asp-controller="Mesas" asp-action="Edit" asp-route-id="@obj.IdMesa" class="btn btn-primary w-100">
                                 <i class="bi bi-pencil-fill"></i> Editar
                             </a>
+                            </div>
                         </td>
                     </tr>
                 }

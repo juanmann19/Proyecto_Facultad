@@ -27,11 +27,11 @@ public partial class Alumno
 
     public string Telefono { get; set; }
 
-    public int? Dpi { get; set; }
+    public string Dpi { get; set; }
 
     public string Nit { get; set; }
 
-    public int? EstadoCivil { get; set; }
+    public string EstadoCivil { get; set; }
 
     public string Genero { get; set; }
 
@@ -39,13 +39,13 @@ public partial class Alumno
 
     public string CodigoFrater { get; set; }
 
-    public bool? Becado { get; set; }
+    public bool Becado { get; set; }
 
-    public bool? Retiro { get; set; }
+    public bool Retiro { get; set; }
 
-    public bool? ReunionesEnConfianza { get; set; }
+    public bool ReunionesEnConfianza { get; set; }
 
-    public bool? Otros { get; set; }
+    public bool Otros { get; set; }
 
     public bool EstatusAlumno { get; set; }
 

@@ -23,8 +23,7 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <label asp-for="IdSede" class="form-label"></label>
-                <select asp-for="IdSede" class="form-control"/>
-                <span asp-validation-for="IdSede" class="text-danger"></span>
+                <select asp-for="IdSede" class="form-control" asp-items="ViewBag.IdSede"></select>
             </div>
         </div>
 

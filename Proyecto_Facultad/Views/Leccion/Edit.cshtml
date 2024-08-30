@@ -1,0 +1,31 @@
+@model Proyecto_Facultad.Models.Leccion
+
+<div class="container">
+    <h2 class="text-primary pt-3">Editar Leccion</h2>
+    <form asp-controller="Leccion" asp-action="Edit" method="post">
+        <div class="row mb-3">
+            <input type="hidden" asp-for="IdLeccion" />
+            <div class="col-md-6">
+                <label asp-for="Descripcion" class="form-label"></label>
+                <input asp-for="Descripcion" class="form-control" />
+                <span asp-validation-for="Descripcion" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="IdLibro" class="form-label"></label>
+                <input asp-for="IdLibro" class="form-control" />
+                <span asp-validation-for="IdLibro" class="text-danger"></span>
+            </div>
+        </div>
+        <div>
+            <div class="form-group d-flex">
+                <button type="submit" class="btn btn-success flex-fill me-2">Guardar</button>
+                <a asp-action="Index" asp-controller="leccion" class="btn btn-danger flex-fill">Cancelar</a>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+@section scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

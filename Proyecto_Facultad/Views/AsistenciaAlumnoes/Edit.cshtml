@@ -1,0 +1,46 @@
+﻿@model Proyecto_Facultad.Models.AsistenciaAlumno
+
+<div class="container">
+
+    <h2 class="text-primary pt-3">Editar Asistencia del Alumno</h2>
+    <form asp-controller="AsistenciaAlumno" asp-action="Edit" method="post">
+        <input type="hidden" asp-for="IdAsistenciaAlumno" />
+
+        <!-- Dropdown para seleccionar la Asistencia del Staff -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="IdAsistenciaStaff" class="form-label"></label>
+                <select asp-for="IdAsistenciaStaff" class="form-control" asp-items="ViewBag.IdAsistenciaStaff"></select>
+                <span asp-validation-for="IdAsistenciaStaff" class="text-danger"></span>
+            </div>
+        </div>
+
+        <!-- Dropdown para seleccionar el Alumno -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="IdAlumno" class="form-label"></label>
+                <select asp-for="IdAlumno" class="form-control" asp-items="ViewBag.IdAlumno"></select>
+                <span asp-validation-for="IdAlumno" class="text-danger"></span>
+            </div>
+        </div>
+
+        <!-- Campo para indicar la Ausencia -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="Ausencia" class="form-label">Ausencia</label>
+                <input asp-for="Ausencia" class="form-control" />
+                <span asp-validation-for="Ausencia" class="text-danger"></span>
+            </div>
+        </div>
+
+        <!-- Botones para Guardar y Cancelar -->
+        <div class="form-group d-flex">
+            <button type="submit" class="btn btn-success flex-fill me-2">Guardar</button>
+            <a asp-action="Index" asp-controller="AsistenciaAlumno" class="btn btn-danger flex-fill">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

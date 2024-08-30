@@ -9,19 +9,16 @@
         <!-- Dropdown para seleccionar la Sede -->
         <div class="row mb-3">
             <div class="col-md-6">
-                <label asp-for="IdSede" class="form-label">Sede</label>
-                <select asp-for="IdSede" class="form-control" 
-                asp-items="ViewBag.NombreSede"></select>
-                <span asp-validation-for="IdSede" class="text-danger"></span>
+                <label asp-for="IdSede" class="form-label"></label>
+                <select asp-for="IdSede" class="form-control" asp-items="ViewBag.NombreSede"></select>
             </div>
         </div>
 
         <!-- Dropdown para seleccionar la Jornada -->
         <div class="row mb-3">
             <div class="col-md-6">
-                <label asp-for="IdJornada" class="form-label">Jornada</label>
-                <select asp-for="IdJornada" class="form-control" asp-items="ViewBag.IdJornada"></select>
-                <span asp-validation-for="IdJornada" class="text-danger"></span>
+                <label asp-for="IdJornada" class="form-label"></label>
+                <select asp-for="IdJornada" class="form-control" asp-items="ViewBag.DiaSemana"></select>
             </div>
         </div>
 
