@@ -44,8 +44,10 @@ namespace Proyecto_Facultad.Controllers
             {
                 _context.Add(asistenciaAlumno);
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Asistencia creada con exito.";
                 return RedirectToAction(nameof(Index));
             }
+            TempData["ErrorMessage"] = "Se produjo un error al guardar los datos.";
             ViewData["IdAlumno"] = new SelectList(_context.Alumnos, "IdAlumno", "Direccion", asistenciaAlumno.IdAlumno);
             ViewData["IdAsistenciaStaff"] = new SelectList(_context.AsistenciaStaffs, "IdAsistenciaStaff", "IdAsistenciaStaff", asistenciaAlumno.IdAsistenciaStaff);
             return View(asistenciaAlumno);
@@ -87,6 +89,7 @@ namespace Proyecto_Facultad.Controllers
                 {
                     _context.Update(asistenciaAlumno);
                     await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Datos actualizados correctamente.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -96,6 +99,7 @@ namespace Proyecto_Facultad.Controllers
                     }
                     else
                     {
+                        TempData["SuccessMessage"] = "Se produjo un error al actualizar datos.";
                         throw;
                     }
                 }

@@ -6,18 +6,18 @@
     <form asp-action="Create" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label asp-for="IdAsistenciaStaff" class="form-label"></label>
-                <input asp-for="IdAsistenciaStaff" class="form-control" />
-                <span asp-validation-for="IdAsistenciaStaff" class="text-danger"></span>
-            </div>
-        </div>
+        <!----<div class="row mb-3"---->
+        <!----  <div class="col-md-6"---->
+                     <!----    <label asp-for="IdAsistenciaStaff" class="form-label"></label---->
+        <!----  <input asp-for="IdAsistenciaStaff" class="form-control" /---->
+        <!---- <span asp-validation-for="IdAsistenciaStaff" class="text-danger"></span---->
+        <!----</div---->
+        <!----</div---->
 
         <div class="row mb-3">
             <div class="col-md-6">
                 <label asp-for="IdStaff" class="form-label"></label>
-                <select asp-for="IdStaff" class="form-control" asp-items="ViewBag.IdStaff"></select>
+                <select asp-for="IdStaff" class="form-control" asp-items="ViewBag.PrimerNombreStaff"></select>
             </div>
         </div>
 
@@ -39,14 +39,14 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <label asp-for="IdLeccion" class="form-label"></label>
-                <select asp-for="IdLeccion" class="form-control" asp-items="ViewBag.IdLeccion"></select>
+                <select asp-for="IdLeccion" class="form-control" asp-items="ViewBag.Descripcion"></select>
             </div>
         </div>
 
         <div class="row mb-3">
             <div class="col-md-6">
                 <label asp-for="IdBimestre" class="form-label"></label>
-                <select asp-for="IdBimestre" class="form-control" asp-items="ViewBag.IdBimestre"></select>
+                <select asp-for="IdBimestre" class="form-control" asp-items="ViewBag.NombreBimestre"></select>
             </div>
         </div>
 
