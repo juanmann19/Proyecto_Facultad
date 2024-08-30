@@ -65,7 +65,9 @@
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Leccion" asp-action="Create">Añadir lección</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="Create">Añadir usuario</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Capacitacion" asp-action="Create">Añadir capacitacion</a></li>
-                             </ul>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Nota" asp-action="Create">Añadir nota</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="AsignacionAlumno" asp-action="Create">Añadir alumno a mesa</a></li>
+                            </ul>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="alumnosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -83,12 +85,16 @@
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Staffs" asp-action="Index">Ver y editar staff</a></li>
                             </ul>
                         </li>
-
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="mesasDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Mesa
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="mesasDropdown">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Mesas" asp-action="Index">Ver mesas</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="AsignacionAlumno" asp-action="Create">Asignar alumno</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Nota" asp-action="Create">Añadir nota</a></li>
+                            </ul>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Mesas" asp-action="Index">Mesa</a>
-                        </li>
-                        
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="jornadumsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Jornadums
@@ -96,7 +102,6 @@
                             <ul class="dropdown-menu" aria-labelledby="jornadumsDropdown">
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Jornadums" asp-action="Index">Ver y editar jornadums</a></li>
                             </ul>
-
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="nivelsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
