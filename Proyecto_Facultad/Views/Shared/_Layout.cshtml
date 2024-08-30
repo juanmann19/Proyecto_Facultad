@@ -88,7 +88,14 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Mesas" asp-action="Index">Mesa</a>
                         </li>
-                        
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="gestionesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Consulta Mesas
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="gestionesDropdown">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="MesaDetalle" asp-action="Index">Información Mesas</a></li>
+                             </ul>
+                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="jornadumsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Jornadums
