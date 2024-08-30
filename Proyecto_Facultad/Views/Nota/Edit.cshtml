@@ -1,0 +1,36 @@
+﻿@model Proyecto_Facultad.Models.Nota
+
+<div class="container">
+    <h2 class="text-primary pt-3">Editar nota</h2>
+    <form asp-controller="Bimestre" asp-action="Edit" method="post">
+        <div class="row mb-3">
+            <input type="hidden" asp-for="IdNota" />
+            <div class="col-md-6">
+                <label asp-for="IdAsignacionalumnos" class="form-label"></label>
+                <select asp-for="IdAsignacionalumnos" class="form-control" asp-items="ViewBag.IdAlumno">
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="IdBimestre" class="form-label"></label>
+                <select asp-for="IdBimestre" class="form-control" asp-items="ViewBag.IdBimestre">
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="NotaObtenida" class="form-label"></label>
+                <input asp-for="NotaObtenida" class="form-control" />
+                <span asp-validation-for="NotaObtenida" class="text-danger"></span>
+            </div>
+        </div>
+        <div>
+            <div class="form-group d-flex">
+                <button type="submit" class="btn btn-success flex-fill me-2">Guardar</button>
+                <a asp-action="Index" asp-controller="nota" class="btn btn-danger flex-fill">Cancelar</a>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+@section scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
