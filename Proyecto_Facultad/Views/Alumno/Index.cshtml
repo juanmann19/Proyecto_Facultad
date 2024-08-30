@@ -1,0 +1,122 @@
+﻿@model List<Proyecto_Facultad.Models.Alumno>
+
+@{
+    // Función para calcular la edad a partir de la fecha de nacimiento
+    int? CalcularEdad(DateOnly? fechaNacimiento)
+    {
+        if (fechaNacimiento == null)
+        {
+            return null;
+        }
+
+        var hoy = DateOnly.FromDateTime(DateTime.Today);
+        var edad = hoy.Year - fechaNacimiento.Value.Year;
+
+        // Ajustar la edad si el cumpleaños de este año aún no ha pasado
+        if (fechaNacimiento.Value.Month > hoy.Month ||
+            (fechaNacimiento.Value.Month == hoy.Month && fechaNacimiento.Value.Day > hoy.Day))
+        {
+            edad--;
+        }
+
+        return edad;
+    }
+}
+<div class="container-fluid pt-4">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+    <div class="row mb-3">
+        <div class="col-6">
+            <h2 class="text-primary">Listado de estudiantes</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Alumno" asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Agregar estudiante
+            </a>
+        </div>
+    </div>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Nombre Completo</th>
+                <th>Otros Nombres</th>
+                <th>Apellido de Casado</th>
+                <th>Fecha de Nacimiento</th>
+                <th>Fecha de Bautizo</th>
+                <th>Dirección</th>
+                <th>Teléfono</th>
+                <th>DPI</th>
+                <th>NIT</th>
+                <th>Género</th>
+                <th>Estado Civil</th>
+                <th>Número de Célula</th>
+                <th>Código Frater</th>
+                <th>Becado</th>
+                <th>Retiro</th>
+                <th>Reuniones en Confianza</th>
+                <th>Otros</th>
+                <th>Estatus</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in Model.OrderBy(u => u.PrimerApellidoAlumno))
+            {
+                <tr>
+                    <td>@($"{obj.PrimerNombreAlumno} {obj.SegundoNombreAlumno} {obj.PrimerApellidoAlumno} {obj.SegundoApellidoAlumno}")</td>
+                    <td>@obj.OtrosNombresAlumno</td>
+                    <td>@obj.ApellidoCasado</td>
+                    <td>@obj.FechaNacimientoAlumno.ToShortDateString()</td>
+                    <td>@(obj.FechaBautizoAlumno.HasValue ? obj.FechaBautizoAlumno.Value.ToShortDateString() : "N/A")</td>
+                    <td>@obj.Direccion</td>
+                    <td>@obj.Telefono</td>
+                    <td>@obj.Dpi</td>
+                    <td>@obj.Nit</td>
+                    <td>@obj.Genero</td>
+                    <td>@obj.EstadoCivil</td>
+                    <td>@obj.NumeroCelula</td>
+                    <td>@obj.CodigoFrater</td>
+                    <td>@(obj.Becado == true ? "Sí" : "No")</td>
+                    <td>@(obj.Retiro == true ? "Sí" : "No")</td>
+                    <td>@(obj.ReunionesEnConfianza == true ? "Sí" : "No")</td>
+                    <td>@(obj.Otros == true ? "Sí" : "No")</td>
+                        <td>
+                            @if (obj.EstatusAlumno)
+                            {
+                                <span class="badge bg-success">Activo</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Inactivo</span>
+                            }
+                        </td>
+                    <td>
+                            <div class="btn-group w-100" role="group">
+                                <a asp-controller="Alumno" asp-action="Edit" asp-route-id="@obj.IdAlumno" class="btn btn-primary flex-grow-1">
+                                    <i class="bi bi-pencil-fill"></i> Editar
+                                </a>
+                                <form asp-action="Deactivate" method="post" class="flex-grow-1">
+                                    <button type="submit" asp-controller="Alumno" asp-action="Deactivate" asp-route-id="@obj.IdAlumno" class="btn btn-danger w-100">
+                                        <i class="bi bi-trash-fill"></i> Activar/Desactivar
+                                    </button>
+                                </form>
+                            </div>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
