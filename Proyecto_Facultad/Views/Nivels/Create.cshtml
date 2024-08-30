@@ -1,0 +1,46 @@
+﻿@model Proyecto_Facultad.Models.Nivel
+
+<div class="container">
+    <h2 class="text-primary">Añadir Nivel</h2>
+
+    <form id="nivelForm" asp-action="Create" method="post">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="NombreNivel" class="form-label"></label>
+                <input asp-for="NombreNivel" class="form-control" />
+                <span asp-validation-for="NombreNivel" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group d-flex">
+            <button type="submit" class="btn btn-primary flex-fill me-2">Guardar</button>
+            <a asp-action="Index" class="btn btn-danger flex-fill">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.querySelector('form').addEventListener('submit', function (event) {
+             var valid = true; // Inicializar la variable para el estado de validación
+
+                // Obtener el campo que deseas validar
+                    var textoInput = document.getElementById('Nombre del nivel');
+                    var texto = textoInput.value;
+
+                    // Expresión regular para validar que el campo contenga solo letras (mayúsculas y minúsculas)
+                    var soloLetras = /^[a-zA-Z\s]+$/;
+
+                    // Verificar si el texto cumple con la condición
+                    if (!soloLetras.test(texto)) {
+                        document.getElementById('textoError').textContent = "El campo solo puede contener letras.";
+                        valid = false;
+                    } else {
+                        document.getElementById('textoError').textContent = "";
+                    }
+                 });
+    </script>
+}
+
+

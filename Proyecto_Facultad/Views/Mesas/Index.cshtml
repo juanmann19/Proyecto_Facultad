@@ -1,0 +1,66 @@
+﻿@model IEnumerable<Proyecto_Facultad.Models.Mesa>
+
+<div class="container-fluid pt-4">
+    @if (TempData["SuccessMessage"] != null)
+
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <div class="row mb-3">
+        <div class="col-6">
+            <h2 class="text-primary">Listado de Mesas</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Mesas" asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Agregar mesa
+            </a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Fecha de Inicio</th>
+                    <th>Fecha de Fin</th>
+                    <th>Estado de la Mesa</th>
+                    <th>Horario</th>
+                    <th>Dia de la semana</th>
+                    <th>Nombre de la Sede</th>
+                    @* <th>Acciones</th> *@
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in Model)
+
+                {
+                    <tr>
+                        <td>@obj.FechaInicio</td>
+                        <td>@obj.FechaFin</td>
+                        <td>@obj.EstadoMesa</td>
+                        <td>@obj.IdJornadaNavigation?.Horario</td>
+                        <td>@obj.IdJornadaNavigation?.DiaSemana</td>
+                        <td>@obj.NombreSedeNavigation?.NombreSede</td>
+                        <td>
+                            <div class="btn-group w-100" role="group">
+                            <a asp-controller="Mesas" asp-action="Edit" asp-route-id="@obj.IdMesa" class="btn btn-primary w-100">
+                                <i class="bi bi-pencil-fill"></i> Editar
+                            </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

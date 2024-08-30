@@ -51,7 +51,11 @@ public partial class BdfflContext : DbContext
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -384,7 +388,7 @@ public partial class BdfflContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Mesa__id_jornada__1BC821DD");
 
-            entity.HasOne(d => d.IdSedeNavigation).WithMany(p => p.Mesas)
+            entity.HasOne(d => d.NombreSedeNavigation).WithMany(p => p.Mesas)
                 .HasForeignKey(d => d.IdSede)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Mesa__id_sede__1AD3FDA4");

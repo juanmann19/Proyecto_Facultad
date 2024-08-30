@@ -1,0 +1,35 @@
+﻿@model Proyecto_Facultad.Models.Sede
+
+<div class="container">
+    <h2 class="text-primary">Añadir Sede</h2>
+
+    <form id="sedeForm" asp-action="Create" method="post">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="NombreSede" class="form-label"></label>
+                <input asp-for="NombreSede" class="form-control" />
+                <span asp-validation-for="NombreSede" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="Pais" class="form-label"></label>
+                <input asp-for="Pais" class="form-control" />
+                <span asp-validation-for="Pais" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group d-flex">
+            <button type="submit" class="btn btn-primary flex-fill me-2">Guardar</button>
+            <a asp-action="Index" class="btn btn-danger flex-fill">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.querySelector('form').addEventListener('submit', function (event)
+    </script>
+}

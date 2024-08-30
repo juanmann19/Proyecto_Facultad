@@ -1,0 +1,62 @@
+﻿@model Proyecto_Facultad.Models.Mesa
+
+<div class="container">
+
+    <h2 class="text-primary pt-3">Editar Mesa</h2>
+    <form asp-controller="Mesas" asp-action="Edit" method="post">
+        <input type="hidden" asp-for="IdMesa" />
+
+        <!-- Dropdown para seleccionar la Sede -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="IdSede" class="form-label"></label>
+                <select asp-for="IdSede" class="form-control" asp-items="ViewBag.NombreSede"></select>
+            </div>
+        </div>
+
+        <!-- Dropdown para seleccionar la Jornada -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="IdJornada" class="form-label"></label>
+                <select asp-for="IdJornada" class="form-control" asp-items="ViewBag.DiaSemana"></select>
+            </div>
+        </div>
+
+        <!-- Campo para seleccionar la fecha de inicio -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="FechaInicio" class="form-label">Fecha de Inicio</label>
+                <input asp-for="FechaInicio" class="form-control" type="date" />
+                <span asp-validation-for="FechaInicio" class="text-danger"></span>
+            </div>
+        </div>
+
+        <!-- Campo para seleccionar la fecha de finalización -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="FechaFin" class="form-label">Fecha de Fin</label>
+                <input asp-for="FechaFin" class="form-control" type="date" />
+                <span asp-validation-for="FechaFin" class="text-danger"></span>
+            </div>
+        </div>
+
+        <!-- Checkbox para el estado de la Mesa -->
+        <div class="row mb-3">
+            <div class="col-md-6 form-check">
+                <input class="form-check-input" asp-for="EstadoMesa" />
+                <label asp-for="EstadoMesa" class="form-check-label">Estado de la Mesa</label>
+                <span asp-validation-for="EstadoMesa" class="text-danger"></span>
+            </div>
+        </div>
+
+        <!-- Botones para Guardar y Cancelar -->
+        <div class="form-group d-flex">
+            <button type="submit" class="btn btn-success flex-fill me-2">Guardar</button>
+            <a asp-action="Index" asp-controller="Mesas" class="btn btn-danger flex-fill">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
