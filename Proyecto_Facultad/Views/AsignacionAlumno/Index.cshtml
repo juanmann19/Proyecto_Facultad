@@ -1,41 +1,56 @@
-﻿@model IEnumerable<Proyecto_Facultad.Models.AsignacionAlumno>
+﻿@model IEnumerable<dynamic>
 
-@{
-    ViewData["Title"] = "Index";
-}
+<div class="container-fluid pt-4">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+    <div class="row mb-3">
+        <div class="col-6">
+            <h2 class="text-primary">Asignar alumno a mesa</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="AsignacionAlumno" asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Asignar un alumno a una mesa
+            </a>
+        </div>
+    </div>
 
-<h1>Index</h1>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.IdAlumnoNavigation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdMesaNavigation)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdAlumnoNavigation.Direccion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdMesaNavigation.IdMesa)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.IdAsignacionalumnos">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdAsignacionalumnos">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdAsignacionalumnos">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                    <!-- Trae solo los campos necesarios, no todos-->
+                    <th>Nombre del alumno</th>
+                    <th>Mesa</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in Model.OrderBy(u => u.IdAsignacionalumnos))
+                {
+                    <tr>
+                        <td>@obj.NombreCompletoAlumno</td>
+                        <td>@obj.Mesa</td>
+                        <td>
+                            <div class="btn-group w-100" role="group">
+                                <a asp-controller="AsignacionAlumno" asp-action="Edit" asp-route-id="@obj.IdAsignacionalumnos" class="btn btn-primary flex-grow-1">
+                                    <i class="bi bi-pencil-fill"></i> Editar
+                                </a>
+                            </div>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
