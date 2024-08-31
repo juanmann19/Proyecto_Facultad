@@ -21,9 +21,24 @@ namespace Proyecto_Facultad.Controllers
         // GET: AsignacionAlumno
         public async Task<IActionResult> Index()
         {
-            var bdfflContext = _context.AsignacionAlumnos.Include(a => a.IdAlumnoNavigation).Include(a => a.IdMesaNavigation);
-            return View(await bdfflContext.ToListAsync());
+            var asignacionAlumnos = await _context.AsignacionAlumnos
+                .Include(a => a.IdAlumnoNavigation)
+                .Include(a => a.IdMesaNavigation)
+                .Select(a => new
+                {
+                    a.IdAsignacionalumnos,
+                    NombreCompletoAlumno = a.IdAlumnoNavigation.PrimerNombreAlumno + " " + a.IdAlumnoNavigation.PrimerApellidoAlumno,
+                    Mesa = a.IdMesaNavigation.IdMesa
+                })
+                .ToListAsync();
+
+            return View(asignacionAlumnos);
         }
+        //public async Task<IActionResult> Index()
+        //{
+        //    var bdfflContext = _context.AsignacionAlumnos.Include(a => a.IdAlumnoNavigation).Include(a => a.IdMesaNavigation);
+        //    return View(await bdfflContext.ToListAsync());
+        //}
 
         // GET: AsignacionAlumno/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -48,10 +63,23 @@ namespace Proyecto_Facultad.Controllers
         // GET: AsignacionAlumno/Create
         public IActionResult Create()
         {
-            ViewData["IdAlumno"] = new SelectList(_context.Alumnos, "IdAlumno", "Direccion");
+            ViewData["IdAlumno"] = new SelectList(
+                _context.Alumnos.Select(a => new
+                {
+                    IdAlumno = a.IdAlumno,
+                    NombreCompleto = a.PrimerNombreAlumno + " " + a.PrimerApellidoAlumno
+                }),
+                "IdAlumno", "NombreCompleto"
+            );
             ViewData["IdMesa"] = new SelectList(_context.Mesas, "IdMesa", "IdMesa");
             return View();
         }
+        // public IActionResult Create()
+        // {
+        //ViewData["IdAlumno"] = new SelectList(_context.Alumnos, "IdAlumno", "PrimerNombreAlumno");
+        //  ViewData["IdMesa"] = new SelectList(_context.Mesas, "IdMesa", "IdMesa");
+        //    return View();
+        // }
 
         // POST: AsignacionAlumno/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -64,11 +92,9 @@ namespace Proyecto_Facultad.Controllers
             {
                 _context.Add(asignacionAlumno);
                 await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Asignacion creada con exito.";
                 return RedirectToAction(nameof(Index));
             }
-            TempData["ErrorMessage"] = "Se produjo un error al guardar los datos.";
-            ViewData["IdAlumno"] = new SelectList(_context.Alumnos, "IdAlumno", "Direccion", asignacionAlumno.IdAlumno);
+            ViewData["IdAlumno"] = new SelectList(_context.Alumnos, "IdAlumno", "PrimerNombreAlumno", asignacionAlumno.IdAlumno);
             ViewData["IdMesa"] = new SelectList(_context.Mesas, "IdMesa", "IdMesa", asignacionAlumno.IdMesa);
             return View(asignacionAlumno);
         }
@@ -86,7 +112,7 @@ namespace Proyecto_Facultad.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdAlumno"] = new SelectList(_context.Alumnos, "IdAlumno", "Direccion", asignacionAlumno.IdAlumno);
+            ViewData["IdAlumno"] = new SelectList(_context.Alumnos, "IdAlumno", "PrimerNombreAlumno", asignacionAlumno.IdAlumno);
             ViewData["IdMesa"] = new SelectList(_context.Mesas, "IdMesa", "IdMesa", asignacionAlumno.IdMesa);
             return View(asignacionAlumno);
         }
@@ -109,7 +135,6 @@ namespace Proyecto_Facultad.Controllers
                 {
                     _context.Update(asignacionAlumno);
                     await _context.SaveChangesAsync();
-                    TempData["SuccessMessage"] = "Datos actualizados correctamente.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -119,13 +144,12 @@ namespace Proyecto_Facultad.Controllers
                     }
                     else
                     {
-                        TempData["SuccessMessage"] = "Se produjo un error al actualizar datos.";
                         throw;
                     }
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdAlumno"] = new SelectList(_context.Alumnos, "IdAlumno", "Direccion", asignacionAlumno.IdAlumno);
+            ViewData["IdAlumno"] = new SelectList(_context.Alumnos, "IdAlumno", "PrimerNombreAlumno", asignacionAlumno.IdAlumno);
             ViewData["IdMesa"] = new SelectList(_context.Mesas, "IdMesa", "IdMesa", asignacionAlumno.IdMesa);
             return View(asignacionAlumno);
         }

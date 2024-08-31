@@ -2,7 +2,7 @@
 
 <div class="container">
     <h2 class="text-primary pt-3">Editar nota</h2>
-    <form asp-controller="Bimestre" asp-action="Edit" method="post">
+    <form asp-controller="Nota" asp-action="Edit" method="post">
         <div class="row mb-3">
             <input type="hidden" asp-for="IdNota" />
             <div class="col-md-6">
@@ -34,3 +34,5 @@
 @section scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
+
