@@ -93,13 +93,12 @@ namespace Proyecto_Facultad.Controllers
                     }
                     else
                     {
-                        TempData["SuccessMessage"] = "Se produjo un error";
+                        TempData["SuccessMessage"] = "Se produjo un error al actualizar datos";
                         throw;
                     }
                 }
                 return RedirectToAction(nameof(Index));
             }
-            TempData["ErrorMessage"] = "Error al actualizar la sede.";
             return View(sede);
         }
 

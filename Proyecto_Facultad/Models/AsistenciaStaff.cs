@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Proyecto_Facultad.Models;
 
@@ -7,14 +9,19 @@ public partial class AsistenciaStaff
 {
     public int IdAsistenciaStaff { get; set; }
 
+    [DisplayName("Nombre")]
     public int IdStaff { get; set; }
 
+    [DisplayName("Fecha de clases")]
     public DateOnly FechaClase { get; set; }
 
+    [DisplayName("Numero de Mesa")]
     public int IdMesa { get; set; }
 
+    [DisplayName("Leccion")]
     public int? IdLeccion { get; set; }
 
+    [DisplayName("Bimestre")]
     public int IdBimestre { get; set; }
 
     public string Ausencia { get; set; }

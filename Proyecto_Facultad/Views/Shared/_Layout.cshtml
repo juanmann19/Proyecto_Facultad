@@ -54,12 +54,11 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="gestionesDropdown">
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Alumno" asp-action="Create">Añadir alumno</a></li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="Usuario" asp-action="Index">Usuario</a>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="Index">Usuario</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Staffs" asp-action="Create">Añadir Staff</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Sedes" asp-action="Create">Añadir sede</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Jornadums" asp-action="Create">Añadir jornada</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Nivels" asp-action="Create">Añadir nivel</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Jornadas" asp-action="Create">Añadir jornada</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Niveles" asp-action="Create">Añadir nivel</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Bimestre" asp-action="Create">Añadir bimestre</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Libro" asp-action="Create">Añadir Libro</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Leccion" asp-action="Create">Añadir lección</a></li>
@@ -154,7 +153,7 @@
 
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="AsistenciaAlumnoesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Asistencia Alumno
+                                Asistencias Alumno
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="jornadasDropdown">
                                 <li><a class="dropdown-item" asp-area="" asp-controller="AsistenciaAlumnoes" asp-action="Index">Ver y editar AsistenciaAlumnoes</a></li>

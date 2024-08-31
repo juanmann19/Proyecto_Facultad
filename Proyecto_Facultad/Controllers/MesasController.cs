@@ -44,8 +44,11 @@ namespace Proyecto_Facultad.Controllers
             {
                 _context.Add(mesa);
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Mesa creada con exito.";
                 return RedirectToAction(nameof(Index));
             }
+            TempData["ErrorMessage"] = "Se produjo un error al guardar los datos.";
+            return View(mesa);
 
             // Crear una lista combinada de Día de la Semana y Horario
             var jornadaList = await _context.Jornada
@@ -98,6 +101,7 @@ namespace Proyecto_Facultad.Controllers
                 {
                     _context.Update(mesa);
                     await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Datos actualizados correctamente.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -107,6 +111,7 @@ namespace Proyecto_Facultad.Controllers
                     }
                     else
                     {
+                        TempData["SuccessMessage"] = "Se produjo un error al actualizar datos.";
                         throw;
                     }
                 }

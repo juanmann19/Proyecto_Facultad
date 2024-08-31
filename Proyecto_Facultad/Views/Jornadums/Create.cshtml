@@ -7,16 +7,20 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <label asp-for="DiaSemana" class="form-label"></label>
-                <input asp-for="DiaSemana" class="form-control" />
+                <input asp-for="DiaSemana" class="form-control" id="diaSemanaInput" />
                 <span asp-validation-for="DiaSemana" class="text-danger"></span>
             </div>
         </div>
 
         <div class="row mb-3">
-            <div class="col-md-6">
+            <div class="form-group">
                 <label asp-for="Horario" class="form-label"></label>
-                <input asp-for="Horario" class="form-control" />
-                <span asp-validation-for="Horario" class="text-danger"></span>
+                <select asp-for="Horario" class="form-control" id="horarioSelect">
+                    <option value="">Seleccione horario</option>
+                    <option value="7:00am">7:00am</option>
+                    <option value="9:00am">9:00am</option>
+                    <option value="11:00am">11:00am</option>
+                </select>
             </div>
         </div>
 
@@ -36,4 +40,24 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.getElementById('diaSemanaInput').addEventListener('input', function () {
+            var diaSemana = this.value.trim().toLowerCase();
+            var horarioSelect = document.getElementById('horarioSelect');
+            horarioSelect.innerHTML = ''; // Limpiar las opciones actuales
+
+            if (diaSemana === 'sábado' || diaSemana === 'sabado') {
+                // Si es sábado, solo permitir la opción de las 6:00 PM
+                horarioSelect.innerHTML = '<option value="6:00pm">6:00pm</option>';
+            } else {
+                // Si no es sábado, restaurar las opciones originales
+                horarioSelect.innerHTML = `
+                            <option value="">Seleccione horario</option>
+                            <option value="7:00am">7:00am</option>
+                            <option value="9:00am">9:00am</option>
+                            <option value="11:00am">11:00am</option>
+                                `;
+            }
+        });
+    </script>
 }

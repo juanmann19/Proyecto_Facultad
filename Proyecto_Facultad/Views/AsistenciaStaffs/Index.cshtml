@@ -33,9 +33,10 @@
                     <th>Bimestre</th>
                     <th>Lección</th>
                     <th>Mesa</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
                     <th>Ausencia</th>
-                    <th>Staff</th>
-                    <th>Acciones</th>
+                    @*<th>Acciones</th>*@
                 </tr>
             </thead>
             <tbody>
@@ -46,13 +47,14 @@
                         <td>@item.IdBimestreNavigation?.NombreBimestre</td>
                         <td>@item.IdLeccionNavigation?.Descripcion</td>
                         <td>@item.IdMesaNavigation?.IdMesa</td>
+                        <td>@item.IdStaffNavigation?.PrimerNombreStaff</td>
+                        <td>@item.IdStaffNavigation?.PrimerApellidoStaff</td>
                         <td>@item.Ausencia</td>
-                        <td>@item.IdStaffNavigation?.NivelAprobado</td>
                         <td>
                             <div class="btn-group w-100" role="group">
-                                <a asp-action="Edit" asp-route-id="@item.IdAsistenciaStaff" class="btn btn-primary w-100">
+                                <!---a asp-action="Edit" asp-route-id="@item.IdAsistenciaStaff" class="btn btn-primary w-100"--->
                                     <i class="bi bi-pencil-fill"></i> Editar
-                                </a>
+                                <!---a-->
                             </div>
                         </td>
                     </tr>
