@@ -26,24 +26,24 @@ namespace Proyecto_Facultad.Controllers
         }
 
         // GET: Nota/Details/5
-        public async Task<IActionResult> Details(int? id)
-       {
-          if (id == null)
-            {
-                return NotFound();
-            }
+       // public async Task<IActionResult> Details(int? id)
+       //{
+       //   if (id == null)
+       //     {
+       //         return NotFound();
+       //     }
 
-                var nota = await _context.Notas
-                .Include(n => n.IdAsignacionalumnosNavigation)
-                .Include(n => n.IdBimestreNavigation)
-              .FirstOrDefaultAsync(m => m.IdNota == id);
-            if (nota == null)
-            {
-                return NotFound();
-            }
+       //         var nota = await _context.Notas
+       //         .Include(n => n.IdAsignacionalumnosNavigation)
+       //         .Include(n => n.IdBimestreNavigation)
+       //       .FirstOrDefaultAsync(m => m.IdNota == id);
+       //     if (nota == null)
+       //     {
+       //         return NotFound();
+       //     }
 
-            return View(nota);
-        }
+       //     return View(nota);
+       // }
 
         // GET: Nota/Create
         public IActionResult Create()

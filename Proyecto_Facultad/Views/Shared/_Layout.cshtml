@@ -9,29 +9,20 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Proyecto_Facultad.styles.css" asp-append-version="true" />
     <style>
-        /* Cambiar color de fondo de la barra de navegación */
         .navbar {
             background-color: #ffffff; /* Blanco */
             color: #ffffff;
         }
-
-        /* Cambiar color de fondo del submenú */
         .dropdown-menu {
             background-color: #ffffff; /* Blanco */
         }
-
-        /* Cambiar color al pasar el cursor sobre los elementos del submenú */
         .dropdown-item:hover {
-            background-color: #0690c3; /* Blanco */
+            background-color: #0690c3; /* Azul */
             color: #ffffff; /* Texto blanco */
         }
-
-        /* Cambiar color del texto del submenú */
         .dropdown-item {
             color: #000000; /* Negro */
         }
-
-        /* Cambiar color de los enlaces al pasar el cursor */
         .nav-link:hover {
             color: #ffffff; /* Blanco */
         }
@@ -53,22 +44,18 @@
                                 Gestiones administrativas
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="gestionesDropdown">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="Create">Añadir usuario</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Alumno" asp-action="Create">Añadir alumno</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="Index">Usuario</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Staffs" asp-action="Create">Añadir Staff</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Sedes" asp-action="Create">Añadir sede</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Jornadas" asp-action="Create">Añadir jornada</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Niveles" asp-action="Create">Añadir nivel</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Jornadums" asp-action="Create">Añadir jornada</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Nivels" asp-action="Create">Añadir nivel</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Bimestre" asp-action="Create">Añadir bimestre</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Libro" asp-action="Create">Añadir Libro</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Leccion" asp-action="Create">Añadir lección</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="Create">Añadir usuario</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Capacitacion" asp-action="Create">Añadir capacitacion</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Nota" asp-action="Create">Añadir nota</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="AsignacionAlumno" asp-action="Create">Añadir alumno a mesa</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="AsistenciaAlumnoes" asp-action="Create">Añadir Asistencia Alumno</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="AsistenciaStaffs" asp-action="Create">Añadir Asistencia Maestro</a></li>
-                            </ul
+                                <li><a class="dropdown-item" asp-area="" asp-controller="AsignacionAlumno" asp-action="Index">Asignar alumno a mesa</a></li>
+                            </ul>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="alumnosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -76,6 +63,7 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="alumnosDropdown">
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Alumno" asp-action="Index">Ver y editar alumnos</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="AsistenciaAlumnoes" asp-action="Create">Añadir asistencia alumnos</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -84,6 +72,7 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="staffDropdown">
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Staffs" asp-action="Index">Ver y editar staff</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="AsistenciaStaffs" asp-action="Create">Añadir asistencia staff</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -91,75 +80,18 @@
                                 Mesa
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="mesasDropdown">
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Mesas" asp-action="Index">Ver mesas</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="AsignacionAlumno" asp-action="Create">Asignar alumno</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Nota" asp-action="Create">Añadir nota</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="gestionesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Consulta Mesas
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="gestionesDropdown">
-                                <li><a class="dropdown-item" asp-area="" asp-controller="MesaDetalle" asp-action="Index">Información Mesas</a></li>
-                             </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="jornadumsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Jornadas
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="jornadumsDropdown">
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Jornadums" asp-action="Index">Ver y editar jornadums</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="nivelsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Niveles
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="nivelsDropdown">
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Nivels" asp-action="Index">Ver y editar niveles</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Bimestre" asp-action="Index">Ver y editar bimestres</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Libro" asp-action="Index">Ver y editar libros</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Leccion" asp-action="Index">Ver y editar lecciones</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="sedesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Sedes
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="sedesDropdown">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="MesaDetalle" asp-action="Index">Información de las mesas asignadas</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Sedes" asp-action="Index">Ver y editar sedes</a></li>
-                            </ul>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="capacitacionesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Capacitaciones
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="capacitacionesDropdown">
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Capacitacion" asp-action="Index">Ver y editar capacitaciones</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Jornadums" asp-action="Index">Ver y editar jornadums</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Nivels" asp-action="Index">Ver y editar niveles</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Nota" asp-action="Index">Asignar nota a un alumno</a></li>
                             </ul>
                         </li>
+                        </ul>
+                    <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacidad</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="AsistenciaStaffsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Asistencias Maestros
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="jornadasDropdown">
-                                <li><a class="dropdown-item" asp-area="" asp-controller="AsistenciaStaffs" asp-action="Index">Ver y editar AsistenciaStaffs</a></li>
-                            </ul>
-                        </li>
-
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="AsistenciaAlumnoesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Asistencias Alumno
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="jornadasDropdown">
-                                <li><a class="dropdown-item" asp-area="" asp-controller="AsistenciaAlumnoes" asp-action="Index">Ver y editar AsistenciaAlumnoes</a></li>
-                            </ul>
-                        </li>
-
                     </ul>
                 </div>
             </div>
@@ -176,9 +108,9 @@
             &copy; 2024 - Proyecto_Facultad - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
