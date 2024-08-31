@@ -3,8 +3,8 @@
 <div class="container">
 
     <h2 class="text-primary pt-3">Editar Asistencia del Alumno</h2>
-    <form asp-controller="AsistenciaAlumno" asp-action="Edit" method="post">
-        <input type="hidden" asp-for="IdAsistenciaAlumno" />
+    <!--form asp-controller="AsistenciaAlumno" asp-action="Edit" method="post"--->
+        <!---input type="hidden" asp-for="IdAsistenciaAlumno" />
 
         <!-- Dropdown para seleccionar la Asistencia del Staff -->
         <div class="row mb-3">
@@ -38,7 +38,7 @@
             <button type="submit" class="btn btn-success flex-fill me-2">Guardar</button>
             <a asp-action="Index" asp-controller="AsistenciaAlumno" class="btn btn-danger flex-fill">Cancelar</a>
         </div>
-    </form>
+    </!--form>
 </div>
 
 @section Scripts {

@@ -28,8 +28,8 @@ namespace Proyecto_Facultad.Controllers
         // GET: AsistenciaAlumnoes/Create
         public IActionResult Create()
         {
-            ViewData["IdAlumno"] = new SelectList(_context.Alumnos, "IdAlumno", "Direccion");
-            ViewData["IdAsistenciaStaff"] = new SelectList(_context.AsistenciaStaffs, "IdAsistenciaStaff", "IdAsistenciaStaff");
+            ViewData["IdAlumno"] = new SelectList(_context.Alumnos, "IdAlumno", "PrimerNombreAlumno");
+            ViewData["IdAsistenciaStaff"] = new SelectList(_context.AsistenciaStaffs, "IdAsistenciaStaff", "IdStaff");
             return View();
         }
 
@@ -44,12 +44,12 @@ namespace Proyecto_Facultad.Controllers
             {
                 _context.Add(asistenciaAlumno);
                 await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Asistencia creada con exito.";
+                TempData["SuccessMessage"] = "Asistencia Alumno creada con exito.";
                 return RedirectToAction(nameof(Index));
             }
             TempData["ErrorMessage"] = "Se produjo un error al guardar los datos.";
-            ViewData["IdAlumno"] = new SelectList(_context.Alumnos, "IdAlumno", "Direccion", asistenciaAlumno.IdAlumno);
-            ViewData["IdAsistenciaStaff"] = new SelectList(_context.AsistenciaStaffs, "IdAsistenciaStaff", "IdAsistenciaStaff", asistenciaAlumno.IdAsistenciaStaff);
+            ViewData["IdAlumno"] = new SelectList(_context.Alumnos, "IdAlumno", "PrimerNombreAlumno", asistenciaAlumno.IdAlumno);
+            ViewData["IdAsistenciaStaff"] = new SelectList(_context.AsistenciaStaffs, "IdAsistenciaStaff", "IdStaff", asistenciaAlumno.IdAsistenciaStaff);
             return View(asistenciaAlumno);
         }
 
@@ -66,8 +66,8 @@ namespace Proyecto_Facultad.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdAlumno"] = new SelectList(_context.Alumnos, "IdAlumno", "Direccion", asistenciaAlumno.IdAlumno);
-            ViewData["IdAsistenciaStaff"] = new SelectList(_context.AsistenciaStaffs, "IdAsistenciaStaff", "IdAsistenciaStaff", asistenciaAlumno.IdAsistenciaStaff);
+            ViewData["IdAlumno"] = new SelectList(_context.Alumnos, "IdAlumno", "PrimerNombreAlumno", asistenciaAlumno.IdAlumno);
+            ViewData["IdAsistenciaStaff"] = new SelectList(_context.AsistenciaStaffs, "IdAsistenciaStaff", "IdStaff", asistenciaAlumno.IdAsistenciaStaff);
             return View(asistenciaAlumno);
         }
 
@@ -89,7 +89,7 @@ namespace Proyecto_Facultad.Controllers
                 {
                     _context.Update(asistenciaAlumno);
                     await _context.SaveChangesAsync();
-                    TempData["SuccessMessage"] = "Datos actualizados correctamente.";
+                    TempData["ErrorMessage"] = "Datos actualizados correctamente.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -105,8 +105,8 @@ namespace Proyecto_Facultad.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdAlumno"] = new SelectList(_context.Alumnos, "IdAlumno", "Direccion", asistenciaAlumno.IdAlumno);
-            ViewData["IdAsistenciaStaff"] = new SelectList(_context.AsistenciaStaffs, "IdAsistenciaStaff", "IdAsistenciaStaff", asistenciaAlumno.IdAsistenciaStaff);
+            ViewData["IdAlumno"] = new SelectList(_context.Alumnos, "IdAlumno", "PrimerNombreAlumno", asistenciaAlumno.IdAlumno);
+            ViewData["IdAsistenciaStaff"] = new SelectList(_context.AsistenciaStaffs, "IdAsistenciaStaff", "IdStaff", asistenciaAlumno.IdAsistenciaStaff);
             return View(asistenciaAlumno);
         }
         private bool AsistenciaAlumnoExists(int id)
