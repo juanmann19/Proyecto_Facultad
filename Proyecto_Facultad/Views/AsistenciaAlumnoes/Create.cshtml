@@ -6,13 +6,13 @@
     <form asp-action="Create" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label asp-for="IdAsistenciaAlumno" class="form-label"></label>
-                <input asp-for="IdAsistenciaAlumno" class="form-control" />
-                <span asp-validation-for="IdAsistenciaAlumno" class="text-danger"></span>
-            </div>
-        </div>
+        <!---div class="row mb-3"-->
+          <!---<div class="col-md-6"-->
+                <!----<label asp-for="IdAsistenciaAlumno" class="form-label"></label-->
+                <!----<input asp-for="IdAsistenciaAlumno" class="form-control" /-->
+            <!----<span asp-validation-for="IdAsistenciaAlumno" class="text-danger"></span--->
+           <!----</div--->
+        <!---</div--->
 
         <div class="row mb-3">
             <div class="col-md-6">
@@ -25,11 +25,11 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <label asp-for="IdAlumno" class="form-label"></label>
-                <select asp-for="IdAlumno" class="form-control" asp-items="ViewBag.PrimerNombreAlumno"></select>
+                <select asp-for="IdAlumno" class="form-control" asp-items="ViewBag.IdAlumno"></select>
                 <span asp-validation-for="IdAlumno" class="text-danger"></span>
             </div>
         </div>
-      
+
         <div class="row mb-3">
             <div class="col-md-6">
                 <label asp-for="Ausencia" class="form-label"></label>

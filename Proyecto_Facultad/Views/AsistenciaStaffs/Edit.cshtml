@@ -3,14 +3,14 @@
 <div class="container">
 
     <h2 class="text-primary pt-3">Editar Asistencia del Staff</h2>
-    <form asp-controller="AsistenciaStaff" asp-action="Edit" method="post">
+    <!---form asp-controller="AsistenciaStaff" asp-action="Edit" method="post"--->
        <!----input type="hidden" asp-for="IdAsistenciaStaff" />
 
         <!-- Dropdown para seleccionar el Staff -->
         <div class="row">
             <div class="col-md-6">
                 <label asp-for="IdStaff" class="form-label"></label>
-                <select asp-for="IdStaff" class="form-control" asp-items="ViewBag.PrimerNombreStaff"></select>
+                <select asp-for="IdStaff" class="form-control" asp-items="ViewBag.IdStaff"></select>
             </div>
         </div>
 
@@ -36,7 +36,7 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <label asp-for="IdLeccion" class="form-label"></label>
-                <select asp-for="IdLeccion" class="form-control" asp-items="ViewBag.Descripcion"></select>
+                <select asp-for="IdLeccion" class="form-control" asp-items="ViewBag.IdLeccion"></select>
                 <span asp-validation-for="IdLeccion" class="text-danger"></span>
             </div>
         </div>
@@ -45,7 +45,7 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <label asp-for="IdBimestre" class="form-label"></label>
-                <select asp-for="IdBimestre" class="form-control" asp-items="ViewBag.NombreBimestre"></select>
+                <select asp-for="IdBimestre" class="form-control" asp-items="ViewBag.IdBimestre"></select>
                 <span asp-validation-for="IdBimestre" class="text-danger"></span>
             </div>
         </div>
@@ -64,7 +64,7 @@
             <button type="submit" class="btn btn-success flex-fill me-2">Guardar</button>
             <a asp-action="Index" asp-controller="AsistenciaStaff" class="btn btn-danger flex-fill">Cancelar</a>
         </div>
-    </form>
+    </!---form>
 </div>
 
 @section Scripts {

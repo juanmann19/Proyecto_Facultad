@@ -53,7 +53,7 @@ namespace Proyecto_Facultad.Controllers
             ViewData["IdBimestre"] = new SelectList(_context.Bimestres, "IdBimestre", "NombreBimestre");
             ViewData["IdLeccion"] = new SelectList(_context.Leccions, "IdLeccion", "Descripcion");
             ViewData["IdMesa"] = new SelectList(_context.Mesas, "IdMesa", "IdMesa");
-            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "NivelAprobado");
+            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "PrimerNombreStaff");
             return View();
         }
 
@@ -75,7 +75,7 @@ namespace Proyecto_Facultad.Controllers
             ViewData["IdBimestre"] = new SelectList(_context.Bimestres, "IdBimestre", "NombreBimestre", asistenciaStaff.IdBimestre);
             ViewData["IdLeccion"] = new SelectList(_context.Leccions, "IdLeccion", "Descripcion", asistenciaStaff.IdLeccion);
             ViewData["IdMesa"] = new SelectList(_context.Mesas, "IdMesa", "IdMesa", asistenciaStaff.IdMesa);
-            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "NivelAprobado", asistenciaStaff.IdStaff);
+            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "PrimerNombreStaff", asistenciaStaff.IdStaff);
             return View(asistenciaStaff);
         }
 
@@ -95,7 +95,7 @@ namespace Proyecto_Facultad.Controllers
             ViewData["IdBimestre"] = new SelectList(_context.Bimestres, "IdBimestre", "NombreBimestre", asistenciaStaff.IdBimestre);
             ViewData["IdLeccion"] = new SelectList(_context.Leccions, "IdLeccion", "Descripcion", asistenciaStaff.IdLeccion);
             ViewData["IdMesa"] = new SelectList(_context.Mesas, "IdMesa", "IdMesa", asistenciaStaff.IdMesa);
-            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "NivelAprobado", asistenciaStaff.IdStaff);
+            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "PrimerNombreStaff", asistenciaStaff.IdStaff);
             return View(asistenciaStaff);
         }
 
@@ -136,7 +136,7 @@ namespace Proyecto_Facultad.Controllers
             ViewData["IdBimestre"] = new SelectList(_context.Bimestres, "IdBimestre", "NombreBimestre", asistenciaStaff.IdBimestre);
             ViewData["IdLeccion"] = new SelectList(_context.Leccions, "IdLeccion", "Descripcion", asistenciaStaff.IdLeccion);
             ViewData["IdMesa"] = new SelectList(_context.Mesas, "IdMesa", "IdMesa", asistenciaStaff.IdMesa);
-            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "NivelAprobado", asistenciaStaff.IdStaff);
+            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "PrimerNombreStaff", asistenciaStaff.IdStaff);
             return View(asistenciaStaff);
         }
 

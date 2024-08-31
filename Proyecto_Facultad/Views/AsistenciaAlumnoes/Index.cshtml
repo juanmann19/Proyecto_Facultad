@@ -39,14 +39,14 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@item.IdAlumnoNavigation?.Direccion</td>
-                        <td>@item.IdAsistenciaStaffNavigation?.IdAsistenciaStaff</td>
+                        <td>@item.IdAlumnoNavigation?.PrimerNombreAlumno</td>
+                        <td>@item.IdAsistenciaStaffNavigation?.IdStaff</td>
                         <td>@item.Ausencia</td>
                         <td>
                             <div class="btn-group w-100" role="group">
-                                <a asp-action="Edit" asp-route-id="@item.IdAsistenciaAlumno" class="btn btn-primary w-100">
+                                <!---a asp-action="Edit" asp-route-id="@item.IdAsistenciaAlumno" class="btn btn-primary w-100"--->
                                     <i class="bi bi-pencil-fill"></i> Editar
-                                </a>
+                                <!---a-->
                             </div>
                         </td>
                     </tr>
