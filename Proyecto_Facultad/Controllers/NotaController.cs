@@ -21,22 +21,22 @@ namespace Proyecto_Facultad.Controllers
         // GET: Nota
         public async Task<IActionResult> Index()
         {
-           var bdfflContext = _context.Notas.Include(n => n.IdAsignacionalumnosNavigation).Include(n => n.IdBimestreNavigation);
+            var bdfflContext = _context.Notas.Include(n => n.IdAsignacionalumnosNavigation).Include(n => n.IdBimestreNavigation);
             return View(await bdfflContext.ToListAsync());
         }
 
         // GET: Nota/Details/5
         public async Task<IActionResult> Details(int? id)
-       {
-          if (id == null)
+        {
+            if (id == null)
             {
                 return NotFound();
             }
 
-                var nota = await _context.Notas
-                .Include(n => n.IdAsignacionalumnosNavigation)
-                .Include(n => n.IdBimestreNavigation)
-              .FirstOrDefaultAsync(m => m.IdNota == id);
+            var nota = await _context.Notas
+            .Include(n => n.IdAsignacionalumnosNavigation)
+            .Include(n => n.IdBimestreNavigation)
+          .FirstOrDefaultAsync(m => m.IdNota == id);
             if (nota == null)
             {
                 return NotFound();
@@ -48,19 +48,27 @@ namespace Proyecto_Facultad.Controllers
         // GET: Nota/Create
         public IActionResult Create()
         {
-            // Supón que obtienes el ID de la mesa de alguna fuente (por ejemplo, desde un campo de sesión)
-            int mesaId = 1; // Aquí debes usar el método real para obtener el ID de mesa del usuario actual
-
-            // Obtener alumnos asignados a la mesa especificada
-            var alumnosAsignados = _context.AsignacionAlumnos
-                .Where(a => a.IdMesa == mesaId)
-                .Select(a => new {
-                    a.IdAsignacionalumnos,
-                    NombreCompleto = a.IdAlumnoNavigation.PrimerNombreAlumno + " " + a.IdAlumnoNavigation.PrimerApellidoAlumno
+            // Obtener todas las mesas
+            var mesas = _context.Mesas
+                .Select(m => new
+                {
+                    m.IdMesa,
+                    Descripcion = m.IdMesa.ToString() // Ajusta esto según tu modelo de mesa
                 })
                 .ToList();
 
-            ViewBag.IdAlumno = new SelectList(alumnosAsignados, "IdAsignacionalumnos", "NombreCompleto");
+            // Obtener todos los alumnos
+            var alumnos = _context.Alumnos
+                .Select(a => new
+                {
+                    a.IdAlumno,
+                    NombreCompleto = $"{a.PrimerNombreAlumno} {a.PrimerApellidoAlumno}"
+                })
+                .ToList();
+
+            // Pasar las mesas y alumnos a la vista
+            ViewBag.IdMesa = new SelectList(mesas, "IdMesa", "Descripcion");
+            ViewBag.IdAlumno = new SelectList(alumnos, "IdAlumno", "NombreCompleto");
 
             // Obtener bimestres
             ViewBag.IdBimestre = new SelectList(_context.Bimestres, "IdBimestre", "NombreBimestre");
