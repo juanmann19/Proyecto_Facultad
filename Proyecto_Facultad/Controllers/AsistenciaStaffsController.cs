@@ -54,21 +54,30 @@ namespace Proyecto_Facultad.Controllers
             int idStaff = 2; // Cambia este valor según el staff que desees filtrar
 
             // Obtén las mesas asignadas a este staff
-            var mesasAsignadas = _context.AsignacionMaestros
-                .Where(am => am.IdStaff == idStaff)
-                .Select(am => am.IdMesaNavigation)
-                .ToList();
+            //var mesasAsignadas = _context.AsignacionMaestros
+            //    .Where(am => am.IdStaff == idStaff)
+            //    .Select(am => am.IdMesaNavigation)
+            //    .ToList();
 
 
             var staff = _context.Staff
                 .Where(s => s.IdStaff == idStaff)
                 .FirstOrDefault();
 
+            var mesasAsignadas = _context.AsignacionMaestros
+                .Where(am => am.IdStaff == idStaff)
+                .Select(am => new
+                {
+                    am.IdMesa,
+                    MesaDescripcion = $"{am.IdMesaNavigation.IdMesa} - {am.IdMesaNavigation.NombreSedeNavigation.NombreSede} - {am.IdMesaNavigation.IdJornadaNavigation.DiaSemana} {am.IdMesaNavigation.IdJornadaNavigation.Horario}"
+                })
+                .ToList();
+
             ViewData["NombreMaestro"] = $"{staff.PrimerNombreStaff} {staff.PrimerApellidoStaff}";
 
 
             // Crear un SelectList con las mesas asignadas
-            ViewData["IdMesa"] = new SelectList(mesasAsignadas, "IdMesa", "IdMesa");
+            ViewData["IdMesa"] = new SelectList(mesasAsignadas, "IdMesa", "MesaDescripcion");
 
             // Obtener otros datos necesarios para el formulario
             //ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "PrimerNombreStaff");
