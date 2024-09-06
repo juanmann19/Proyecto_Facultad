@@ -1,0 +1,45 @@
+@model Proyecto_Facultad.Models.AvanceMesa
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="container">
+    <h2 class="text-primary">Añadir Avance de Mesa</h2>
+    <form id="avanceMesaForm" asp-action="Create" method="post">
+        <div class="form-group">
+            <label asp-for="IdNivel" class="control-label"></label>
+            <select asp-for="IdNivel" class="form-select" asp-items="ViewBag.IdNivel"></select>
+            <span asp-validation-for="IdNivel" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="IdBimestre" class="control-label"></label>
+            <select asp-for="IdBimestre" class="form-select" asp-items="ViewBag.IdBimestre"></select>
+            <span asp-validation-for="IdBimestre" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="IdLibro" class="control-label"></label>
+            <select asp-for="IdLibro" class="form-select" asp-items="ViewBag.IdLibro"></select>
+            <span asp-validation-for="IdLibro" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="IdLeccion" class="control-label"></label>
+            <select asp-for="IdLeccion" class="form-select" asp-items="ViewBag.IdLeccion"></select>
+            <span asp-validation-for="IdLeccion" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="IdMesa" class="control-label"></label>
+            <select asp-for="IdMesa" class="form-select" asp-items="ViewBag.IdMesa"></select>
+            <span asp-validation-for="IdMesa" class="text-danger"></span>
+        </div>
+
+        <div class="form-group d-flex">
+            <button type="submit" class="btn btn-primary flex-fill me-2">Guardar</button>
+            <a asp-action="Index" asp-controller="AvanceMesa" class="btn btn-danger flex-fill">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
