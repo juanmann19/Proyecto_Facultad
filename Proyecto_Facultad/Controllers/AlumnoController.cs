@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_Facultad.Models;
+using Proyecto_Facultad.ViewModels;
 
 namespace Proyecto_Facultad.Controllers
 {
@@ -217,6 +218,27 @@ namespace Proyecto_Facultad.Controllers
         {
             return View(await _context.Alumnos.Where(a => a.EstatusAlumno).
                 ToListAsync());
+        }
+
+        public IActionResult ReporteGraduados()
+        {
+            // Filtrar las asignaciones que tienen una nota mayor a 80 y bimestre = 4
+            var alumnosGraduados = _context.Notas
+                .Where(n => n.NotaObtenida > 80 && n.IdBimestre == 4)
+                .Select(n => n.IdAsignacionalumnosNavigation.IdAlumnoNavigation)
+                .Select(a => new AlumnoReporteViewModel
+                {
+                    NombreCompleto = $"{a.PrimerNombreAlumno} {a.SegundoNombreAlumno} {a.PrimerApellidoAlumno} {a.SegundoApellidoAlumno}",
+                    Telefono = a.Telefono
+                })
+                .ToList();
+
+            var viewModel = new ReporteAlumnosGraduadosViewModel
+            {
+                AlumnosGraduados = alumnosGraduados
+            };
+
+            return View(viewModel);
         }
     }
 }

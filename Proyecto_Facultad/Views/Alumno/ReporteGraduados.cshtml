@@ -1,0 +1,21 @@
+﻿@model Proyecto_Facultad.ViewModels.ReporteAlumnosGraduadosViewModel
+
+<h2>Reporte de Alumnos Graduados</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr class="table-primary">
+            <th>Nombre Completo</th>
+            <th>Teléfono</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var alumno in Model.AlumnosGraduados)
+        {
+            <tr>
+                <td>@alumno.NombreCompleto</td>
+                <td>@alumno.Telefono</td>
+            </tr>
+        }
+    </tbody>
+</table>
