@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +19,11 @@ namespace Proyecto_Facultad.Controllers
         // GET: Leccion
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Leccions.ToListAsync());
+            var leccionesConLibros = await _context.Leccions
+        .Include(l => l.IdLibroNavigation) // Incluye la información del libro
+        .ToListAsync();
+
+            return View(leccionesConLibros);
         }
 
         // GET: Leccion/Details/5
@@ -45,76 +47,88 @@ namespace Proyecto_Facultad.Controllers
         // GET: Leccion/Create
         public IActionResult Create()
         {
+            // Obtener la lista de libros para el desplegable
+            ViewBag.IdLibro = new SelectList(_context.Libros, "IdLibro", "NombreLibro");
             return View();
         }
 
         // POST: Leccion/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Descripcion,IdLibro")] Leccion leccion)
         {
-
-            try
+            if (ModelState.IsValid)
             {
                 _context.Add(leccion);
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Dato cargado correctamente";
                 return RedirectToAction(nameof(Index));
             }
-            catch (Exception ex)
+            // Reinitialize the ViewBag if the model state is not valid
+            ViewBag.IdLibro = new SelectList(_context.Libros, "IdLibro", "NombreLibro", leccion.IdLibro);
+            TempData["ErrorMessage"] = "Se produjo un error al guardar los datos.";
+            return View(leccion);
+        }
+
+        // GET: Leccion/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
             {
-                TempData["ErrorMessage"] = "Se produjo un error al guardar los datos.";
-                return View(leccion);
+                return NotFound();
             }
+
+            var leccion = await _context.Leccions.FindAsync(id);
+            if (leccion == null)
+            {
+                return NotFound();
+            }
+
+            // Obtener la lista de libros para el desplegable
+            ViewBag.IdLibro = new SelectList(_context.Libros, "IdLibro", "NombreLibro", leccion.IdLibro);
+            return View(leccion);
         }
-       // GET: Leccion/Edit/5
-public async Task<IActionResult> Edit(int? id)
-{
-    if (id == null)
-    {
-        return NotFound();
-    }
 
-    var leccion = await _context.Leccions.FindAsync(id);
-    if (leccion == null)
-    {
-        return NotFound();
-    }
-    return View(leccion);
-}
-
-// POST: Leccion/Edit/5
-[HttpPost]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> Edit(int id, [Bind("IdLeccion,Descripcion,IdLibro")] Leccion leccion)
-{
-    if (id != leccion.IdLeccion)
-    {
-        return RedirectToAction(nameof(Index));
-    }
-
-    if (ModelState.IsValid)
-    {
-        try
+        // POST: Leccion/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("IdLeccion,Descripcion,IdLibro")] Leccion leccion)
         {
-            _context.Update(leccion);
-            await _context.SaveChangesAsync();
-            TempData["SuccessMessage"] = "Datos actualizados correctamente";
+            if (id != leccion.IdLeccion)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(leccion);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Datos actualizados correctamente";
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!LeccionExists(leccion.IdLeccion))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+
+            // Reinitialize the ViewBag if the model state is not valid
+            ViewBag.IdLibro = new SelectList(_context.Libros, "IdLibro", "NombreLibro", leccion.IdLibro);
+            return View(leccion);
         }
-        catch (DbUpdateConcurrencyException)
+
+        private bool LeccionExists(int id)
         {
-            
-                TempData["ErrorMessage"] = "Se produjo un error al actualizar los datos.";
-                throw;
-            
+            return _context.Leccions.Any(e => e.IdLeccion == id);
         }
-        return RedirectToAction(nameof(Index));
-    }
-    return View(leccion);
-}
-
-
     }
 }

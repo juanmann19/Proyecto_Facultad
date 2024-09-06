@@ -1,4 +1,4 @@
-@model List<Usuario>
+@model List<Proyecto_Facultad.Models.Usuario>
 
 <div class="container-fluid pt-4">
     @if (TempData["SuccessMessage"] != null)
@@ -15,7 +15,7 @@
     }
     <div class="row mb-3">
         <div class="col-6">
-            <h2 class="text-primary">Listado Usuarios</h2>
+            <h2 class="text-primary">Listado de Usuarios</h2>
         </div>
         <div class="col-6 text-end">
             <a asp-controller="Usuario" asp-action="Create" class="btn btn-primary">
@@ -28,35 +28,25 @@
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    
-                    <!-- Trae solo los campos necesarios, no todos-->
                     <th>Nombre Usuario</th>
                     <th>Rol</th>
-                    <th>Estatus</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var obj in Model.OrderBy(u => u.NombreUsuario))
+                @foreach (var usuario in Model.OrderBy(u => u.NombreUsuario))
                 {
                     <tr>
-                        <td>@obj.NombreUsuario</td>
-                        <td>@obj.IdRol</td>
-                        <td>@(obj.EstadoUsuario ? "Activo" : "Inactivo")</td>
+                        <td>@usuario.NombreUsuario</td>
+                        <td>@usuario.IdRolNavigation.NombreRol</td> <!-- Muestra el nombre del rol -->
+                        <td>@(usuario.EstadoUsuario ? "Activo" : "Inactivo")</td>
                         <td>
                             <div class="btn-group w-100" role="group">
-                                <a asp-controller="Usuario" asp-action="Edit" asp-route-id="@obj.IdUsuario" class="btn btn-primary flex-grow-1">
+                                <a asp-controller="Usuario" asp-action="Edit" asp-route-id="@usuario.IdUsuario" class="btn btn-primary flex-grow-1">
                                     <i class="bi bi-pencil-fill"></i> Editar
                                 </a>
-                                <form asp-action="Deactivate" method="post" class="flex-grow-1">
-                                    <button type="submit" asp-controller="Usuario" asp-action="Deactivate" asp-route-id="@obj.EstadoUsuario" class="btn btn-danger w-100">
-                                        <i class="bi bi-trash-fill"></i> Activar/Desactivar
-                                    </button>
-                                </form>
-                                @* <a asp-controller="Usuario" asp-action="Delete" asp-route-id="@obj.IdUsuario" class="btn btn-danger flex-grow-1">
-                                    <i class="bi bi-pencil-fill"></i> Eliminar
-                                </a> *@
                             </div>
-
                         </td>
                     </tr>
                 }
@@ -64,4 +54,3 @@
         </table>
     </div>
 </div>
-

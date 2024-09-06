@@ -1,47 +1,39 @@
 @model Proyecto_Facultad.Models.Usuario
 
-<div class="container">
-    <h2 class="text-primary pt-3">Editar Usuario</h2>
-    <form asp-controller="Usuario" asp-action="Edit" method="post">
-        <div class="row mb-3">
-            <input type="hidden" asp-for="IdUsuario" />
-            <div class="col-md-6">
-                <label asp-for="NombreUsuario" class="form-label"></label>
-                <input asp-for="NombreUsuario" class="form-control" />
-                <span asp-validation-for="NombreUsuario" class="text-danger"></span>
-            </div>
-            <div class="col-md-6">
-                <label asp-for="ContrasenaUsuario" class="form-label"></label>
-                <input asp-for="ContrasenaUsuario" class="form-control" type="password" />
-                <span asp-validation-for="ContrasenaUsuario" class="text-danger"></span>
-            </div>
-            <div class="col-md-6">
-                <label asp-for="IdRol" class="form-label"></label>
-                <select asp-for="IdRol" class="form-control">
-                    <option value="1">Coordinador</option>
-                    <option value="2">Maestro</option>
-                    <option value="3">Auxiliar</option>
-                </select>
-                <span asp-validation-for="IdRol" class="text-danger"></span>
-            </div>
-            <div class="col-md-6">
-                <div class="form-check">
-                    <input asp-for="EstadoUsuario" class="form-check-input" type="checkbox" />
-                    <label asp-for="EstadoUsuario" class="form-check-label"></label>
-                    <span asp-validation-for="EstadoUsuario" class="text-danger"></span>
-                </div>
-            </div>
-        </div>
-        <div>
-            <div class="form-group d-flex">
-                <button type="submit" class="btn btn-success flex-fill me-2">Guardar</button>
-                <a asp-action="Index" asp-controller="usuario" class="btn btn-danger flex-fill">Cancelar</a>
-            </div>
-        </div>
+@{
+    ViewData["Title"] = "Editar Usuario";
+}
 
+<div class="container">
+    <h2 class="text-primary">Editar Usuario</h2>
+    <form id="usuarioForm" asp-action="Edit" method="post">
+        <div class="form-group">
+            <label asp-for="NombreUsuario" class="control-label"></label>
+            <input asp-for="NombreUsuario" class="form-control" />
+            <span asp-validation-for="NombreUsuario" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ContrasenaUsuario" class="control-label"></label>
+            <input asp-for="ContrasenaUsuario" type="password" class="form-control" />
+            <span asp-validation-for="ContrasenaUsuario" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="IdRol" class="control-label"></label>
+            <select asp-for="IdRol" class="form-control" asp-items="ViewBag.Roles"></select>
+            <span asp-validation-for="IdRol" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="EstadoUsuario" class="control-label"></label>
+            <input asp-for="EstadoUsuario" type="checkbox" />
+            <span asp-validation-for="EstadoUsuario" class="text-danger"></span>
+        </div>
+        <div class="form-group d-flex">
+            <button type="submit" class="btn btn-primary flex-fill me-2">Guardar</button>
+            <a asp-action="Index" asp-controller="Usuario" class="btn btn-danger flex-fill">Cancelar</a>
+        </div>
     </form>
 </div>
 
-@section scripts {
+@section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }

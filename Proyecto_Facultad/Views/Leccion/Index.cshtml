@@ -1,4 +1,4 @@
-@model List<Leccion>
+@model List<Proyecto_Facultad.Models.Leccion>
 
 <div class="container-fluid pt-4">
     @if (TempData["SuccessMessage"] != null)
@@ -19,7 +19,7 @@
         </div>
         <div class="col-6 text-end">
             <a asp-controller="Leccion" asp-action="Create" class="btn btn-primary">
-                <i class="bi bi-plus-circle"></i> Agregar Leccion
+                <i class="bi bi-plus-circle"></i> Agregar Lección
             </a>
         </div>
     </div>
@@ -28,9 +28,7 @@
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    
-                    <!-- Trae solo los campos necesarios, no todos-->
-                    <th>Nombre Leccion</th>
+                    <th>Nombre Lección</th>
                     <th>Libro</th>
                 </tr>
             </thead>
@@ -39,14 +37,13 @@
                 {
                     <tr>
                         <td>@obj.Descripcion</td>
-                        <td>@obj.IdLibro</td>
+                        <td>@obj.IdLibroNavigation.NombreLibro</td> <!-- Muestra el nombre del libro -->
                         <td>
                             <div class="btn-group w-100" role="group">
                                 <a asp-controller="Leccion" asp-action="Edit" asp-route-id="@obj.IdLeccion" class="btn btn-primary flex-grow-1">
                                     <i class="bi bi-pencil-fill"></i> Editar
                                 </a>
                             </div>
-
                         </td>
                     </tr>
                 }
@@ -54,4 +51,3 @@
         </table>
     </div>
 </div>
-

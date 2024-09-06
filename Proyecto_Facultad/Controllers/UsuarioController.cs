@@ -18,11 +18,14 @@ namespace Proyecto_Facultad.Controllers
         {
             _context = context;
         }
-
         // GET: usuario
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Usuarios.ToListAsync());
+            var usuarios = await _context.Usuarios
+            .Include(u => u.IdRolNavigation) // Incluye la información del rol
+            .ToListAsync();
+
+            return View(usuarios);
         }
 
         // GET: usuario/Details/5
@@ -43,16 +46,18 @@ namespace Proyecto_Facultad.Controllers
             return View(usuario);
         }
 
-        // GET: usuario/Create
+        // GET: Usuario/Create
         public IActionResult Create()
         {
+            // Cargar la lista de roles para el dropdown
+            ViewBag.Roles = new SelectList(_context.Rols, "IdRol", "NombreRol");
             return View();
         }
 
-        // POST: usuario/Create
+        // POST: Usuario/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("NombreUsuario, ContrasenaUsuario, IdRol,EstadoUsuario")] Usuario usuario)
+        public async Task<IActionResult> Create([Bind("NombreUsuario, ContrasenaUsuario, IdRol, EstadoUsuario")] Usuario usuario)
         {
             if (ModelState.IsValid)
             {
@@ -67,10 +72,11 @@ namespace Proyecto_Facultad.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            ViewBag.Roles = new SelectList(_context.Rols, "IdRol", "NombreRol", usuario.IdRol);
             return View(usuario);
         }
 
-        // GET: usuario/Edit/5
+        // GET: Usuario/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -78,11 +84,17 @@ namespace Proyecto_Facultad.Controllers
                 return NotFound();
             }
 
-            var usuario = await _context.Usuarios.FindAsync(id);
+            var usuario = await _context.Usuarios
+                .Include(u => u.IdRolNavigation)
+                .FirstOrDefaultAsync(m => m.IdUsuario == id);
+
             if (usuario == null)
             {
                 return NotFound();
             }
+
+            // Cargar la lista de roles para el dropdown
+            ViewBag.Roles = new SelectList(_context.Rols, "IdRol", "NombreRol", usuario.IdRol);
             return View(usuario);
         }
 
@@ -128,6 +140,8 @@ namespace Proyecto_Facultad.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.Roles = new SelectList(_context.Rols, "IdRol", "NombreRol", usuario.IdRol);
             return View(usuario);
         }
     }
