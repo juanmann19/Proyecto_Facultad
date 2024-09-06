@@ -159,7 +159,7 @@ namespace Proyecto_Facultad.Controllers
                 {
                     _context.Leccions.Remove(leccion);
                     await _context.SaveChangesAsync();
-                    TempData["SuccessMessage"] = "Lecci�n eliminada correctamente";
+                    TempData["SuccessMessage"] = "Lección eliminada correctamente";
                 }
             }
             catch (Exception)
