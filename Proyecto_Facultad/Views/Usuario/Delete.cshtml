@@ -1,26 +1,24 @@
-@model Proyecto_Facultad.Models.Usuario
+@model Proyecto_Facultad.Models.Nivel
 
 <div class="container">
-    <h3>¿Está seguro de que desea eliminar este usuario?</h3>
-    <div>
-        <dl class="row">
-            <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.NombreUsuario)
-            </dt>
-            <dd class="col-sm-9">
-                @Html.DisplayFor(model => model.NombreUsuario)
-            </dd>
-            <dt class="col-sm-3">
-                @Html.DisplayNameFor(model => model.IdRol)
-            </dt>
-            <dd class="col-sm-9">
-                @Html.DisplayFor(model => model.IdRol)
-            </dd>
-        </dl>
-        <form asp-action="DeleteConfirmed" method="post">
-            <input type="hidden" asp-for="IdUsuario" />
-            <button type="submit" class="btn btn-danger">Eliminar</button>
-            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
-        </form>
-    </div>
+    <h2 class="text-primary">Eliminar Usuario</h2>
+    <form id="UsuarioForm" asp-action="Delete" method="post">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="NombreNivel" class="form-label"></label>
+                <input asp-for="NombreNivel" class="form-control" />
+                <span asp-validation-for="NombreNivel" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group d-flex">
+            <button type="submit" class="btn btn-primary flex-fill me-2">Eliminar</button>
+            <a asp-action="Index" class="btn btn-danger flex-fill">Cancelar</a>
+        </div>
+    </form>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+}

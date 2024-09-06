@@ -33,11 +33,11 @@
                 <tr>
                     <th>Fecha de Inicio</th>
                     <th>Fecha de Fin</th>
-                    <th>Estado de la Mesa</th>
+                    <th>Estado de la mesa</th>
                     <th>Horario</th>
                     <th>Dia de la semana</th>
                     <th>Nombre de la Sede</th>
-                    @* <th>Acciones</th> *@
+                    <th>Acciones</th> 
                 </tr>
             </thead>
             <tbody>
@@ -47,7 +47,7 @@
                     <tr>
                         <td>@obj.FechaInicio</td>
                         <td>@obj.FechaFin</td>
-                        <td>@obj.EstadoMesa</td>
+                        <td>@(obj.EstadoMesa ? "Activo" : "Inactivo")</td>
                         <td>@obj.IdJornadaNavigation?.Horario</td>
                         <td>@obj.IdJornadaNavigation?.DiaSemana</td>
                         <td>@obj.NombreSedeNavigation?.NombreSede</td>

@@ -129,6 +129,46 @@ namespace Proyecto_Facultad.Controllers
         private bool LeccionExists(int id)
         {
             return _context.Leccions.Any(e => e.IdLeccion == id);
+        }        // GET: Leccion/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var leccion = await _context.Leccions
+                .FirstOrDefaultAsync(m => m.IdLeccion == id);
+            if (leccion == null)
+            {
+                return NotFound();
+            }
+
+            return View(leccion);
+        }
+
+        // POST: Leccion/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            try
+            {
+                var leccion = await _context.Leccions.FindAsync(id);
+                if (leccion != null)
+                {
+                    _context.Leccions.Remove(leccion);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Lecci�n eliminada correctamente";
+                }
+            }
+            catch (Exception)
+            {
+                TempData["ErrorMessage"] = "Se produjo un error al eliminar la lecci�n.";
+            }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
+

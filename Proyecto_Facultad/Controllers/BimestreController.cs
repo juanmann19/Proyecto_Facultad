@@ -116,6 +116,45 @@ public async Task<IActionResult> Edit(int id, [Bind("IdBimestre,NombreBimestre")
     return View(bimestre);
 }
 
+        // GET: Bimestre/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+            var bimestre = await _context.Bimestres
+                .FirstOrDefaultAsync(m => m.IdBimestre == id);
+            if (bimestre == null)
+            {
+                return NotFound();
+            }
+
+            return View(bimestre);
+        }
+
+        // POST: Bimestre/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            try
+            {
+                var bimestre = await _context.Bimestres.FindAsync(id);
+                if (bimestre != null)
+                {
+                    _context.Bimestres.Remove(bimestre);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Dato eliminado correctamente";
+                }
+            }
+            catch (Exception)
+            {
+                TempData["ErrorMessage"] = "Se produjo un error al eliminar los datos.";
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

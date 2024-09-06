@@ -91,7 +91,7 @@ namespace Proyecto_Facultad.Controllers
                 {
                     if (!NivelExists(nivel.IdNivel))
                     {
-                        TempData["ErrorMessage"] = "Nivel no existe.";
+                        TempData["ErrorMessage"] = "El nivel no existe.";
                         return NotFound();
                     }
                     else
@@ -104,6 +104,51 @@ namespace Proyecto_Facultad.Controllers
             }
             TempData["ErrorMessage"] = "Error al actualizar el nivel.";
             return View(nivel);
+        }
+        // GET: Nivels/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                TempData["ErrorMessage"] = "ID no válido.";
+                return NotFound();
+            }
+
+            var nivel = await _context.Nivels
+                .FirstOrDefaultAsync(m => m.IdNivel == id);
+            if (nivel == null)
+            {
+                TempData["ErrorMessage"] = "Nivel no encontrado.";
+                return NotFound();
+            }
+
+            return View(nivel);
+        }
+
+        // POST: Nivels/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var nivel = await _context.Nivels.FindAsync(id);
+            if (nivel == null)
+            {
+                TempData["ErrorMessage"] = "Nivel no encontrado.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            try
+            {
+                _context.Nivels.Remove(nivel);
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Nivel eliminado exitosamente.";
+            }
+            catch (DbUpdateException ex)
+            {
+                TempData["ErrorMessage"] = $"Error al eliminar el nivel: {ex.Message}";
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
         private bool NivelExists(int id)

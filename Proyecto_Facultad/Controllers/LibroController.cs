@@ -115,7 +115,45 @@ public async Task<IActionResult> Edit(int id, [Bind("IdLibro,NombreLibro")] Libr
     }
     return View(libro);
 }
+        // GET: Libro/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+            var libro = await _context.Libros
+                .FirstOrDefaultAsync(m => m.IdLibro == id);
+            if (libro == null)
+            {
+                return NotFound();
+            }
 
+            return View(libro);
+        }
+
+        // POST: Libro/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            try
+            {
+                var libro = await _context.Libros.FindAsync(id);
+                if (libro != null)
+                {
+                    _context.Libros.Remove(libro);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Libro eliminado correctamente";
+                }
+            }
+            catch (Exception)
+            {
+                TempData["ErrorMessage"] = "Se produjo un error al eliminar el libro.";
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
