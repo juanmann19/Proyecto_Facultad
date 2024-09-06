@@ -1,0 +1,40 @@
+@model IEnumerable<Proyecto_Facultad.Models.AvanceMesa>
+
+@{
+    ViewData["Title"] = "Reporte Avance Mesa";
+}
+
+<h1>Reporte Avance Mesa</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id Mesa</th>
+            <th>Nombre Nivel</th>
+            <th>Nombre Bimestre</th>
+            <th>Nombre Libro</th>
+            <th>Descripción Lección</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.IdMesaNavigation?.IdMesa</td>
+                    <td>@item.IdNivelNavigation?.NombreNivel</td>
+                    <td>@item.IdBimestreNavigation?.NombreBimestre</td>
+                    <td>@item.IdLibroNavigation?.NombreLibro</td>
+                    <td>@item.IdLeccionNavigation?.Descripcion</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5">No hay datos disponibles</td>
+            </tr>
+        }
+    </tbody>
+</table>
