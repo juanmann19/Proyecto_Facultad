@@ -1,14 +1,14 @@
 ﻿@model Proyecto_Facultad.ViewModels.ReporteAlumnosGraduadosViewModel
 
-<h2>Reporte de Alumnos Graduados</h2>
+<h2>Reporte de Alumnos Graduados - Nivel 2</h2>
 
 <table class="table table-bordered">
     <thead>
         <tr class="table-primary">
             <th>Nombre Completo</th>
             <th>Teléfono</th>
-            <th>Nota Obtenida</th>
             <th>Nivel</th>
+            <th>Nota Obtenida</th>
         </tr>
     </thead>
     <tbody>
@@ -17,8 +17,8 @@
             <tr>
                 <td>@alumno.NombreCompleto</td>
                 <td>@alumno.Telefono</td>
-                <td>@alumno.NotaObtenida</td>
                 <td>@alumno.Nivel</td>
+                <td>@alumno.NotaObtenida</td>
             </tr>
         }
     </tbody>

@@ -173,8 +173,18 @@
                                         <li><a class="dropdown-item" asp-area="" asp-controller="ReporteAvanceMesa" asp-action="FiltrarPorNivel">Por Nivel</a></li>
                                     </ul>
                                 </li>
+
+                                <li class="dropdown-submenu">
+                                    <a class="dropdown-item dropdown-toggle" href="#">Alumnos Graduados</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Alumno" asp-action="ReporteGraduados">Nivel 1</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Alumno" asp-action="ReporteGraduadosNivel2">Nivel 2</a></li>
+                                    </ul>
+                                </li>
+
+
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Alumno" asp-action="ReporteAlumnosInscritos">Alumnos Inscritos</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Alumno" asp-action="ReporteGraduados">Alumnos Inscritos</a></li>
+
                             </ul>
                         </li>
 

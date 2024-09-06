@@ -222,14 +222,58 @@ namespace Proyecto_Facultad.Controllers
 
         public IActionResult ReporteGraduados()
         {
-            // Filtrar las asignaciones que tienen una nota mayor a 80 y bimestre = 4
-            var alumnosGraduados = _context.Notas
-                .Where(n => n.NotaObtenida > 80 && n.IdBimestre == 4)
-                .Select(n => n.IdAsignacionalumnosNavigation.IdAlumnoNavigation)
-                .Select(a => new AlumnoReporteViewModel
+            // Obtener alumnos graduados en mesas de Nivel 1
+            var alumnosGraduadosNivel1 = _context.Notas
+                .Where(n => n.IdBimestre == 4 && n.NotaObtenida > 80) // Condiciones de bimestre y nota
+                .Select(nota => new
                 {
-                    NombreCompleto = $"{a.PrimerNombreAlumno} {a.SegundoNombreAlumno} {a.PrimerApellidoAlumno} {a.SegundoApellidoAlumno}",
-                    Telefono = a.Telefono
+                    Asignacion = nota.IdAsignacionalumnosNavigation, // Acceder a AsignacionAlumno
+                    Alumno = nota.IdAsignacionalumnosNavigation.IdAlumnoNavigation, // Acceder al Alumno a través de AsignacionAlumno
+                    Mesa = nota.IdAsignacionalumnosNavigation.IdMesaNavigation, // Acceder a Mesa a través de AsignacionAlumno
+                    NotaObtenida = nota.NotaObtenida, // Obtener la nota
+                    AvanceMesa = nota.IdAsignacionalumnosNavigation.IdMesaNavigation.AvanceMesas
+                        .Where(am => am.IdMesa == nota.IdAsignacionalumnosNavigation.IdMesa && am.IdNivel == 1) // Condición de Nivel 1
+                        .FirstOrDefault() // Obtener el primer avance de mesa de Nivel 1
+                })
+                .Where(x => x.AvanceMesa != null) // Asegurarse de que haya un AvanceMesa en Nivel 1
+                .Select(x => new AlumnoReporteViewModel
+                {
+                    NombreCompleto = $"{x.Alumno.PrimerNombreAlumno} {x.Alumno.SegundoNombreAlumno} {x.Alumno.PrimerApellidoAlumno} {x.Alumno.SegundoApellidoAlumno}",
+                    Telefono = x.Alumno.Telefono,
+                    NotaObtenida = x.NotaObtenida,
+                    Nivel = x.AvanceMesa.IdNivelNavigation.NombreNivel // Acceder al nombre del nivel desde la navegación
+                })
+                .ToList();
+
+            // Pasar los datos a la vista
+            var viewModel = new ReporteAlumnosGraduadosViewModel
+            {
+                AlumnosGraduados = alumnosGraduadosNivel1
+            };
+
+            return View(viewModel);
+        }
+
+        public IActionResult ReporteGraduadosNivel2()
+        {
+            var alumnosGraduados = _context.Notas
+                .Where(n => n.IdBimestre == 4 && n.NotaObtenida > 80) // Condición de bimestre y nota
+                .Select(nota => new
+                {
+                    Asignacion = nota.IdAsignacionalumnosNavigation,
+                    Alumno = nota.IdAsignacionalumnosNavigation.IdAlumnoNavigation,
+                    Mesa = nota.IdAsignacionalumnosNavigation.IdMesaNavigation,
+                    NotaObtenida = nota.NotaObtenida,
+                    AvanceMesa = nota.IdAsignacionalumnosNavigation.IdMesaNavigation.AvanceMesas
+                        .FirstOrDefault(am => am.IdNivel == 2) // Solo alumnos del Nivel 2
+                })
+                .Where(x => x.AvanceMesa != null) // Asegurarse de que el AvanceMesa existe
+                .Select(x => new AlumnoReporteViewModel
+                {
+                    NombreCompleto = $"{x.Alumno.PrimerNombreAlumno} {x.Alumno.SegundoNombreAlumno} {x.Alumno.PrimerApellidoAlumno} {x.Alumno.SegundoApellidoAlumno}",
+                    Telefono = x.Alumno.Telefono,
+                    NotaObtenida = x.NotaObtenida,
+                    Nivel = x.AvanceMesa.IdNivelNavigation.NombreNivel // Mostrar el nivel real (que será 2)
                 })
                 .ToList();
 
@@ -238,7 +282,10 @@ namespace Proyecto_Facultad.Controllers
                 AlumnosGraduados = alumnosGraduados
             };
 
-            return View(viewModel);
+            return View("ReporteGraduadosNivel2", viewModel); // Especifica la vista aparte
         }
+
+
+
     }
 }
