@@ -212,5 +212,11 @@ namespace Proyecto_Facultad.Controllers
         {
             return _context.Alumnos.Any(e => e.IdAlumno == id);
         }
+
+        public async Task<IActionResult> ReporteAlumnosInscritos()
+        {
+            return View(await _context.Alumnos.Where(a => a.EstatusAlumno).
+                ToListAsync());
+        }
     }
 }

@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Proyecto_Facultad.Models.Alumno>
+
+@{
+    ViewData["Title"] = "Reporte de Alumnos Inscritos";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre Completo</th>
+            <th>Codigo Frater</th>
+            <th>Teléfono</th>
+            <th>Dirección</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var alumno in Model)
+        {
+            <tr>
+                <td>@($"{alumno.PrimerNombreAlumno} {alumno.SegundoNombreAlumno} {alumno.OtrosNombresAlumno} {alumno.PrimerApellidoAlumno} {alumno.SegundoApellidoAlumno} {alumno.ApellidoCasado}")</td>
+                <td>@alumno.CodigoFrater</td>
+                <td>@alumno.Telefono</td>
+                <td>@alumno.Direccion</td>
+            </tr>
+        }
+    </tbody>
+</table>
