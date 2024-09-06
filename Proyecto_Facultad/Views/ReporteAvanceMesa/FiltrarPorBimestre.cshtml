@@ -1,0 +1,88 @@
+@model IEnumerable<Proyecto_Facultad.Models.AvanceMesa>
+
+@{
+    ViewData["Title"] = "Reporte Avance por Bimestre";
+}
+
+<h1>Reporte Avance por Bimestre</h1>
+
+<!-- Filtro por Bimestre -->
+<form method="get" asp-action="FiltrarPorBimestre">
+    <div class="form-group">
+        <label for="bimestre">Seleccionar Bimestre:</label>
+        <select id="bimestre" name="bimestreId" class="form-control">
+            <option value="">Todos los bimestres</option>
+            @foreach (var bimestre in ViewBag.Bimestres as List<SelectListItem>)
+            {
+                <option value="@bimestre.Value">@bimestre.Text</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Filtrar</button>
+</form>
+
+<!-- Tabla de Datos -->
+<table class="table mt-4">
+    <thead>
+        <tr>
+            <th>Id Mesa</th>
+            <th>Nombre Nivel</th>
+            <th>Nombre Bimestre</th>
+            <th>Nombre Libro</th>
+            <th>Descripción Lección</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.IdMesaNavigation?.IdMesa</td>
+                    <td>@item.IdNivelNavigation?.NombreNivel</td>
+                    <td>@item.IdBimestreNavigation?.NombreBimestre</td>
+                    <td>@item.IdLibroNavigation?.NombreLibro</td>
+                    <td>@item.IdLeccionNavigation?.Descripcion</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5">No hay datos disponibles</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Gráfica de Datos -->
+<div class="mt-4">
+    <canvas id="bimestreChart"></canvas>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('bimestreChart').getContext('2d');
+        var bimestreChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.Select(m => m.IdBimestreNavigation.NombreBimestre).Distinct())),
+                datasets: [{
+                    label: 'Número de Avances',
+                    data: @Html.Raw(Json.Serialize(Model.GroupBy(m => m.IdBimestreNavigation.NombreBimestre).Select(g => g.Count()))),
+                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+}

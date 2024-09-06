@@ -30,7 +30,7 @@ public partial class AvanceMesa
     [DisplayName("Mesa")]
     [Required(ErrorMessage = "La Mesa es Obligatoria")]
     public int IdMesa { get; set; }
-
+    
     public virtual Bimestre IdBimestreNavigation { get; set; }
 
     public virtual Leccion IdLeccionNavigation { get; set; }

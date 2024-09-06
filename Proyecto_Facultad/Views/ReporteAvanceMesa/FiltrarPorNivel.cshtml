@@ -1,0 +1,88 @@
+@model IEnumerable<Proyecto_Facultad.Models.AvanceMesa>
+
+@{
+    ViewData["Title"] = "Reporte Avance por Nivel";
+}
+
+<h1>Reporte Avance por Nivel</h1>
+
+<!-- Filtro por Nivel -->
+<form method="get" asp-action="FiltrarPorNivel">
+    <div class="form-group">
+        <label for="nivel">Seleccionar Nivel:</label>
+        <select id="nivel" name="nivelId" class="form-control">
+            <option value="">Todos los niveles</option>
+            @foreach (var nivel in ViewBag.Niveles as List<SelectListItem>)
+            {
+                <option value="@nivel.Value">@nivel.Text</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Filtrar</button>
+</form>
+
+<!-- Tabla de Datos -->
+<table class="table mt-4">
+    <thead>
+        <tr>
+            <th>Id Mesa</th>
+            <th>Nombre Nivel</th>
+            <th>Nombre Bimestre</th>
+            <th>Nombre Libro</th>
+            <th>Descripción Lección</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.IdMesaNavigation?.IdMesa</td>
+                    <td>@item.IdNivelNavigation?.NombreNivel</td>
+                    <td>@item.IdBimestreNavigation?.NombreBimestre</td>
+                    <td>@item.IdLibroNavigation?.NombreLibro</td>
+                    <td>@item.IdLeccionNavigation?.Descripcion</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5">No hay datos disponibles</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Gráfica de Datos -->
+<div class="mt-4">
+    <canvas id="nivelChart"></canvas>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('nivelChart').getContext('2d');
+        var nivelChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.Select(m => m.IdNivelNavigation.NombreNivel).Distinct())),
+                datasets: [{
+                    label: 'Número de Avances',
+                    data: @Html.Raw(Json.Serialize(Model.GroupBy(m => m.IdNivelNavigation.NombreNivel).Select(g => g.Count()))),
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+}
