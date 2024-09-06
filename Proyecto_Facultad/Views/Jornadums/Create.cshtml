@@ -20,7 +20,9 @@
                     <option value="7:00am">7:00am</option>
                     <option value="9:00am">9:00am</option>
                     <option value="11:00am">11:00am</option>
+                    <option value="6:00pm">6:00pm</option>
                 </select>
+                <span asp-validation-for="Horario" class="text-danger"></span>
             </div>
         </div>
 
@@ -40,24 +42,4 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script>
-        document.getElementById('diaSemanaInput').addEventListener('input', function () {
-            var diaSemana = this.value.trim().toLowerCase();
-            var horarioSelect = document.getElementById('horarioSelect');
-            horarioSelect.innerHTML = ''; // Limpiar las opciones actuales
-
-            if (diaSemana === 'sábado' || diaSemana === 'sabado') {
-                // Si es sábado, solo permitir la opción de las 6:00 PM
-                horarioSelect.innerHTML = '<option value="6:00pm">6:00pm</option>';
-            } else {
-                // Si no es sábado, restaurar las opciones originales
-                horarioSelect.innerHTML = `
-                            <option value="">Seleccione horario</option>
-                            <option value="7:00am">7:00am</option>
-                            <option value="9:00am">9:00am</option>
-                            <option value="11:00am">11:00am</option>
-                                `;
-            }
-        });
-    </script>
 }

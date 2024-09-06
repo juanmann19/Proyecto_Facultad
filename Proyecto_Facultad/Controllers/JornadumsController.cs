@@ -121,9 +121,9 @@ namespace Proyecto_Facultad.Controllers
             TempData["ErrorMessage"] = "Error al actualizar la jornada.";
             ViewData["IdSede"] = new SelectList(_context.Sedes, "IdSede", "NombreSede", jornadum.IdSede);
             return View(jornadum);
-        }
+        } 
 
-        private bool JornadumExists(int id)
+            private bool JornadumExists(int id)
         {
             return _context.Jornada.Any(e => e.IdJornada == id);
         }

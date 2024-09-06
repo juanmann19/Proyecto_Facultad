@@ -1,33 +1,32 @@
 ﻿@model Proyecto_Facultad.Models.Capacitacion
 
-@{
-    ViewData["Title"] = "Delete";
-}
+<div class="container">
+    <h2 class="text-primary">Eliminar Capacitación</h2>
 
-<h1>Delete</h1>
+    <form asp-action="Delete" method="post">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="FechaCapacitacion" class="form-label"></label>
+                <input asp-for="FechaCapacitacion" class="form-control" />
+                <span asp-validation-for="FechaCapacitacion" class="text-danger"></span>
+            </div>
+        </div>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Capacitacion</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaCapacitacion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaCapacitacion)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdStaffNavigation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdStaffNavigation.NivelAprobado)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="IdCapacitacion" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="IdStaff" class="form-label"></label>
+                <select asp-for="IdStaff" class="form-control" asp-items="ViewBag.IdStaff"></select>
+            </div>
+        </div>
+
+        <div class="form-group d-flex">
+            <button type="submit" class="btn btn-primary flex-fill me-2">Eliminar</button>
+            <a asp-action="Index" class="btn btn-danger flex-fill">Cancelar</a>
+        </div>
     </form>
 </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

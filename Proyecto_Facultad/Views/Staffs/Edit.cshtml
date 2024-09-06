@@ -108,6 +108,8 @@
                     <option value="">Seleccione</option>
                     <option value="Soltero" selected="@Model.EstadoCivil == " Soltero"">Soltero</option>
                     <option value="Casado" selected="@Model.EstadoCivil == " Casado"">Casado</option>
+                    <option value="Divorciado" selected="@Model.EstadoCivil == " Divorciado"">Divorciado</option>
+                    <option value="Viudo" selected="@Model.EstadoCivil == " Viudo">Viudo</option>
                 </select>
                 <span asp-validation-for="EstadoCivil" class="text-danger"></span>
             </div>
@@ -127,13 +129,27 @@
 
     <div class="form-group">
         <label asp-for="NumeroCelula" class="form-label"></label>
-        <input asp-for="NumeroCelula" class="form-control" />
+        <select asp-for="NumeroCelula" class="form-control">
+            <option value="">Seleccione</option>
+            <option value="Mujeres(Solteras o Casadas)">Mujeres(Solteras o Casadas)</option>
+            <option value="Familiares(Familia y Todo el que Necesita Familia)">Familiares(Familia y Todo el que Necesita Familia)</option>
+            <option value="Jovenes Frater (15 a 23 Años)">Jovenes Frater(15 a 23 Años)</option>
+            <option value="Jovenes Adultos Frater (23 Años en adelante)">Jovenes Adultos Frater(23 Años en Adelante)</option>
+            <option value="Matrimonios Jovenes (0 a 15 Años Casados)">Matrimonios Jovenes (0 a 15 Años Casados)</option>
+            <option value="Matrimonios Frater (15 + Años Casados)">Matrimonios Frater(15 + Años casados)</option>
+            <option value="RDI (Hombres Solteros o Casados)">RDI(Hombres Solteros o Casados)</option>
+        </select>
         <span asp-validation-for="NumeroCelula" class="text-danger"></span>
     </div>
 
     <div class="form-group">
         <label asp-for="NivelAprobado" class="form-label"></label>
-        <input asp-for="NivelAprobado" class="form-control" />
+        <select asp-for="NivelAprobado" class="form-control">
+            <option value="">Seleccione</option>
+            <option value="Primer Nivel">Primer Nivel</option>
+            <option value="Segundo Nivel">Segundo Nivel</option>
+            <option value="Tercer Nivel">Tercer Nivel</option>
+        </select>
         <span asp-validation-for="NivelAprobado" class="text-danger"></span>
     </div>
 
