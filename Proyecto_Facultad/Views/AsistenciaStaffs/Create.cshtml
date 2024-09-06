@@ -16,8 +16,11 @@
 
         <div class="row mb-3">
             <div class="col-md-6">
-                <label asp-for="IdStaff" class="form-label"></label>
-                <select asp-for="IdStaff" class="form-control" asp-items="ViewBag.IdStaff"></select>
+               @*  <label asp-for="IdStaff" class="form-label"></label>
+                <select asp-for="IdStaff" class="form-control" asp-items="ViewBag.IdStaff"></select> *@
+                <label class="control-label">Nombre Maestro</label>
+                <input type="text" class="form-control" value="@ViewData["NombreMaestro"]" readonly />
+
             </div>
         </div>
 

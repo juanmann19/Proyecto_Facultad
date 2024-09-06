@@ -50,12 +50,43 @@ namespace Proyecto_Facultad.Controllers
         // GET: AsistenciaStaffs/Create
         public IActionResult Create()
         {
-            ViewData["IdBimestre"] = new SelectList(_context.Bimestres, "IdBimestre", "NombreBimestre");
+            // Hardcodear el ID del staff
+            int idStaff = 2; // Cambia este valor según el staff que desees filtrar
+
+            // Obtén las mesas asignadas a este staff
+            //var mesasAsignadas = _context.AsignacionMaestros
+            //    .Where(am => am.IdStaff == idStaff)
+            //    .Select(am => am.IdMesaNavigation)
+            //    .ToList();
+
+
+            var staff = _context.Staff
+                .Where(s => s.IdStaff == idStaff)
+                .FirstOrDefault();
+
+            var mesasAsignadas = _context.AsignacionMaestros
+                .Where(am => am.IdStaff == idStaff)
+                .Select(am => new
+                {
+                    am.IdMesa,
+                    MesaDescripcion = $"{am.IdMesaNavigation.IdMesa} - {am.IdMesaNavigation.NombreSedeNavigation.NombreSede} - {am.IdMesaNavigation.IdJornadaNavigation.DiaSemana} {am.IdMesaNavigation.IdJornadaNavigation.Horario}"
+                })
+                .ToList();
+
+            ViewData["NombreMaestro"] = $"{staff.PrimerNombreStaff} {staff.PrimerApellidoStaff}";
+
+
+            // Crear un SelectList con las mesas asignadas
+            ViewData["IdMesa"] = new SelectList(mesasAsignadas, "IdMesa", "MesaDescripcion");
+
+            // Obtener otros datos necesarios para el formulario
+            //ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "PrimerNombreStaff");
             ViewData["IdLeccion"] = new SelectList(_context.Leccions, "IdLeccion", "Descripcion");
-            ViewData["IdMesa"] = new SelectList(_context.Mesas, "IdMesa", "IdMesa");
-            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "PrimerNombreStaff");
+            ViewData["IdBimestre"] = new SelectList(_context.Bimestres, "IdBimestre", "NombreBimestre");
+
             return View();
         }
+
 
         // POST: AsistenciaStaffs/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
