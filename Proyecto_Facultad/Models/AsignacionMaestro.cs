@@ -14,4 +14,26 @@ public partial class AsignacionMaestro
     public virtual Mesa IdMesaNavigation { get; set; }
 
     public virtual Staff IdStaffNavigation { get; set; }
+
+    public string NombreCompletoMaestro
+    {
+        get
+        {
+        
+            return IdStaffNavigation != null ? $"{IdStaffNavigation.PrimerNombreStaff} {IdStaffNavigation.PrimerApellidoStaff}" : "Desconocido";
+        }
+    }
+
+    public string Mesa
+    {
+        get
+        {
+            if (IdMesaNavigation != null)
+            {
+                // Asumiendo que IdMesaNavigation tiene una propiedad llamada Jornada
+                return $"{IdMesaNavigation.IdMesa} - {IdMesaNavigation.IdJornada}";
+            }
+            return "Desconocida";
+        }
+    }
 }
