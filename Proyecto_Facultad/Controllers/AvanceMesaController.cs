@@ -90,6 +90,7 @@ namespace Proyecto_Facultad.Controllers
         }
 
         // GET: AvanceMesa/Edit/5
+        // GET: AvanceMesa/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -102,15 +103,32 @@ namespace Proyecto_Facultad.Controllers
             {
                 return NotFound();
             }
-            // Inicializa ViewBag para la vista Edit
-            ViewBag.Bimestres = new SelectList(await _context.Bimestres.ToListAsync(), "IdBimestre", "NombreBimestre", avanceMesa.IdBimestre);
-            ViewBag.Lecciones = new SelectList(await _context.Leccions.ToListAsync(), "IdLeccion", "Descripcion", avanceMesa.IdLeccion);
-            ViewBag.Libros = new SelectList(await _context.Libros.ToListAsync(), "IdLibro", "NombreLibro", avanceMesa.IdLibro);
-            ViewBag.Mesas = new SelectList(await _context.Mesas.ToListAsync(), "IdMesa", "IdMesa", avanceMesa.IdMesa);
-            ViewBag.Niveles = new SelectList(await _context.Nivels.ToListAsync(), "IdNivel", "NombreNivel", avanceMesa.IdNivel);
+
+            // Verifica los datos que se están cargando
+            var bimestres = await _context.Bimestres.ToListAsync();
+            var leccions = await _context.Leccions.ToListAsync();
+            var libros = await _context.Libros.ToListAsync();
+            var mesas = await _context.Mesas.ToListAsync();
+            var nivels = await _context.Nivels.ToListAsync();
+
+            // Agrega datos de depuración (puedes usar un logger o simplemente inspeccionar el contenido en la vista)
+            System.Diagnostics.Debug.WriteLine($"Bimestres count: {bimestres.Count}");
+            System.Diagnostics.Debug.WriteLine($"Leccions count: {leccions.Count}");
+            System.Diagnostics.Debug.WriteLine($"Libros count: {libros.Count}");
+            System.Diagnostics.Debug.WriteLine($"Mesas count: {mesas.Count}");
+            System.Diagnostics.Debug.WriteLine($"Nivels count: {nivels.Count}");
+
+            // Inicializa ViewData para la vista Edit
+            ViewData["IdBimestre"] = new SelectList(bimestres, "IdBimestre", "NombreBimestre", avanceMesa.IdBimestre);
+            ViewData["IdLeccion"] = new SelectList(leccions, "IdLeccion", "Descripcion", avanceMesa.IdLeccion);
+            ViewData["IdLibro"] = new SelectList(libros, "IdLibro", "NombreLibro", avanceMesa.IdLibro);
+            ViewData["IdMesa"] = new SelectList(mesas, "IdMesa", "IdMesa", avanceMesa.IdMesa);
+            ViewData["IdNivel"] = new SelectList(nivels, "IdNivel", "NombreNivel", avanceMesa.IdNivel);
+
 
             return View(avanceMesa);
         }
+
 
         // POST: AvanceMesa/Edit/5
         [HttpPost]
@@ -145,11 +163,12 @@ namespace Proyecto_Facultad.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["IdBimestre"] = new SelectList(_context.Bimestres, "IdBimestre", "NombreBimestre", avanceMesa.IdBimestre);
-            ViewData["IdLeccion"] = new SelectList(_context.Leccions, "IdLeccion", "Descripcion", avanceMesa.IdLeccion);
-            ViewData["IdLibro"] = new SelectList(_context.Libros, "IdLibro", "NombreLibro", avanceMesa.IdLibro);
-            ViewData["IdMesa"] = new SelectList(_context.Mesas, "IdMesa", "IdMesa", avanceMesa.IdMesa);
-            ViewData["IdNivel"] = new SelectList(_context.Nivels, "IdNivel", "NombreNivel", avanceMesa.IdNivel);
+            // Re-cargar los datos para los SelectList
+            ViewData["IdBimestre"] = new SelectList(await _context.Bimestres.ToListAsync(), "IdBimestre", "NombreBimestre", avanceMesa.IdBimestre);
+            ViewData["IdLeccion"] = new SelectList(await _context.Leccions.ToListAsync(), "IdLeccion", "Descripcion", avanceMesa.IdLeccion);
+            ViewData["IdLibro"] = new SelectList(await _context.Libros.ToListAsync(), "IdLibro", "NombreLibro", avanceMesa.IdLibro);
+            ViewData["IdMesa"] = new SelectList(await _context.Mesas.ToListAsync(), "IdMesa", "IdMesa", avanceMesa.IdMesa);
+            ViewData["IdNivel"] = new SelectList(await _context.Nivels.ToListAsync(), "IdNivel", "NombreNivel", avanceMesa.IdNivel);
 
             return View(avanceMesa);
         }
