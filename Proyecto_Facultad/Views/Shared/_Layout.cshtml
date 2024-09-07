@@ -151,7 +151,7 @@
                             <ul class="dropdown-menu" aria-labelledby="mesasDropdown">
                                 <li><a class="dropdown-item" asp-area="" asp-controller="AsignacionAlumno"
                                         asp-action="Index">Asignar alumno a mesa</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="AsignacionStaffs"
+                                <li><a class="dropdown-item" asp-area="" asp-controller="AsignacionMaestroes"
                                         asp-action="Index">Asignar personal a mesa</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="AvanceMesa"
                                         asp-action="Index">Avance Mesa</a></li>
@@ -172,8 +172,16 @@
                                         <li><a class="dropdown-item" asp-area="" asp-controller="ReporteAvanceMesa" asp-action="FiltrarPorBimestre">Por Bimestre</a></li>
                                         <li><a class="dropdown-item" asp-area="" asp-controller="ReporteAvanceMesa" asp-action="FiltrarPorNivel">Por Nivel</a></li>
                                     </ul>
+                                 </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Alumno" asp-action="BautizadosPorMes">Alumnos Bautizados</a>
                                 </li>
-
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Capacitacion" asp-action="Reporte">Capacitaciones recibidas</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-area="" asp-controller="AsignacionMaestroes" asp-action="Reporte">Maestros sin asignación</a>
+                                </li>
                                 <li class="dropdown-submenu">
                                     <a class="dropdown-item dropdown-toggle" href="#">Alumnos Graduados</a>
                                     <ul class="dropdown-menu">

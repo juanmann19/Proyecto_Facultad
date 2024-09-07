@@ -9,7 +9,7 @@ public partial class Capacitacion
     public int IdCapacitacion { get; set; }
 
     [DisplayName("Fecha de Capacitacion")]
-    public DateOnly FechaCapacitacion { get; set; }
+    public DateTime FechaCapacitacion { get; set; }
 
     [DisplayName("Nombre del Maestro")]
     public int IdStaff { get; set; }

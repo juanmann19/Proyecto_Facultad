@@ -1,4 +1,4 @@
-﻿@model Proyecto_Facultad.Models.AsignacionAlumno
+﻿@model Proyecto_Facultad.Models.AsignacionMaestro
 
 @{
     ViewData["Title"] = "Create";
@@ -6,15 +6,15 @@
 
 <h1>Create</h1>
 
-<h4>Asignacion Alumno a una mesa</h4>
+<h4>Asignar maestro a una mesa</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div class="form-group">
-                <label asp-for="IdAlumno" class="control-label"></label>
-                <select asp-for="IdAlumno" asp-items="ViewBag.IdAlumno" class="form-control"></select>
-                <span asp-validation-for="IdAlumno" class="text-danger"></span>
+                <label asp-for="IdStaff" class="control-label"></label>
+                <select asp-for="IdStaff" asp-items="ViewBag.IdStaff" class="form-control"></select>
+                <span asp-validation-for="IdStaff" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="IdMesa" class="control-label"></label>
@@ -29,7 +29,7 @@
 </div>
 
 <div>
-    <a asp-action="Index" asp-controller="leccion" class="btn btn-danger flex-fill">Cancelar</a>
+    <a asp-action="Index" asp-controller="AsignacionMaestroes" class="btn btn-danger flex-fill">Cancelar</a>
 </div>
 
 @section Scripts {
@@ -37,3 +37,4 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+

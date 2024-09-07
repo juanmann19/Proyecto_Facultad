@@ -284,7 +284,21 @@ namespace Proyecto_Facultad.Controllers
 
             return View("ReporteGraduadosNivel2", viewModel); // Especifica la vista aparte
         }
+        public async Task<IActionResult> BautizadosPorMes()
+        {
+            var alumnosBautizados = await _context.Alumnos
+                .Where(a => a.FechaBautizoAlumno.HasValue) // Asegúrate de filtrar por alumnos que tienen fecha de bautizo
+                .GroupBy(a => new { a.FechaBautizoAlumno.Value.Year, a.FechaBautizoAlumno.Value.Month }) // Agrupar por año y mes
+                .Select(g => new AlumnoBautizadoPorMesViewModel
+                {
+                    Anio = g.Key.Year,
+                    Mes = g.Key.Month,
+                    Cantidad = g.Count()
+                })
+                .ToListAsync();
 
+            return View(alumnosBautizados);
+        }
 
 
     }

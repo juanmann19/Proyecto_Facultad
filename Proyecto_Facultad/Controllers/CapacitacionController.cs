@@ -21,6 +21,7 @@ namespace Proyecto_Facultad.Controllers
         // GET: Capacitacion
         public async Task<IActionResult> Index()
         {
+            // Incluye la navegación a Staff
             var bdfflContext = _context.Capacitacions.Include(c => c.IdStaffNavigation);
             return View(await bdfflContext.ToListAsync());
         }
@@ -52,21 +53,25 @@ namespace Proyecto_Facultad.Controllers
         }
 
         // POST: Capacitacion/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdCapacitacion,FechaCapacitacion,IdStaff")] Capacitacion capacitacion)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(capacitacion);
-                await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Dato cargado correctamente";
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    _context.Add(capacitacion);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Dato cargado correctamente";
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    TempData["ErrorMessage"] = "Se produjo un error al guardar los datos.";
+                }
             }
             ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "PrimerNombreStaff", capacitacion.IdStaff);
-            TempData["ErrorMessage"] = "Se produjo un error al guardar los datos.";
             return View(capacitacion);
         }
 
@@ -88,8 +93,6 @@ namespace Proyecto_Facultad.Controllers
         }
 
         // POST: Capacitacion/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IdCapacitacion,FechaCapacitacion,IdStaff")] Capacitacion capacitacion)
@@ -106,6 +109,7 @@ namespace Proyecto_Facultad.Controllers
                     _context.Update(capacitacion);
                     await _context.SaveChangesAsync();
                     TempData["SuccessMessage"] = "Datos actualizados correctamente";
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -119,7 +123,6 @@ namespace Proyecto_Facultad.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
             ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "PrimerNombreStaff", capacitacion.IdStaff);
             return View(capacitacion);
@@ -153,11 +156,125 @@ namespace Proyecto_Facultad.Controllers
             if (capacitacion != null)
             {
                 _context.Capacitacions.Remove(capacitacion);
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Capacitación eliminada correctamente.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Se produjo un error al intentar eliminar la capacitación.";
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+        // Acción para el reporte de capacitaciones
+        public async Task<IActionResult> Reporte(string nombreStaff, DateTime? fechaInicio, DateTime? fechaFin)
+        {
+            var capacitacionesQuery = _context.Capacitacions
+                .Include(c => c.IdStaffNavigation)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(nombreStaff))
+            {
+                capacitacionesQuery = capacitacionesQuery
+                    .Where(c => EF.Functions.Like(c.IdStaffNavigation.PrimerNombreStaff, $"%{nombreStaff}%"));
+            }
+
+            if (fechaInicio.HasValue)
+            {
+                capacitacionesQuery = capacitacionesQuery.Where(c => c.FechaCapacitacion >= fechaInicio.Value);
+            }
+
+            if (fechaFin.HasValue)
+            {
+                capacitacionesQuery = capacitacionesQuery.Where(c => c.FechaCapacitacion <= fechaFin.Value);
+            }
+
+            var capacitaciones = await capacitacionesQuery.ToListAsync();
+
+            // Agrupar por mes
+            var capacitacionesPorMes = capacitaciones
+                .GroupBy(c => c.FechaCapacitacion.Month)
+                .Select(g => new
+                {
+                    Mes = g.Key,
+                    Total = g.Count()
+                })
+                .ToList();
+
+            // Obtener los nombres de los maestros asociados
+            var capacitacionesConNombresPorMes = capacitaciones
+                .GroupBy(c => c.FechaCapacitacion.Month)
+                .Select(g => new
+                {
+                    NombresMaestros = g.Select(c => c.IdStaffNavigation.PrimerNombreStaff).Distinct().ToList()
+                })
+                .ToList();
+
+            // Pasar los datos a la vista usando ViewBag
+            ViewBag.NombreStaff = nombreStaff;
+            ViewBag.FechaInicio = fechaInicio;
+            ViewBag.FechaFin = fechaFin;
+            ViewBag.CapacitacionesPorMes = capacitacionesPorMes;
+            ViewBag.CapacitacionesConNombresPorMes = capacitacionesConNombresPorMes;
+
+            return View();
+        }
+
+        //public async Task<IActionResult> Reporte(string nombreStaff, DateTime? fechaInicio, DateTime? fechaFin)
+        //{
+        //    // Filtrar capacitaciones basadas en los parámetros de búsqueda
+        //    var capacitacionesQuery = _context.Capacitacions
+        //        .Include(c => c.IdStaffNavigation)
+        //        .AsQueryable();
+
+        //    if (!string.IsNullOrEmpty(nombreStaff))
+        //    {
+        //        capacitacionesQuery = capacitacionesQuery
+        //            .Where(c => c.IdStaffNavigation.PrimerNombreStaff.Contains(nombreStaff, StringComparison.OrdinalIgnoreCase));
+        //    }
+
+        //    if (fechaInicio.HasValue)
+        //    {
+        //        capacitacionesQuery = capacitacionesQuery.Where(c => c.FechaCapacitacion >= fechaInicio.Value);
+        //    }
+
+        //    if (fechaFin.HasValue)
+        //    {
+        //        capacitacionesQuery = capacitacionesQuery.Where(c => c.FechaCapacitacion <= fechaFin.Value);
+        //    }
+
+
+        //    var capacitaciones = await capacitacionesQuery.ToListAsync();
+
+        //    // Agrupar por mes
+        //    var capacitacionesPorMes = capacitaciones
+        //        .GroupBy(c => c.FechaCapacitacion.Month)
+        //        .Select(g => new
+        //        {
+        //            Mes = g.Key,
+        //            Total = g.Count()
+        //        })
+        //        .ToList();
+
+        //    // Obtener los nombres de los maestros asociados
+        //    var capacitacionesConNombresPorMes = capacitaciones
+        //        .GroupBy(c => c.FechaCapacitacion.Month)
+        //        .Select(g => new
+        //        {
+        //            NombresMaestros = g.Select(c => c.IdStaffNavigation.PrimerNombreStaff).Distinct().ToList()
+        //        })
+        //        .ToList();
+
+        //    // Pasar los datos a la vista usando ViewBag
+        //    ViewBag.NombreStaff = nombreStaff;
+        //    ViewBag.FechaInicio = fechaInicio;
+        //    ViewBag.FechaFin = fechaFin;
+        //    ViewBag.CapacitacionesPorMes = capacitacionesPorMes;
+        //    ViewBag.CapacitacionesConNombresPorMes = capacitacionesConNombresPorMes;
+
+        //    return View();
+        //}
 
         private bool CapacitacionExists(int id)
         {
@@ -165,3 +282,4 @@ namespace Proyecto_Facultad.Controllers
         }
     }
 }
+

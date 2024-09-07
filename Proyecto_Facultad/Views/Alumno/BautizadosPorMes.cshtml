@@ -1,0 +1,96 @@
+﻿@model IEnumerable<Proyecto_Facultad.ViewModels.AlumnoBautizadoPorMesViewModel>
+
+@{
+    ViewData["Title"] = "Alumnos Bautizados por Mes";
+    var meses = new List<string> { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
+    var resultadosBusqueda = ViewBag.ResultadosBusqueda as List<Proyecto_Facultad.Models.Alumno>;
+}
+
+<h2 class="text-primary">Alumnos Bautizados por Mes</h2>
+<br />
+<br />
+
+<!-- Formulario de búsqueda -->
+<form method="get" class="mb-4">
+    <div class="row">
+        <div class="col-md-4">
+            <label for="nombre" class="form-label">Buscar por Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" value="@Context.Request.Query["nombre"]" placeholder="Nombre del alumno">
+        </div>
+        <div class="col-md-3">
+            <label for="fechaInicio" class="form-label">Fecha de Inicio</label>
+            <input type="date" class="form-control" id="fechaInicio" name="fechaInicio" value="@Context.Request.Query["fechaInicio"]">
+        </div>
+        <div class="col-md-3">
+            <label for="fechaFin" class="form-label">Fecha de Fin</label>
+            <input type="date" class="form-control" id="fechaFin" name="fechaFin" value="@Context.Request.Query["fechaFin"]">
+        </div>
+        <div class="col-md-2 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary me-2">Buscar</button>
+            <a href="@Url.Action("BautizadosPorMes")" class="btn btn-secondary">Limpiar</a>
+        </div>
+    </div>
+</form>
+
+<canvas id="bautizadosChart" width="250" height="100"></canvas>
+
+<!-- Mostrar resultados de la búsqueda -->
+@if (resultadosBusqueda != null && resultadosBusqueda.Any())
+{
+    <h3 class="text-primary mt-4">Resultados de la Búsqueda</h3>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre Completo</th>
+                    <th>Fecha de Bautizo</th>
+                    <th>Género</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var alumno in resultadosBusqueda)
+                {
+                    <tr>
+                        <td>@($"{alumno.PrimerNombreAlumno} {alumno.SegundoNombreAlumno} {alumno.PrimerApellidoAlumno} {alumno.SegundoApellidoAlumno}")</td>
+                        <td>@(alumno.FechaBautizoAlumno.HasValue ? alumno.FechaBautizoAlumno.Value.ToShortDateString() : "N/A")</td>
+                        <td>@alumno.Genero</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('bautizadosChart').getContext('2d');
+        var bautizadosData = @Html.Raw(Json.Serialize(Model.Select(m => m.Cantidad)));
+        var bautizadosMeses = @Html.Raw(Json.Serialize(Model.Select(m => m.Mes).Select(m => meses[m - 1])));
+        var bautizadosChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: bautizadosMeses,
+                datasets: [{
+                    label: 'Alumnos Bautizados',
+                    data: bautizadosData,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            precision: 0
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+}
+
