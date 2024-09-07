@@ -1,0 +1,81 @@
+﻿@model Proyecto_Facultad.Models.ReporteMaestrosViewModel
+
+<div class="container-fluid pt-4">
+    <!-- Mensajes de éxito o error -->
+    <div class="row mb-3">
+        <div class="col-6">
+            <h2 class="text-primary">Reporte de Maestros</h2>
+        </div>
+    </div>
+
+    <!-- Barra de búsqueda -->
+    <div class="row mb-3">
+        <div class="col">
+            <form asp-action="Reporte" method="get" class="d-flex align-items-center">
+                <div class="input-group" style="max-width: 600px;">
+                    <input type="text" name="searchTerm" value="@Model.SearchTerm" class="form-control" placeholder="Buscar por nombre" />
+                    <button type="submit" class="btn btn-primary ms-2">Buscar</button>
+                    <a asp-action="Reporte" class="btn btn-secondary ms-2" role="button">Limpiar búsqueda</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Gráfico de barras -->
+    <div class="row mb-3">
+        <div class="col">
+            <canvas id="maestrosChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Tabla de maestros no asignados -->
+    <div class="row">
+        <div class="col">
+            <h4>Maestros</h4>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Nombre Completo</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var maestro in Model.MaestrosNoAsignados)
+                    {
+                        <tr>
+                            <td>@maestro.NombreCompleto</td>
+                            <td>@(maestro.EstaAsignado ? "Asignado" : "No asignado")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var ctx = document.getElementById('maestrosChart').getContext('2d');
+        var maestrosChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Maestros Asignados', 'Maestros Disponibles'],
+                datasets: [{
+                    label: 'Número de Maestros',
+                    data: [@Model.MaestrosAsignados, @Model.MaestrosDisponibles],
+                    backgroundColor: ['rgba(54, 162, 235, 0.2)', 'rgba(255, 99, 132, 0.2)'],
+                    borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+}
+

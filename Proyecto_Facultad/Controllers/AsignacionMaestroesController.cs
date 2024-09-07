@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_Facultad.Models;
+using Proyecto_Facultad.ViewModels;
 
 namespace Proyecto_Facultad.Controllers
 {
@@ -18,6 +19,41 @@ namespace Proyecto_Facultad.Controllers
             _context = context;
         }
 
+        // Acción para mostrar el reporte
+        public async Task<IActionResult> Reporte(string searchTerm)
+        {
+            var maestros = await _context.Staff
+                .Include(s => s.AsignacionMaestros)
+                .Select(s => new MaestroInfo
+                {
+                    IdStaff = s.IdStaff,
+                    NombreCompleto = $"{s.PrimerNombreStaff} {s.PrimerApellidoStaff}",
+                    EstaAsignado = s.AsignacionMaestros.Any()
+                })
+                .ToListAsync();
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                maestros = maestros
+                    .Where(m => m.NombreCompleto.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+            }
+            // Para el estado "Asignado" o "No asignado"
+            foreach (var maestro in maestros)
+            {
+                maestro.EstaAsignado = _context.AsignacionMaestros.Any(a => a.IdStaff == maestro.IdStaff);
+            }
+
+            var modelo = new ReporteMaestrosViewModel
+            {
+                MaestrosAsignados = maestros.Count(m => m.EstaAsignado),
+                MaestrosDisponibles = maestros.Count(m => !m.EstaAsignado),
+                MaestrosNoAsignados = maestros.Where(m => !m.EstaAsignado).ToList(),
+                SearchTerm = searchTerm
+            };
+
+            return View(modelo);
+        }
         // GET: AsignacionMaestroes
         public async Task<IActionResult> Index()
         {
