@@ -36,7 +36,7 @@
                     <th>Nombre</th>
                     <th>Apellido</th>
                     <th>Ausencia</th>
-                    @*<th>Acciones</th>*@
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -52,9 +52,9 @@
                         <td>@item.Ausencia</td>
                         <td>
                             <div class="btn-group w-100" role="group">
-                                <!---a asp-action="Edit" asp-route-id="@item.IdAsistenciaStaff" class="btn btn-primary w-100"--->
+                                <a asp-action="Edit" asp-route-id="@item.IdAsistenciaStaff" class="btn btn-primary w-100">
                                     <i class="bi bi-pencil-fill"></i> Editar
-                                <!---a-->
+                                </a>
                             </div>
                         </td>
                     </tr>
