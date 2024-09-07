@@ -73,7 +73,7 @@ namespace Proyecto_Facultad.Controllers
                 })
                 .ToList();
 
-           //iewData["NombreMaestro"] = $"{staff.PrimerNombreStaff} {staff.PrimerApellidoStaff}";
+            ViewData["NombreMaestro"] = $"{staff.PrimerNombreStaff} {staff.PrimerApellidoStaff}";
 
 
             // Crear un SelectList con las mesas asignadas
