@@ -1,0 +1,105 @@
+﻿@model IEnumerable<Proyecto_Facultad.Models.Capacitacion>
+
+@{
+    ViewData["Title"] = "Reporte de Capacitaciones por Mes";
+    var meses = new List<string> { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
+
+    var nombreStaff = ViewBag.NombreStaff as string;
+    var fechaInicio = ViewBag.FechaInicio as DateTime?;
+    var fechaFin = ViewBag.FechaFin as DateTime?;
+    var capacitacionesPorMes = ViewBag.CapacitacionesPorMes as IEnumerable<dynamic>;
+    var capacitacionesConNombresPorMes = ViewBag.CapacitacionesConNombresPorMes as IEnumerable<dynamic>;
+}
+
+<h2 class="text-primary">Reporte de Capacitaciones por Mes</h2>
+<br />
+<br />
+
+<form method="get" class="mb-4">
+    <div class="row">
+        <div class="col-md-4">
+            <label for="nombreStaff" class="form-label">Buscar por Nombre del Maestro</label>
+            <input type="text" class="form-control" id="nombreStaff" name="nombreStaff" value="@nombreStaff" placeholder="Nombre del maestro">
+        </div>
+        <div class="col-md-3">
+            <label for="fechaInicio" class="form-label">Fecha de Inicio</label>
+            <input type="date" class="form-control" id="fechaInicio" name="fechaInicio" value="@fechaInicio?.ToString("yyyy-MM-dd")">
+        </div>
+        <div class="col-md-3">
+            <label for="fechaFin" class="form-label">Fecha de Fin</label>
+            <input type="date" class="form-control" id="fechaFin" name="fechaFin" value="@fechaFin?.ToString("yyyy-MM-dd")">
+        </div>
+        <div class="col-md-2 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary me-2">Buscar</button>
+            <a href="@Url.Action("Reporte", "Capacitacion")" class="btn btn-secondary">Limpiar</a>
+        </div>
+    </div>
+</form>
+
+<canvas id="capacitacionesChart" width="250" height="100"></canvas>
+
+@if (capacitacionesPorMes != null && capacitacionesPorMes.Any())
+{
+    <h3 class="text-primary mt-4">Resultados de la Búsqueda</h3>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Nombres de los Maestros</th>
+                    <th>Mes</th>
+                    <th>Total de Capacitaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < capacitacionesPorMes.Count(); i++)
+                {
+                    var item = capacitacionesPorMes.ElementAt(i);
+                    var nombres = capacitacionesConNombresPorMes.ElementAt(i).NombresMaestros;
+
+                    <tr>
+                        <td>@string.Join(", ", nombres)</td>
+                        <td>@meses[item.Mes - 1]</td>
+                        <td>@item.Total</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@section Scripts
+{
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function  () {
+            var ctx = document.getElementById('capacitacionesChart').getContext('2d');
+            var meses = @Html.Raw(Json.Serialize(capacitacionesPorMes.Select(m => @meses[m.Mes - 1])));
+            var totales = @Html.Raw(Json.Serialize(capacitacionesPorMes.Select(m => m.Total)));
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: meses,
+                    datasets: [{
+                        label: 'Total de Capacitaciones por Mes',
+                        data: totales,
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+}
