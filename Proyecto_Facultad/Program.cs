@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_Facultad.Models;
 using System.Globalization;
@@ -9,6 +12,9 @@ var builder = WebApplication.CreateBuilder(args);
 //CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
 //CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<BdfflContext>()
+    .AddDefaultTokenProviders();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -21,7 +27,17 @@ builder.Services.AddDbContext<BdfflContext>(options =>
 
     );
 
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Cuentas/Login"; // Ruta para la página de inicio de sesión
+        options.AccessDeniedPath = "/Cuentas/AccessDenied"; // Página de acceso denegado
+    });
+
+
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -37,6 +53,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+app.UseAuthentication();    
 
 app.MapControllerRoute(
     name: "default",

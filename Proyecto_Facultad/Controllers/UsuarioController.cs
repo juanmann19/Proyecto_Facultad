@@ -61,21 +61,18 @@ namespace Proyecto_Facultad.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Hashear la contraseña antes de guardar el usuario
-                var (hash, salt) = PasswordHasher.HashPassword(usuario.ContrasenaUsuario);
-                usuario.ContrasenaUsuario = hash;
-                usuario.ContrasenaUsuario = salt;
+                // Usar el método SetPassword del modelo Usuario para hashear la contraseña
+                usuario.SetPassword(usuario.ContrasenaUsuario);
 
                 _context.Add(usuario);
                 await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Datos cargado correctamente";
+                TempData["SuccessMessage"] = "Usuario creado correctamente";
                 return RedirectToAction(nameof(Index));
             }
 
             ViewBag.Roles = new SelectList(_context.Rols, "IdRol", "NombreRol", usuario.IdRol);
             return View(usuario);
         }
-
         // GET: Usuario/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {

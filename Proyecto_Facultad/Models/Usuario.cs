@@ -32,12 +32,18 @@ public partial class Usuario
     public void SetPassword(string password)
     {
         var (hash, salt) = PasswordHasher.HashPassword(password);
-        ContrasenaUsuario = hash;
-        ContrasenaUsuario = salt;
+        ContrasenaUsuario = $"{hash}:{salt}";
     }
 
     public bool VerifyPassword(string password)
     {
-        return PasswordHasher.VerifyPassword(password, ContrasenaUsuario, ContrasenaUsuario);
+        var parts = ContrasenaUsuario.Split(':');
+        if (parts.Length != 2) return false;
+
+        var storedHash = parts[0];
+        var storedSalt = parts[1];
+
+        return PasswordHasher.VerifyPassword(password, storedHash, storedSalt);
     }
+
 }
