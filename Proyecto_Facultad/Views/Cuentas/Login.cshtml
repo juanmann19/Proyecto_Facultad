@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Proyecto_Facultad.Models.Usuario
+
+@{
     Layout = null;
     ViewData["Title"] = "Login";
 }
@@ -8,21 +10,26 @@
 <form method="post" asp-action="Login">
     <div>
         <label for="nombreUsuario">Nombre de Usuario</label>
-        <input type="text" id="nombreUsuario" name="nombreUsuario" />
+        <input type="text" id="nombreUsuario" name="nombreUsuario" class="form-control" />
+        <span asp-validation-for="NombreUsuario" class="text-danger"></span> <!-- Campo vinculado al modelo -->
     </div>
     <div>
-        <label for="contrasena">Contraseña</label>
-        <input type="password" id="contrasena" name="contrasena" />
+        <label for="contrasenaUsuario">Contraseña</label>
+        <input type="password" id="contrasenaUsuario" name="contrasenaUsuario" class="form-control" />
+        <span asp-validation-for="ContrasenaUsuario" class="text-danger"></span> <!-- Campo vinculado al modelo -->
     </div>
-    <button type="submit">Login</button>
-
+    <button type="submit" class="btn btn-primary">Login</button>
 </form>
-@if (!ViewData.ModelState.IsValid)
-{
-    <div class="text-danger">
-        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-        {
-            <p>@error.ErrorMessage</p>
-        }
-    </div>
+
+<div class="text-danger">
+    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+    {
+        <p>@error.ErrorMessage</p>
+    }
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

@@ -13,9 +13,6 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.AccessDeniedPath = "/Cuentas/AccessDenied"; // Página de acceso denegado
     });
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<BdfflContext>()
-    .AddDefaultTokenProviders();
 
 // Configurar las opciones de las cookies de Identity para usar las rutas personalizadas
 builder.Services.ConfigureApplicationCookie(options =>
@@ -30,7 +27,9 @@ builder.Services.AddControllersWithViews();
 DotNetEnv.Env.Load();
 
 builder.Services.AddDbContext<BdfflContext>(options =>
-    options.UseSqlServer(Environment.GetEnvironmentVariable("SQL_STRING"))
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+
+    //options.UseSqlServer(Environment.GetEnvironmentVariable("SQL_STRING"))
 );
 
 var app = builder.Build();
