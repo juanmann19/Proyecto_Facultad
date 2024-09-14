@@ -3,9 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using Proyecto_Facultad.Models;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Proyecto_Facultad.Controllers
 {
+    [Authorize (Roles = "Coordinador, Auxiliar, Maestro")]
     public class MesaDetalleController : Controller
     {
         private readonly BdfflContext _context;

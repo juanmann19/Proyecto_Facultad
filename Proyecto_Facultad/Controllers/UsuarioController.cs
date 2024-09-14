@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_Facultad.Models;
 using Proyecto_Facultad.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Proyecto_Facultad.Controllers
 {
+    [Authorize (Roles = "Coordinador")]
     public class UsuarioController : Controller
     {
         private readonly BdfflContext _context;

@@ -22,6 +22,13 @@ namespace Proyecto_Facultad.Controllers
             return View();
         }
 
+        
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Login(string nombreUsuario, string contrasenaUsuario)
         {

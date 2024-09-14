@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_Facultad.Models;
+using Microsoft.AspNetCore.Authorization;
 using Proyecto_Facultad.ViewModels;
 
 namespace Proyecto_Facultad.Controllers
 {
+    [Authorize (Roles = "Coordinador")]
     public class AsignacionMaestroesController : Controller
     {
         private readonly BdfflContext _context;

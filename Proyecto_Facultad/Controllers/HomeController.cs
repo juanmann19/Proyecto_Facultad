@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace Proyecto_Facultad.Controllers
 {
-    [Authorize]
+    
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -20,8 +20,10 @@ namespace Proyecto_Facultad.Controllers
             return View();
         }
 
+        
         public IActionResult Privacy()
         {
+            
             return View();
         }
 

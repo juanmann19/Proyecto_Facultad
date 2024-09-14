@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using Proyecto_Facultad.Models;
 
 namespace Proyecto_Facultad.Controllers
 {
+    [Authorize (Roles = "Maestro, Auxiliar")]
     public class AsistenciaStaffsController : Controller
     {
         private readonly BdfflContext _context;

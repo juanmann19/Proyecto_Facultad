@@ -11,7 +11,8 @@ using Proyecto_Facultad.ViewModels;
 
 namespace Proyecto_Facultad.Controllers
 {
-    [Authorize]
+    
+    [Authorize (Roles = "Coordinador")]
     public class AlumnoController : Controller
     {
         private readonly BdfflContext _context;
