@@ -94,16 +94,23 @@
                     </td>
                     <td>@staff.IdUsuarioNavigation?.NombreUsuario</td> <!-- Asumiendo que el modelo Usuario tiene una propiedad NombreUsuario -->
                     <td>
-                            <div class="btn-group w-100" role="group">
-                                <a asp-controller="Staffs" asp-action="Edit" asp-route-id="@staff.IdStaff" class="btn btn-primary flex-grow-1">
-                                    <i class="bi bi-pencil-fill"></i> Editar
+                            <div class="d-grid gap-2">
+                                <a asp-controller="Staffs" asp-action="Edit" asp-route-id="@staff.IdStaff" class="btn btn-primary d-flex justify-content-center align-items-center">
+                                    <i class="bi bi-pencil-fill me-2"></i> Editar
                                 </a>
-                                <form asp-action="Deactivate" method="post" class="flex-grow-1">
-                                    <button type="submit" asp-controller="Staffs" asp-action="Deactivate" asp-route-id="@staff.IdStaff" class="btn btn-danger w-100">
-                                        <i class="bi bi-trash-fill"></i> Activar/Desactivar
+                                <form asp-action="Deactivate" method="post" >
+                                    <button type="submit" asp-controller="Staffs" asp-action="Deactivate" asp-route-id="@staff.IdStaff" class="btn btn-danger d-flex justify-content-center align-items-center">
+                                        <i class="bi bi-trash-fill me-2"></i> Activar/Desactivar
                                     </button>
                                 </form>
                             </div>
+
+
+
+
+
+
+
                     </td>
                 </tr>
             }

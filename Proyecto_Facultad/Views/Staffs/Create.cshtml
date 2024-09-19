@@ -137,11 +137,11 @@
             <option value="">Seleccione</option>
             <option value="Mujeres">Mujeres(Solteras o Casadas)</option>
             <option value="Familiares">Familiares(Familia y Todo el que Necesita Familia)</option>
-            <option value="Jovenes (15 a 23 Años)">Jovenes Frater(15 a 23 Años)</option>
-            <option value="Jovenes Adultos (23 Años en adelante)">Jovenes Adultos Frater(23 Años en Adelante)</option>
-            <option value="Matrimonios Jovenes (0 a 15 Años Casados)">Matrimonios Jovenes(0 a 15 Años Casados)</option>
-            <option value="Matrimonios Frater (15 + Años Casados)">Matrimonios Frater(15 + Años Casados)</option>
-            <option value="RDI (Hombres Solteros o Casados)">RDI(Hombres Solteros o Casados)</option>
+            <option value="Jovenes (15+ Años)">Jovenes Frater(15 a 23 Años)</option>
+            <option value="Jovenes (23+ Años)">Jovenes Adultos Frater(23 Años en Adelante)</option>
+            <option value="Matri (15- Años)">Matrimonios Jovenes(0 a 15 Años Casados)</option>
+            <option value="Matri (15+ Años)">Matrimonios Frater(15 + Años Casados)</option>
+            <option value="RDI">RDI(Hombres Solteros o Casados)</option>
         </select>
         <span asp-validation-for="NumeroCelula" class="text-danger"></span>
     </div>
@@ -163,14 +163,6 @@
         <span asp-validation-for="CodigoFrater" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="EstatusStaff" class="form-label"></label>
-        <div class="form-check">
-            <input asp-for="EstatusStaff" type="checkbox" class="form-check-input" />
-            <label class="form-check-label">Activo</label>
-        </div>
-        <span asp-validation-for="EstatusStaff" class="text-danger"></span>
-    </div>
 
     <div class="form-group">
         <label asp-for="IdUsuario" class="form-label"></label>

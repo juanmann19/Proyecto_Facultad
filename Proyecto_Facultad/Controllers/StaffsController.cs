@@ -80,6 +80,7 @@ namespace Proyecto_Facultad.Controllers
                     }
                     else
                     {
+                        staff.EstatusStaff = true;
                         _context.Add(staff);
                         await _context.SaveChangesAsync();
                         TempData["SuccessMessage"] = "Creado correctamente";
