@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Proyecto_Facultad.Controllers
 {
-    [Authorize (Roles = "Maestro, Auxiliar")]
+    [Authorize (Roles = "Admin, Maestro, Auxiliar")]
     public class AvanceMesaController : Controller
     {
         private readonly BdfflContext _context;
