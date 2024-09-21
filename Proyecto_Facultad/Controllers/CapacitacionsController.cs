@@ -21,7 +21,7 @@ namespace Proyecto_Facultad.Controllers
         }
 
         // GET: Capacitacions
-        [Authorize (Roles = "Coordinador, Auxiliar")]
+        [Authorize (Roles = "Coordinador, Auxiliar, Admin")]
         public async Task<IActionResult> Index()
         {
             var bdfflContext = _context.Capacitacions.Include(c => c.IdStaffNavigation);
@@ -29,7 +29,7 @@ namespace Proyecto_Facultad.Controllers
         }
 
         // GET: Capacitacions/Details/5
-        [Authorize (Roles = "Coordinador, Auxiliar")]
+        [Authorize (Roles = "Coordinador, Auxiliar, Admin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -49,7 +49,7 @@ namespace Proyecto_Facultad.Controllers
         }
 
         // GET: Capacitacions/Create
-        [Authorize (Roles = "Coordinador, Auxiliar")]
+        [Authorize (Roles = "Coordinador, Auxiliar, Admin")]
         public IActionResult Create()
         {
             ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "NivelAprobado");
@@ -61,7 +61,7 @@ namespace Proyecto_Facultad.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize (Roles = "Coordinador, Auxiliar")]
+        [Authorize (Roles = "Coordinador, Auxiliar, Admin")]
         public async Task<IActionResult> Create([Bind("IdCapacitacion,FechaCapacitacion,IdStaff")] Capacitacion capacitacion)
         {
             if (ModelState.IsValid)
@@ -75,7 +75,7 @@ namespace Proyecto_Facultad.Controllers
         }
 
         // GET: Capacitacions/Edit/5
-        [Authorize (Roles = "Coordinador, Auxiliar")]
+        [Authorize (Roles = "Coordinador, Auxiliar, Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -97,7 +97,7 @@ namespace Proyecto_Facultad.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize (Roles = "Coordinador, Auxiliar")]
+        [Authorize (Roles = "Coordinador, Auxiliar, Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("IdCapacitacion,FechaCapacitacion,IdStaff")] Capacitacion capacitacion)
         {
             if (id != capacitacion.IdCapacitacion)
@@ -130,7 +130,7 @@ namespace Proyecto_Facultad.Controllers
         }
 
         // GET: Capacitacions/Delete/5
-        [Authorize (Roles = "Coordinador, Auxiliar")]
+        [Authorize (Roles = "Coordinador, Auxiliar, Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -152,7 +152,7 @@ namespace Proyecto_Facultad.Controllers
         // POST: Capacitacions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize (Roles = "Coordinador, Auxiliar")]
+        [Authorize (Roles = "Coordinador, Auxiliar, Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var capacitacion = await _context.Capacitacions.FindAsync(id);

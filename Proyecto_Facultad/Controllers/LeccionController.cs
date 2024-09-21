@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Proyecto_Facultad.Controllers
 {
-    [Authorize (Roles = "Coordinador")]
+    [Authorize (Roles = "Coordinador, Admin")]
     public class LeccionController : Controller
     {
         private readonly BdfflContext _context;
