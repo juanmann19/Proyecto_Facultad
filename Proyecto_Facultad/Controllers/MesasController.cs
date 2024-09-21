@@ -30,10 +30,20 @@ namespace Proyecto_Facultad.Controllers
         // GET: Mesas/Create
         public IActionResult Create()
         {
-            ViewData["DiaSemana"] = new SelectList(_context.Jornada, "IdJornada", "DiaSemana");
+            // Crear una lista combinada de Día de la Semana y Horario
+            var jornadaList = _context.Jornada
+                .Select(j => new
+                {
+                    j.IdJornada,
+                    DisplayText = $"{j.DiaSemana} - {j.Horario}"
+                })
+                .ToList();
+
+            ViewData["Jornadas"] = new SelectList(jornadaList, "IdJornada", "DisplayText");
             ViewData["NombreSede"] = new SelectList(_context.Sedes, "IdSede", "NombreSede");
             return View();
         }
+
 
         // POST: Mesas/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -46,11 +56,10 @@ namespace Proyecto_Facultad.Controllers
             {
                 _context.Add(mesa);
                 await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Mesa creada con exito.";
+                TempData["SuccessMessage"] = "Mesa creada con éxito.";
                 return RedirectToAction(nameof(Index));
             }
             TempData["ErrorMessage"] = "Se produjo un error al guardar los datos.";
-            return View(mesa);
 
             // Crear una lista combinada de Día de la Semana y Horario
             var jornadaList = await _context.Jornada
@@ -63,9 +72,9 @@ namespace Proyecto_Facultad.Controllers
 
             ViewData["Jornadas"] = new SelectList(jornadaList, "IdJornada", "DisplayText", mesa.IdJornada);
             ViewData["NombreSede"] = new SelectList(_context.Sedes, "IdSede", "NombreSede", mesa.IdSede);
-
             return View(mesa);
         }
+
 
         // GET: Mesas/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -80,7 +89,17 @@ namespace Proyecto_Facultad.Controllers
             {
                 return NotFound();
             }
-            ViewData["DiaSemana"] = new SelectList(_context.Jornada, "IdJornada", "DiaSemana", mesa.IdJornada);
+
+            // Crear una lista combinada de Día de la Semana y Horario
+            var jornadaList = _context.Jornada
+                .Select(j => new
+                {
+                    j.IdJornada,
+                    DisplayText = $"{j.DiaSemana} - {j.Horario}"
+                })
+                .ToList();
+
+            ViewData["Jornadas"] = new SelectList(jornadaList, "IdJornada", "DisplayText", mesa.IdJornada);
             ViewData["NombreSede"] = new SelectList(_context.Sedes, "IdSede", "NombreSede", mesa.IdSede);
             return View(mesa);
         }
