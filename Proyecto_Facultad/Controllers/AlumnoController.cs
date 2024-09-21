@@ -70,6 +70,7 @@ namespace Proyecto_Facultad.Controllers
 
             if (ModelState.IsValid)
             {
+                alumno.EstatusAlumno = true;
                 _context.Add(alumno);
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Dato cargado correctamente";
