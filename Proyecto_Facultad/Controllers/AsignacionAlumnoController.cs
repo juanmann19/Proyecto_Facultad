@@ -10,7 +10,7 @@ using Proyecto_Facultad.Models;
 
 namespace Proyecto_Facultad.Controllers
 {
-    [Authorize (Roles = "Coordinador")]
+    [Authorize (Roles = "Coordinador, Admin")]
     public class AsignacionAlumnoController : Controller
     {
         private readonly BdfflContext _context;

@@ -11,7 +11,7 @@ using System.Security.Claims;
 
 namespace Proyecto_Facultad.Controllers
 {
-    [Authorize (Roles = "Maestro, Auxiliar")]
+    [Authorize (Roles = "Maestro, Auxiliar, Admin")]
     public class AsistenciaStaffsController : Controller
     {
         private readonly BdfflContext _context;

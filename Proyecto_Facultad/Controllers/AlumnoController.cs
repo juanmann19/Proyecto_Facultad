@@ -12,7 +12,7 @@ using Proyecto_Facultad.ViewModels;
 namespace Proyecto_Facultad.Controllers
 {
     
-    [Authorize (Roles = "Coordinador")]
+    [Authorize (Roles = "Coordinador, Admin")]
     public class AlumnoController : Controller
     {
         private readonly BdfflContext _context;
@@ -70,6 +70,7 @@ namespace Proyecto_Facultad.Controllers
 
             if (ModelState.IsValid)
             {
+                alumno.EstatusAlumno = true;
                 _context.Add(alumno);
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Dato cargado correctamente";

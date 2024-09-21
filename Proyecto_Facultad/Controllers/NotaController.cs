@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace Proyecto_Facultad.Controllers
 {
     
-    [Authorize (Roles = "Maestro")]
+    [Authorize (Roles = "Maestro, Admin")]
     public class NotaController : Controller
     {
         private readonly BdfflContext _context;

@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Proyecto_Facultad.Controllers
 {
-    [Authorize (Roles = "Coordinador")]
+    [Authorize(Roles = "Coordinador, Admin")]
     public class UsuarioController : Controller
     {
         private readonly BdfflContext _context;
@@ -59,12 +59,13 @@ namespace Proyecto_Facultad.Controllers
         // POST: Usuario/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("NombreUsuario, ContrasenaUsuario, IdRol, EstadoUsuario")] Usuario usuario)
+        public async Task<IActionResult> Create([Bind("NombreUsuario, ContrasenaUsuario, IdRol")] Usuario usuario)
         {
             if (ModelState.IsValid)
             {
                 // Usar el método SetPassword del modelo Usuario para hashear la contraseña
                 usuario.SetPassword(usuario.ContrasenaUsuario);
+                usuario.EstadoUsuario = true;
 
                 _context.Add(usuario);
                 await _context.SaveChangesAsync();
@@ -143,5 +144,51 @@ namespace Proyecto_Facultad.Controllers
             ViewBag.Roles = new SelectList(_context.Rols, "IdRol", "NombreRol", usuario.IdRol);
             return View(usuario);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Deactivate(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var usuario = await _context.Usuarios.FindAsync(id);
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+
+            // Cambiar el estado del usuario
+            usuario.EstadoUsuario = !usuario.EstadoUsuario;
+
+            try
+            {
+                _context.Update(usuario);
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = usuario.EstadoUsuario ? "Usuario activado correctamente" : "Usuario desactivado correctamente";
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UsuarioExists(usuario.IdUsuario))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Se produjo un error al cambiar el estado.";
+                    throw;
+                }
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        // Método para verificar si el usuario existe
+        private bool UsuarioExists(int id)
+        {
+            return _context.Usuarios.Any(e => e.IdUsuario == id);
+        }
+
     }
 }

@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Proyecto_Facultad.Controllers
 {
-    [Authorize (Roles = "Maestro, Auxiliar")]
+    [Authorize(Roles = "Maestro, Auxiliar, Admin")]
     public class AvanceMesaController : Controller
     {
         private readonly BdfflContext _context;
@@ -105,11 +105,11 @@ namespace Proyecto_Facultad.Controllers
                 return NotFound();
             }
             // Inicializa ViewBag para la vista Edit
-            ViewBag.Bimestres = new SelectList(await _context.Bimestres.ToListAsync(), "IdBimestre", "NombreBimestre", avanceMesa.IdBimestre);
-            ViewBag.Lecciones = new SelectList(await _context.Leccions.ToListAsync(), "IdLeccion", "Descripcion", avanceMesa.IdLeccion);
-            ViewBag.Libros = new SelectList(await _context.Libros.ToListAsync(), "IdLibro", "NombreLibro", avanceMesa.IdLibro);
-            ViewBag.Mesas = new SelectList(await _context.Mesas.ToListAsync(), "IdMesa", "IdMesa", avanceMesa.IdMesa);
             ViewBag.Niveles = new SelectList(await _context.Nivels.ToListAsync(), "IdNivel", "NombreNivel", avanceMesa.IdNivel);
+            ViewBag.Bimestres = new SelectList(await _context.Bimestres.ToListAsync(), "IdBimestre", "NombreBimestre", avanceMesa.IdBimestre);
+            ViewBag.Libros = new SelectList(await _context.Libros.ToListAsync(), "IdLibro", "NombreLibro", avanceMesa.IdLibro);
+            ViewBag.Lecciones = new SelectList(await _context.Leccions.ToListAsync(), "IdLeccion", "Descripcion", avanceMesa.IdLeccion);
+            ViewBag.Mesas = new SelectList(await _context.Mesas.ToListAsync(), "IdMesa", "IdMesa", avanceMesa.IdMesa);
 
             return View(avanceMesa);
         }
