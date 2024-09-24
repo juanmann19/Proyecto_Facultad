@@ -5,6 +5,7 @@ using System.Diagnostics;
 
 namespace Proyecto_Facultad.Controllers
 {
+    [Authorize]
     
     public class HomeController : Controller
     {
