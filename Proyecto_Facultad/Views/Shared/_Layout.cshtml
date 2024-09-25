@@ -48,10 +48,6 @@
             display: block;
             /* Para mostrar el menú cuando esté activo */
         }
-    </style>
-
-
-    <style> /* Estilo para los submenus */
         .dropdown-submenu {
             position: relative;
         }
@@ -65,9 +61,8 @@
             .dropdown-submenu:hover .dropdown-menu {
                 display: block;
             }
+
     </style>
-
-
 
 
 </head>
@@ -204,10 +199,10 @@
                     </ul>
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home"
-                                asp-action="Privacy">Privacy</a>
+                            <a class="nav-link" asp-area="" asp-controller="Cuentas" asp-action="Logout">Salir</a>
                         </li>
                     </ul>
+
                 </div>
             </div>
         </nav>

@@ -13,12 +13,11 @@
             <!----<span asp-validation-for="IdAsistenciaAlumno" class="text-danger"></span--->
            <!----</div--->
         <!---</div--->
-
         <div class="row mb-3">
             <div class="col-md-6">
-                <label asp-for="IdAsistenciaStaff" class="form-label"></label>
-                <select asp-for="IdAsistenciaStaff" class="form-control" asp-items="ViewBag.IdAsistenciaStaff"></select>
-                <span asp-validation-for="IdAsistenciaStaff" class="text-danger"></span>
+                <label class="control-label">Nombre Maestro</label>
+                <!-- Campo de solo lectura con el nombre del maestro -->
+                <input type="text" class="form-control" value="@ViewData["NombreMaestro"]" readonly />
             </div>
         </div>
 

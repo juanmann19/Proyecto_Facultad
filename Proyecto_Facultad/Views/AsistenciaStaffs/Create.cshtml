@@ -6,19 +6,10 @@
     <form asp-action="Create" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-        <!----<div class="row mb-3"---->
-        <!----  <div class="col-md-6"---->
-                     <!----    <label asp-for="IdAsistenciaStaff" class="form-label"></label---->
-        <!----  <input asp-for="IdAsistenciaStaff" class="form-control" /---->
-        <!---- <span asp-validation-for="IdAsistenciaStaff" class="text-danger"></span---->
-        <!----</div---->
-        <!----</div---->
-
         <div class="row mb-3">
             <div class="col-md-6">
-               @*  <label asp-for="IdStaff" class="form-label"></label>
-                <select asp-for="IdStaff" class="form-control" asp-items="ViewBag.IdStaff"></select> *@
                 <label class="control-label">Nombre Maestro</label>
+                <!-- Campo de solo lectura con el nombre del maestro -->
                 <input type="text" class="form-control" value="@ViewData["NombreMaestro"]" readonly />
 
             </div>
@@ -26,7 +17,7 @@
 
         <div class="row mb-3">
             <div class="col-md-6">
-                <label asp-for="FechaClase" class="form-label"></label>
+                <label asp-for="FechaClase" class="form-label">Fecha de Clase</label>
                 <input asp-for="FechaClase" class="form-control" type="date" />
                 <span asp-validation-for="FechaClase" class="text-danger"></span>
             </div>
@@ -34,28 +25,29 @@
 
         <div class="row mb-3">
             <div class="col-md-6">
-                <label asp-for="IdMesa" class="form-label"></label>
+                <label asp-for="IdMesa" class="form-label">Mesa</label>
+                <!-- Mostrar solo las mesas asignadas al maestro -->
                 <select asp-for="IdMesa" class="form-control" asp-items="ViewBag.IdMesa"></select>
             </div>
         </div>
 
         <div class="row mb-3">
             <div class="col-md-6">
-                <label asp-for="IdLeccion" class="form-label"></label>
+                <label asp-for="IdLeccion" class="form-label">Lección</label>
                 <select asp-for="IdLeccion" class="form-control" asp-items="ViewBag.IdLeccion"></select>
             </div>
         </div>
 
         <div class="row mb-3">
             <div class="col-md-6">
-                <label asp-for="IdBimestre" class="form-label"></label>
+                <label asp-for="IdBimestre" class="form-label">Bimestre</label>
                 <select asp-for="IdBimestre" class="form-control" asp-items="ViewBag.IdBimestre"></select>
             </div>
         </div>
 
         <div class="row mb-3">
             <div class="col-md-6">
-                <label asp-for="Ausencia" class="form-label"></label>
+                <label asp-for="Ausencia" class="form-label">Ausencia</label>
                 <input asp-for="Ausencia" class="form-control" />
                 <span asp-validation-for="Ausencia" class="text-danger"></span>
             </div>
@@ -63,12 +55,9 @@
 
         <div class="form-group d-flex">
             <button type="submit" class="btn btn-primary flex-fill me-2">Guardar</button>
-            <a asp-action="Index" class="btn btn-danger flex-fill me-2">Cancelar</a>
-            <button type="submit" class="btn btn-success flex-fill" onclick="window.location.href='/AsistenciaAlumnoes/Create'">Siguiente</button>
+            <button type="button" class="btn btn-success flex-fill" onclick="window.location.href='/AsistenciaAlumnoes/Create'">Siguiente</button>
+            <a asp-action="Index" class="btn btn-danger flex-fill">Cancelar</a>
         </div>
     </form>
 </div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}

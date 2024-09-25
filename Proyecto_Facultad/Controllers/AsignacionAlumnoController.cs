@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_Facultad.Models;
 
 namespace Proyecto_Facultad.Controllers
 {
+    [Authorize (Roles = "Coordinador, Admin")]
     public class AsignacionAlumnoController : Controller
     {
         private readonly BdfflContext _context;

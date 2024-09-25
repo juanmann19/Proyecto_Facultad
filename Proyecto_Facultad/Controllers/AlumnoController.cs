@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,8 @@ using Proyecto_Facultad.ViewModels;
 
 namespace Proyecto_Facultad.Controllers
 {
+    
+    [Authorize (Roles = "Coordinador, Admin")]
     public class AlumnoController : Controller
     {
         private readonly BdfflContext _context;
@@ -67,6 +70,7 @@ namespace Proyecto_Facultad.Controllers
 
             if (ModelState.IsValid)
             {
+                alumno.EstatusAlumno = true;
                 _context.Add(alumno);
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Dato cargado correctamente";

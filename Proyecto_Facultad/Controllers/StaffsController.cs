@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using Proyecto_Facultad.Models;
 
 namespace Proyecto_Facultad.Controllers
 {
+    [Authorize (Roles = "Coordinador, Admin")]
     public class StaffsController : Controller
     {
         private readonly BdfflContext _context;
@@ -78,6 +80,7 @@ namespace Proyecto_Facultad.Controllers
                     }
                     else
                     {
+                        staff.EstatusStaff = true;
                         _context.Add(staff);
                         await _context.SaveChangesAsync();
                         TempData["SuccessMessage"] = "Creado correctamente";
