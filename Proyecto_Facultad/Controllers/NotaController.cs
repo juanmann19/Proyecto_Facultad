@@ -21,66 +21,81 @@ namespace Proyecto_Facultad.Controllers
         // GET: Nota
         public async Task<IActionResult> Index()
         {
-            var bdfflContext = _context.Notas.Include(n => n.IdAsignacionalumnosNavigation).Include(n => n.IdBimestreNavigation);
+            var bdfflContext = _context.Notas.Include(n => n.IdAsignacionalumnosNavigation).ThenInclude(aa => aa.IdAlumnoNavigation).Include(n => n.IdBimestreNavigation);
             return View(await bdfflContext.ToListAsync());
         }
 
         // GET: Nota/Details/5
-       // public async Task<IActionResult> Details(int? id)
-       //{
-       //   if (id == null)
-       //     {
-       //         return NotFound();
-       //     }
+        // public async Task<IActionResult> Details(int? id)
+        //{
+        //   if (id == null)
+        //     {
+        //         return NotFound();
+        //     }
 
-       //         var nota = await _context.Notas
-       //         .Include(n => n.IdAsignacionalumnosNavigation)
-       //         .Include(n => n.IdBimestreNavigation)
-       //       .FirstOrDefaultAsync(m => m.IdNota == id);
-       //     if (nota == null)
-       //     {
-       //         return NotFound();
-       //     }
+        //         var nota = await _context.Notas
+        //         .Include(n => n.IdAsignacionalumnosNavigation)
+        //         .Include(n => n.IdBimestreNavigation)
+        //       .FirstOrDefaultAsync(m => m.IdNota == id);
+        //     if (nota == null)
+        //     {
+        //         return NotFound();
+        //     }
 
-       //     return View(nota);
-       // }
+        //     return View(nota);
+        // }
 
         // GET: Nota/Create
         public IActionResult Create()
         {
-            // Obtener todas las mesas
-            var mesas = _context.Mesas
-                .Select(m => new
-                {
-                    m.IdMesa,
-                    Descripcion = m.IdMesa.ToString() // Ajusta esto según tu modelo de mesa
-                })
-                .ToList();
-
-            // Obtener todos los alumnos
-            var alumnos = _context.Alumnos
+            // Obtener las asignaciones de alumnos con su nombre completo
+            var asignaciones = _context.AsignacionAlumnos
+                .Include(a => a.IdAlumnoNavigation)  // Incluir la navegación hacia el alumno
                 .Select(a => new
                 {
-                    a.IdAlumno,
-                    NombreCompleto = $"{a.PrimerNombreAlumno} {a.PrimerApellidoAlumno}"
+                    a.IdAsignacionalumnos,  // Utilizar IdAsignacionalumnos como valor
+                    NombreCompleto = $"{a.IdAlumnoNavigation.PrimerNombreAlumno} {a.IdAlumnoNavigation.PrimerApellidoAlumno}"
                 })
                 .ToList();
 
-            // Pasar las mesas y alumnos a la vista
-            ViewBag.IdMesa = new SelectList(mesas, "IdMesa", "Descripcion");
-            ViewBag.IdAlumno = new SelectList(alumnos, "IdAlumno", "NombreCompleto");
+            // Pasar la lista de asignaciones de alumnos a la vista
+            ViewBag.IdAlumno = new SelectList(asignaciones, "IdAsignacionalumnos", "NombreCompleto");
 
-            // Obtener bimestres
+            // Cargar bimestres en el dropdown
             ViewBag.IdBimestre = new SelectList(_context.Bimestres, "IdBimestre", "NombreBimestre");
 
             return View();
         }
         //public IActionResult Create()
         //{
-        //    ViewData["IdAsignacionalumnos"] = new SelectList(_context.AsignacionAlumnos, "IdAsignacionalumnos", "PrimerNombreAlumno");
-        //    ViewData["IdBimestre"] = new SelectList(_context.Bimestres, "IdBimestre", "NombreBimestre");
+        //    // Obtener todas las mesas
+        //    var mesas = _context.Mesas
+        //        .Select(m => new
+        //        {
+        //            m.IdMesa,
+        //            Descripcion = m.IdMesa.ToString() // Ajusta esto según tu modelo de mesa
+        //        })
+        //        .ToList();
+
+        //    // Obtener todos los alumnos
+        //    var alumnos = _context.Alumnos
+        //        .Select(a => new
+        //        {
+        //            a.IdAlumno,
+        //            NombreCompleto = $"{a.PrimerNombreAlumno} {a.PrimerApellidoAlumno}"
+        //        })
+        //        .ToList();
+
+        //    // Pasar las mesas y alumnos a la vista
+        //    ViewBag.IdMesa = new SelectList(mesas, "IdMesa", "Descripcion");
+        //    ViewBag.IdAlumno = new SelectList(alumnos, "IdAlumno", "NombreCompleto");
+
+        //    // Obtener bimestres
+        //    ViewBag.IdBimestre = new SelectList(_context.Bimestres, "IdBimestre", "NombreBimestre");
+
         //    return View();
         //}
+
 
         // POST: Nota/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -91,18 +106,54 @@ namespace Proyecto_Facultad.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(nota);
-                await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Dato cargado correctamente";
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    // Añadir la nueva nota a la base de datos
+                    _context.Add(nota);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Nota asignada correctamente.";
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    // Manejar cualquier error al guardar en la base de datos
+                    TempData["ErrorMessage"] = "Ocurrió un error al guardar los datos: " + ex.Message;
+                }
             }
-            ViewData["IdAsignacionalumnos"] = new SelectList(_context.AsignacionAlumnos, "IdAlumno", "PrimerNombreAlumno", nota.IdAsignacionalumnos);
-            ViewData["IdBimestre"] = new SelectList(_context.Bimestres, "IdBimestre", "NombreBimestre", nota.IdBimestre);
-            TempData["ErrorMessage"] = "Se produjo un error al guardar los datos.";
+
+            // Si la validación falla, recargar los dropdowns
+            var asignaciones = _context.AsignacionAlumnos
+                .Include(a => a.IdAlumnoNavigation)  // Incluir la navegación hacia el alumno
+                .Select(a => new
+                {
+                    a.IdAsignacionalumnos,  // Utilizar IdAsignacionalumnos como valor
+                    NombreCompleto = $"{a.IdAlumnoNavigation.PrimerNombreAlumno} {a.IdAlumnoNavigation.PrimerApellidoAlumno}"
+                })
+                .ToList();
+
+            // Volver a cargar las listas en caso de error
+            ViewBag.IdAlumno = new SelectList(asignaciones, "IdAsignacionalumnos", "NombreCompleto", nota.IdAsignacionalumnos);
+            ViewBag.IdBimestre = new SelectList(_context.Bimestres, "IdBimestre", "NombreBimestre", nota.IdBimestre);
+
             return View(nota);
         }
+        //public async Task<IActionResult> Create([Bind("IdNota,IdAsignacionalumnos,IdBimestre,NotaObtenida")] Nota nota)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(nota);
+        //        await _context.SaveChangesAsync();
+        //        TempData["SuccessMessage"] = "Dato cargado correctamente";
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    ViewData["IdAsignacionalumnos"] = new SelectList(_context.AsignacionAlumnos, "IdAlumno", "PrimerNombreAlumno", nota.IdAsignacionalumnos);
+        //    ViewData["IdBimestre"] = new SelectList(_context.Bimestres, "IdBimestre", "NombreBimestre", nota.IdBimestre);
+        //    TempData["ErrorMessage"] = "Se produjo un error al guardar los datos.";
+        //    return View(nota);
+        //}
 
         // GET: Nota/Edit/5
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -110,15 +161,51 @@ namespace Proyecto_Facultad.Controllers
                 return NotFound();
             }
 
-            var nota = await _context.Notas.FindAsync(id);
+            var nota = await _context.Notas
+                .Include(n => n.IdAsignacionalumnosNavigation)  // Asegúrate de incluir la navegación
+                .ThenInclude(a => a.IdAlumnoNavigation)         // Incluir la navegación hacia Alumno
+                .FirstOrDefaultAsync(n => n.IdNota == id);
+
             if (nota == null)
             {
                 return NotFound();
             }
-            ViewData["IdAsignacionalumnos"] = new SelectList(_context.AsignacionAlumnos, "IdAsignacionalumnos", "IdAsignacionalumnos", nota.IdAsignacionalumnos);
+
+            // Obtener la lista de alumnos con su nombre completo
+            var alumnos = await _context.AsignacionAlumnos
+                .Include(a => a.IdAlumnoNavigation) // Asegúrate de incluir la navegación hacia Alumno
+                .Select(a => new
+                {
+                    a.IdAsignacionalumnos,
+                    NombreCompleto = $"{a.IdAlumnoNavigation.PrimerNombreAlumno} {a.IdAlumnoNavigation.PrimerApellidoAlumno}"
+                })
+                .ToListAsync();
+
+            // Pasar la lista de alumnos a la vista
+            ViewData["IdAsignacionalumnos"] = new SelectList(alumnos, "IdAsignacionalumnos", "NombreCompleto", nota.IdAsignacionalumnos);
+
+            // Obtener los bimestres
             ViewData["IdBimestre"] = new SelectList(_context.Bimestres, "IdBimestre", "NombreBimestre", nota.IdBimestre);
+
             return View(nota);
         }
+
+        //public async Task<IActionResult> Edit(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var nota = await _context.Notas.FindAsync(id);
+        //    if (nota == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    ViewData["IdAsignacionalumnos"] = new SelectList(_context.AsignacionAlumnos, "IdAsignacionalumnos", "IdAsignacionalumnos", nota.IdAsignacionalumnos);
+        //    ViewData["IdBimestre"] = new SelectList(_context.Bimestres, "IdBimestre", "NombreBimestre", nota.IdBimestre);
+        //    return View(nota);
+        //}
 
         // POST: Nota/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.

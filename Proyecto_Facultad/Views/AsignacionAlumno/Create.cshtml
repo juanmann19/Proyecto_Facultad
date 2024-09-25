@@ -1,39 +1,31 @@
 ﻿@model Proyecto_Facultad.Models.AsignacionAlumno
 
-@{
-    ViewData["Title"] = "Create";
-}
+<div class="container">
+    <h2 class="text-primary">Asignar alumno a una mesa</h2>
 
-<h1>Create</h1>
-
-<h4>Asignacion Alumno a una mesa</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div class="form-group">
-                <label asp-for="IdAlumno" class="control-label"></label>
-                <select asp-for="IdAlumno" asp-items="ViewBag.IdAlumno" class="form-control"></select>
+    <form id="sedeForm" asp-action="Create" method="post">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="IdAlumno" class="form-label"></label>
+                <select asp-for="IdAlumno" class="form-control" asp-items="ViewBag.IdAlumno">
+                </select>
                 <span asp-validation-for="IdAlumno" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="IdMesa" class="control-label"></label>
-                <select asp-for="IdMesa" asp-items="ViewBag.IdMesa" class="form-control"></select>
+            <div class="col-md-6">
+                <label asp-for="IdMesa" class="form-label"></label>
+                <select asp-for="IdMesa" class="form-control" asp-items="ViewBag.IdMesa">
+                </select>
                 <span asp-validation-for="IdMesa" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Crear" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index" asp-controller="leccion" class="btn btn-danger flex-fill">Cancelar</a>
+        </div>
+        <div class="form-group d-flex">
+            <button type="submit" class="btn btn-primary flex-fill me-2">Guardar</button>
+            <a asp-action="Index" class="btn btn-danger flex-fill">Cancelar</a>
+        </div>
+    </form>
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    <partial name="_ValidationScriptsPartial" />
 }
+

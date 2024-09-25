@@ -62,6 +62,7 @@ public partial class Staff
     [DisplayName("Usuario")]
     public int IdUsuario { get; set; }
 
+   
     public virtual ICollection<AsignacionMaestro> AsignacionMaestros { get; set; } = new List<AsignacionMaestro>();
 
     public virtual ICollection<AsistenciaStaff> AsistenciaStaffs { get; set; } = new List<AsistenciaStaff>();
