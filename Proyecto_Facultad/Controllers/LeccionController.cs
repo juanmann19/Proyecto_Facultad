@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_Facultad.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Proyecto_Facultad.Controllers
 {
+    [Authorize (Roles = "Coordinador, Admin")]
     public class LeccionController : Controller
     {
         private readonly BdfflContext _context;

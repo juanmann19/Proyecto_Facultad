@@ -5,10 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using Proyecto_Facultad.Models;
+using System.Security.Claims;
 
 namespace Proyecto_Facultad.Controllers
 {
+    [Authorize (Roles = "Maestro, Auxiliar, Admin")]
     public class AsistenciaStaffsController : Controller
     {
         private readonly BdfflContext _context;
@@ -50,22 +53,36 @@ namespace Proyecto_Facultad.Controllers
         // GET: AsistenciaStaffs/Create
         public IActionResult Create()
         {
-            // Hardcodear el ID del staff
-            int idStaff = 2; // Cambia este valor según el staff que desees filtrar
+            // Aquí obtienes el nombre del usuario autenticado.
+            var userName = User.Identity.Name;
 
-            // Obtén las mesas asignadas a este staff
-            //var mesasAsignadas = _context.AsignacionMaestros
-            //    .Where(am => am.IdStaff == idStaff)
-            //    .Select(am => am.IdMesaNavigation)
-            //    .ToList();
+            // Verificar si obtenemos el nombre de usuario autenticado.
+            if (string.IsNullOrEmpty(userName))
+            {
+                return Unauthorized("Usuario no autenticado.");
+            }
 
+            // Buscar el usuario basado en su nombre.
+            var usuario = _context.Usuarios.FirstOrDefault(u => u.NombreUsuario == userName);
 
-            var staff = _context.Staff
-                .Where(s => s.IdStaff == idStaff)
-                .FirstOrDefault();
+            // Verificar si el usuario existe en la tabla Usuarios.
+            if (usuario == null)
+            {
+                return NotFound("Usuario no encontrado.");
+            }
 
+            // Ahora, usa el IdUsuario para buscar el staff (maestro).
+            var staff = _context.Staff.FirstOrDefault(s => s.IdUsuario == usuario.IdUsuario);
+
+            // Verificar si el staff existe en la tabla Staff.
+            if (staff == null)
+            {
+                return NotFound("No se encontró el maestro relacionado con el usuario.");
+            }
+
+            // Si todo va bien, continuamos con el código normal.
             var mesasAsignadas = _context.AsignacionMaestros
-                .Where(am => am.IdStaff == idStaff)
+                .Where(am => am.IdStaff == staff.IdStaff)
                 .Select(am => new
                 {
                     am.IdMesa,
@@ -73,14 +90,13 @@ namespace Proyecto_Facultad.Controllers
                 })
                 .ToList();
 
-            //ViewData["NombreMaestro"] = $"{staff.PrimerNombreStaff} {staff.PrimerApellidoStaff}";
+            // Enviar el nombre del maestro a la vista.
+            ViewData["NombreMaestro"] = $"{staff.PrimerNombreStaff} {staff.PrimerApellidoStaff}";
 
-
-            // Crear un SelectList con las mesas asignadas
+            // Crear un SelectList con las mesas asignadas.
             ViewData["IdMesa"] = new SelectList(mesasAsignadas, "IdMesa", "MesaDescripcion");
 
-            // Obtener otros datos necesarios para el formulario
-            //ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "PrimerNombreStaff");
+            // Otros datos necesarios para el formulario.
             ViewData["IdLeccion"] = new SelectList(_context.Leccions, "IdLeccion", "Descripcion");
             ViewData["IdBimestre"] = new SelectList(_context.Bimestres, "IdBimestre", "NombreBimestre");
 

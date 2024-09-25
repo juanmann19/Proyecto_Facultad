@@ -41,11 +41,21 @@
                         <td>@usuario.NombreUsuario</td>
                         <td>@usuario.IdRolNavigation.NombreRol</td> <!-- Muestra el nombre del rol -->
                         <td>@(usuario.EstadoUsuario ? "Activo" : "Inactivo")</td>
-                        <td>
-                            <div class="btn-group w-100" role="group">
-                                <a asp-controller="Usuario" asp-action="Edit" asp-route-id="@usuario.IdUsuario" class="btn btn-primary flex-grow-1">
+                        <td style="align-items: center;">
+                            <div class="btn-group w-50" role="group" style="justify-content: center; align-items: center; display: flex;">
+                                <div style="padding-right: 2%;">
+                                    <a asp-controller="Usuario" asp-action="Edit" asp-route-id="@usuario.IdUsuario" class="btn btn-warning flex-grow-1">
                                     <i class="bi bi-pencil-fill"></i> Editar
                                 </a>
+                                </div>
+                                <div>
+                                    
+                                <form asp-action="Deactivate" method="post" class="flex-grow-1">
+                                    <button type="submit" asp-controller="Usuario" asp-action="Deactivate" asp-route-id="@usuario.IdUsuario" class="btn btn-danger w-100">
+                                        <i class="bi bi-trash-fill"></i> Activar/Desactivar
+                                    </button>
+                                </form>
+                                </div>
                             </div>
                         </td>
                     </tr>
