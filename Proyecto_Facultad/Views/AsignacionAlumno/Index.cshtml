@@ -15,7 +15,7 @@
     }
     <div class="row mb-3">
         <div class="col-6">
-            <h2 class="text-primary">Asignar alumno a mesa</h2>
+            <h2 class="text-primary">Alumnos asignados a mesas</h2>
         </div>
         <div class="col-6 text-end">
             <a asp-controller="AsignacionAlumno" asp-action="Create" class="btn btn-primary">
@@ -28,10 +28,9 @@
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-
-                    <!-- Trae solo los campos necesarios, no todos-->
                     <th>Nombre del alumno</th>
-                    <th>Mesa</th>
+                    <th>Sede</th>
+                    <th>Jornada</th>
                 </tr>
             </thead>
             <tbody>
@@ -39,7 +38,8 @@
                 {
                     <tr>
                         <td>@obj.NombreCompletoAlumno</td>
-                        <td>@obj.Mesa</td>
+                        <td>@obj.Sede</td>
+                        <td>@obj.Jornada</td>
                         <td>
                             <div class="btn-group w-100" role="group">
                                 <a asp-controller="AsignacionAlumno" asp-action="Edit" asp-route-id="@obj.IdAsignacionalumnos" class="btn btn-primary flex-grow-1">
@@ -51,11 +51,9 @@
                                     </button>
                                 </form>
                             </div>
-
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
-</div>

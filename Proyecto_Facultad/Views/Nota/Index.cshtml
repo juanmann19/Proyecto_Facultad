@@ -15,7 +15,7 @@
     }
     <div class="row mb-3">
         <div class="col-6">
-            <h2 class="text-primary">Listado de alumnos de mi mesa</h2>
+            <h2 class="text-primary">Listado de notas obtenidas por los alumnos </h2>
         </div>
         <div class="col-6 text-end">
             <a asp-controller="Nota" asp-action="Create" class="btn btn-primary">
@@ -31,30 +31,23 @@
                     <th>Nombre alumno</th>
                     <th>Bimestre</th>
                     <th>Nota</th>
-                    <th>Acciones</th> <!-- Agregamos una columna para acciones -->
+                    <th>Aprobado/Reprobado</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var obj in Model.OrderBy(u => u.IdNota))
                 {
                     <tr>
-                        <td>@obj.IdAsignacionalumnosNavigation?.IdAsignacionalumnos</td>
+                        <td>@obj.IdAsignacionalumnosNavigation?.IdAlumnoNavigation?.PrimerNombreAlumno @obj.IdAsignacionalumnosNavigation?.IdAlumnoNavigation?.PrimerApellidoAlumno</td>
                         <td>@obj.IdBimestreNavigation?.NombreBimestre</td>
                         <td>@obj.NotaObtenida</td>
                         <td>
-                            <div class="btn-group w-50" role="group">
-                                <a asp-controller="Nota" asp-action="Edit" asp-route-id="@obj.IdNota" class="btn btn-primary flex-grow-1">
-                                    <i class="bi bi-pencil-fill"></i> Editar
-                                </a>
-                                <br />
-                                <br />
-                                <br />
-                                <form asp-controller="Nota" asp-action="Delete" asp-route-id="@obj.IdNota" method="post" class="d-inline">
-                                    <button type="submit" class="btn btn-danger flex-grow-1" onclick="return confirm('¿Estás seguro de que deseas eliminar esta nota?');">
-                                        <i class="bi bi-trash-fill"></i> Eliminar
-                                    </button>
-                                </form>
-                            </div>
+                            @(obj.NotaObtenida > 60 ? "Alumno aprobado" : "Alumno reprobado")
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@obj.IdNota" class="btn btn-warning">Editar</a>
+                           @*  <a asp-action="Delete" asp-route-id="@obj.IdNota" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar esta nota?');">Eliminar</a> *@
                         </td>
                     </tr>
                 }
