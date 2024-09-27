@@ -64,7 +64,7 @@ namespace Proyecto_Facultad.Controllers
             ViewBag.IdBimestre = new SelectList(_context.Bimestres, "IdBimestre", "NombreBimestre");
             ViewBag.IdLibro = new SelectList(_context.Libros, "IdLibro", "NombreLibro");
             ViewBag.IdLeccion = new SelectList(_context.Leccions, "IdLeccion", "Descripcion");
-            ViewBag.IdMesa = new SelectList(_context.Mesas, "IdMesa", "IdMesa"); // Cambia "IdMesa" por el nombre que desees mostrar
+            ViewBag.IdMesa = new SelectList(_context.Mesas, "IdMesa", "IdMesa"); 
 
             return View();
         }
