@@ -12,7 +12,7 @@ public partial class AsignacionAlumno
     [DisplayName("Nombre del alumno")]
     public int IdAlumno { get; set; }
 
-    [DisplayName("Número de mesa")]
+    [DisplayName("Asignar mesa")]
     public int IdMesa { get; set; }
 
     public virtual Alumno IdAlumnoNavigation { get; set; }

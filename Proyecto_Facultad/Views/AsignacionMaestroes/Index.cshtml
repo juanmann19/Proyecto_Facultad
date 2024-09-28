@@ -1,10 +1,9 @@
 ﻿@model IEnumerable<Proyecto_Facultad.Models.AsignacionMaestro>
 
 <div class="container-fluid pt-4">
-    <!-- Mensajes de éxito o error -->
     <div class="row mb-3">
         <div class="col-6">
-            <h2 class="text-primary">Asignar maestro a mesa</h2>
+            <h2 class="text-primary">Asignar personal a mesa</h2>
         </div>
         <div class="col-6 text-end">
             <a asp-controller="AsignacionMaestroes" asp-action="Create" class="btn btn-primary">
@@ -18,15 +17,75 @@
             <thead>
                 <tr>
                     <th>Nombre del maestro</th>
-                    <th>Mesa</th>
+                    <th>Número de Mesa</th>
+                    <th>Sede</th>
+                    <th>Jornada (Día - Horario)</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var obj in Model.OrderBy(u => u.IdAsignacionmaestros))
+
                 {
                     <tr>
-                        <td>@obj.IdStaffNavigation.PrimerNombreStaff @obj.IdStaffNavigation.PrimerApellidoStaff</td>
-                       <td>@obj.IdMesaNavigation.IdJornada</td>
+                        <td>
+                            @if (obj.IdStaffNavigation != null)
+
+                            {
+                            @obj.NombreCompletoMaestro
+
+
+                            }
+
+                            else
+
+                            {
+                                <span>Desconocido</span>
+                            }
+                        </td>
+                        <td>
+                            @if (obj.IdMesaNavigation != null)
+
+                            {
+                                @obj.IdMesaNavigation.IdMesa
+                            }
+
+                            else
+
+                            {
+                                <span>Desconocido</span>
+                            }
+                        </td>
+                        <td>
+                            @if (obj.IdMesaNavigation?.NombreSedeNavigation != null)
+
+                            {
+                                @obj.IdMesaNavigation.NombreSedeNavigation.NombreSede
+                            }
+
+                            else
+
+                            {
+                                <span>Desconocida</span>
+                            }
+                        </td>
+
+                        <td>
+                            @{
+                                string jornadaInfo = "Jornada desconocida"; // Valor por defecto
+
+                                if (obj.IdMesaNavigation?.IdJornadaNavigation != null)
+
+                                {
+
+                                    jornadaInfo = $"{obj.IdMesaNavigation.IdJornadaNavigation.DiaSemana} - {obj.IdMesaNavigation.IdJornadaNavigation.Horario}";
+
+                                }
+                            }
+                            <span>@jornadaInfo</span>
+                        </td>
+
+
                         <td>
                             <div class="btn-group w-100" role="group">
                                 <a asp-controller="AsignacionMaestroes" asp-action="Edit" asp-route-id="@obj.IdAsignacionmaestros" class="btn btn-primary flex-grow-1">

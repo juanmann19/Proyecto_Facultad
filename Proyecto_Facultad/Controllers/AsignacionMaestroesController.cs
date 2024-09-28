@@ -11,7 +11,7 @@ using Proyecto_Facultad.ViewModels;
 
 namespace Proyecto_Facultad.Controllers
 {
-    [Authorize (Roles = "Coordinador, Admin")]
+    [Authorize(Roles = "Coordinador, Admin")]
     public class AsignacionMaestroesController : Controller
     {
         private readonly BdfflContext _context;
@@ -40,7 +40,7 @@ namespace Proyecto_Facultad.Controllers
                     .Where(m => m.NombreCompleto.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
                     .ToList();
             }
-            // Para el estado "Asignado" o "No asignado"
+
             foreach (var maestro in maestros)
             {
                 maestro.EstaAsignado = _context.AsignacionMaestros.Any(a => a.IdStaff == maestro.IdStaff);
@@ -56,12 +56,32 @@ namespace Proyecto_Facultad.Controllers
 
             return View(modelo);
         }
+
         // GET: AsignacionMaestroes
         public async Task<IActionResult> Index()
         {
-            var bdfflContext = _context.AsignacionMaestros.Include(a => a.IdMesaNavigation).Include(a => a.IdStaffNavigation);
-            return View(await bdfflContext.ToListAsync());
+            var asignaciones = await _context.AsignacionMaestros
+                .Include(a => a.IdMesaNavigation)
+                    .ThenInclude(m => m.IdJornadaNavigation) // Cargar la jornada relacionada
+                .Include(a => a.IdMesaNavigation)
+                    .ThenInclude(m => m.NombreSedeNavigation) // Cargar la sede relacionada
+                .Include(a => a.IdStaffNavigation)
+                .ToListAsync();
+
+            return View(asignaciones);
         }
+
+        //// GET: AsignacionMaestroes
+        //public async Task<IActionResult> Index()
+        //{
+        //    var bdfflContext = await _context.AsignacionMaestros
+        //        .Include(a => a.IdMesaNavigation)
+        //            .ThenInclude(m => m.IdJornadaNavigation) // Asegúrate de incluir la jornada
+        //        .Include(a => a.IdStaffNavigation)
+        //        .ToListAsync();
+
+        //    return View(bdfflContext);
+        //}
 
         // GET: AsignacionMaestroes/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -84,21 +104,30 @@ namespace Proyecto_Facultad.Controllers
         }
 
         // GET: AsignacionMaestroes/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["IdMesa"] = new SelectList(_context.Mesas, "IdMesa", "IdMesa");
-            ViewData["IdStaff"] = new SelectList(_context.Staff.Select(s => new
+            // Cargar datos para los select
+            var mesas = await _context.Mesas
+                .Include(m => m.IdJornadaNavigation)
+                .Include(m => m.NombreSedeNavigation)
+                .Select(m => new
+                {
+                    m.IdMesa,
+                    DisplayText = $"{m.NombreSedeNavigation.NombreSede} - {m.IdJornadaNavigation.DiaSemana} - {m.IdJornadaNavigation.Horario}"
+                })
+                .ToListAsync();
+
+            ViewData["IdMesa"] = new SelectList(mesas, "IdMesa", "DisplayText");
+            ViewData["IdStaff"] = new SelectList(await _context.Staff.Select(s => new
             {
                 s.IdStaff,
                 NombreCompleto = $"{s.PrimerNombreStaff} {s.PrimerApellidoStaff}"
-            }), "IdStaff", "NombreCompleto");
+            }).ToListAsync(), "IdStaff", "NombreCompleto");
 
             return View();
         }
 
         // POST: AsignacionMaestroes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdAsignacionmaestros,IdStaff,IdMesa")] AsignacionMaestro asignacionMaestro)
@@ -109,8 +138,10 @@ namespace Proyecto_Facultad.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdMesa"] = new SelectList(_context.Mesas, "IdMesa", "IdMesa", asignacionMaestro.IdMesa);
-            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "NivelAprobado", asignacionMaestro.IdStaff);
+
+            // Volver a cargar datos en caso de error
+            ViewData["IdMesa"] = new SelectList(await _context.Mesas.ToListAsync(), "IdMesa", "IdMesa", asignacionMaestro.IdMesa);
+            ViewData["IdStaff"] = new SelectList(await _context.Staff.ToListAsync(), "IdStaff", "NombreCompleto", asignacionMaestro.IdStaff);
             return View(asignacionMaestro);
         }
 
@@ -127,14 +158,13 @@ namespace Proyecto_Facultad.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdMesa"] = new SelectList(_context.Mesas, "IdMesa", "IdMesa", asignacionMaestro.IdMesa);
-            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "NivelAprobado", asignacionMaestro.IdStaff);
+
+            ViewData["IdMesa"] = new SelectList(await _context.Mesas.ToListAsync(), "IdMesa", "IdMesa", asignacionMaestro.IdMesa);
+            ViewData["IdStaff"] = new SelectList(await _context.Staff.ToListAsync(), "IdStaff", "NivelAprobado", asignacionMaestro.IdStaff);
             return View(asignacionMaestro);
         }
 
         // POST: AsignacionMaestroes/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IdAsignacionmaestros,IdStaff,IdMesa")] AsignacionMaestro asignacionMaestro)
@@ -164,8 +194,9 @@ namespace Proyecto_Facultad.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdMesa"] = new SelectList(_context.Mesas, "IdMesa", "IdMesa", asignacionMaestro.IdMesa);
-            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "NivelAprobado", asignacionMaestro.IdStaff);
+
+            ViewData["IdMesa"] = new SelectList(await _context.Mesas.ToListAsync(), "IdMesa", "IdMesa", asignacionMaestro.IdMesa);
+            ViewData["IdStaff"] = new SelectList(await _context.Staff.ToListAsync(), "IdStaff", "NivelAprobado", asignacionMaestro.IdStaff);
             return View(asignacionMaestro);
         }
 
@@ -210,3 +241,4 @@ namespace Proyecto_Facultad.Controllers
         }
     }
 }
+

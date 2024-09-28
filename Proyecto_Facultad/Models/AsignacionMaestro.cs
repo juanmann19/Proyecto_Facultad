@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Proyecto_Facultad.Models;
 
@@ -7,8 +8,10 @@ public partial class AsignacionMaestro
 {
     public int IdAsignacionmaestros { get; set; }
 
+    [DisplayName("Nombre del personal")]
     public int IdStaff { get; set; }
 
+    [DisplayName("Número de mesa")]
     public int IdMesa { get; set; }
 
     public virtual Mesa IdMesaNavigation { get; set; }
@@ -30,24 +33,11 @@ public partial class AsignacionMaestro
         {
             if (IdMesaNavigation != null)
             {
-                // Asumiendo que IdMesaNavigation tiene una propiedad llamada Jornada
+               
                 return $"{IdMesaNavigation.IdMesa} - {IdMesaNavigation.IdJornada}";
             }
             return "Desconocida";
         }
     }
-    //public class ReporteMaestrosViewModel
-    //{
-    //    public int MaestrosAsignados { get; set; }
-    //    public int MaestrosDisponibles { get; set; }
-    // public List<MaestroInfo> MaestrosNoAsignados { get; set; } = new List<MaestroInfo>();
-    //   public string SearchTerm { get; set; }
-    //}
-
-    //public class MaestroInfo
-    //{
-    //    public int IdStaff { get; set; }
-    //    public string NombreCompleto { get; set; }
-    //    public bool EstaAsignado { get; set; }
-    //}
+  
 }

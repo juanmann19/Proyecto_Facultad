@@ -2,17 +2,38 @@
 
 <div class="container-fluid pt-4">
     @if (TempData["SuccessMessage"] != null)
+
     {
         <div class="alert alert-success">
             @TempData["SuccessMessage"]
         </div>
     }
     @if (TempData["ErrorMessage"] != null)
+
     {
         <div class="alert alert-danger">
             @TempData["ErrorMessage"]
         </div>
+        <script>
+                setTimeout(function() {
+                window.location.href = '@Url.Action("Index", "AsignacionAlumno")';
+            }, 15000); // Redirigir después de 15 segundos
+        </script>
     }
+
+    @if (TempData["SuccessMessage"] != null)
+
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+        <script>
+            setTimeout(function() {
+                window.location.href = '@Url.Action("Index", "AsignacionAlumno")';
+            }, 5000); // Redirigir después de 5 segundos
+        </script>
+    }
+  
     <div class="row mb-3">
         <div class="col-6">
             <h2 class="text-primary">Alumnos asignados a mesas</h2>
@@ -29,15 +50,19 @@
             <thead>
                 <tr>
                     <th>Nombre del alumno</th>
+                    <th>Nombre del maestro</th>
                     <th>Sede</th>
                     <th>Jornada</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var obj in Model.OrderBy(u => u.IdAsignacionalumnos))
+
                 {
                     <tr>
                         <td>@obj.NombreCompletoAlumno</td>
+                        <td>@obj.NombreCompletoMaestro</td> 
                         <td>@obj.Sede</td>
                         <td>@obj.Jornada</td>
                         <td>
@@ -57,3 +82,4 @@
             </tbody>
         </table>
     </div>
+</div>

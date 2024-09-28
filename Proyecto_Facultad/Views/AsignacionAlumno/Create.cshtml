@@ -3,6 +3,13 @@
 <div class="container">
     <h2 class="text-primary">Asignar alumno a una mesa</h2>
 
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            @Html.ValidationSummary()
+        </div>
+    }
+
     <form id="sedeForm" asp-action="Create" method="post">
         <div class="row mb-3">
             <div class="col-md-6">
@@ -28,4 +35,5 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
 
