@@ -1,69 +1,72 @@
 ﻿@model Proyecto_Facultad.Models.AsistenciaStaff
-
 <div class="container">
+    <h2 class="text-primary">Editar Asistencia</h2>
 
-    <h2 class="text-primary pt-3">Editar Asistencia del Personal</h2>
-    <!---form asp-controller="AsistenciaStaff" asp-action="Edit" method="post"--->
-       <!----input type="hidden" asp-for="IdAsistenciaStaff" />
+    <form asp-action="Edit" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-        <!-- Dropdown para seleccionar el Staff -->
-        <div class="row">
+        <div class="row mb-3">
             <div class="col-md-6">
-                <label asp-for="IdStaff" class="form-label"></label>
-                <select asp-for="IdStaff" class="form-control" asp-items="ViewBag.IdStaff"></select>
+                <label class="control-label">Nombre Maestro</label>
+                <!-- Campo de solo lectura con el nombre del maestro -->
+                <input type="text" class="form-control" value="@ViewData["NombreMaestro"]" readonly />
+
             </div>
         </div>
 
-        <!-- Campo para seleccionar la fecha de la clase -->
+
         <div class="row mb-3">
             <div class="col-md-6">
-                <label asp-for="FechaClase" class="form-label">Fecha de la Clase</label>
+                <label asp-for="FechaClase" class="form-label">Fecha de Clase</label>
                 <input asp-for="FechaClase" class="form-control" type="date" />
                 <span asp-validation-for="FechaClase" class="text-danger"></span>
             </div>
         </div>
 
-        <!-- Dropdown para seleccionar la Mesa -->
         <div class="row mb-3">
             <div class="col-md-6">
-                <label asp-for="IdMesa" class="form-label"></label>
+                <label asp-for="IdMesa" class="form-label">Mesa</label>
+                <!-- Mostrar solo las mesas asignadas al maestro -->
                 <select asp-for="IdMesa" class="form-control" asp-items="ViewBag.IdMesa"></select>
-                <span asp-validation-for="IdMesa" class="text-danger"></span>
             </div>
         </div>
 
-        <!-- Dropdown para seleccionar la Lección -->
         <div class="row mb-3">
             <div class="col-md-6">
-                <label asp-for="IdLeccion" class="form-label"></label>
+                <label asp-for="IdLeccion" class="form-label">Lección</label>
                 <select asp-for="IdLeccion" class="form-control" asp-items="ViewBag.IdLeccion"></select>
-                <span asp-validation-for="IdLeccion" class="text-danger"></span>
             </div>
         </div>
 
-        <!-- Dropdown para seleccionar el Bimestre -->
         <div class="row mb-3">
             <div class="col-md-6">
-                <label asp-for="IdBimestre" class="form-label"></label>
+                <label asp-for="IdBimestre" class="form-label">Bimestre</label>
                 <select asp-for="IdBimestre" class="form-control" asp-items="ViewBag.IdBimestre"></select>
-                <span asp-validation-for="IdBimestre" class="text-danger"></span>
             </div>
         </div>
 
-        <!-- Campo para indicar la Ausencia -->
         <div class="row mb-3">
             <div class="col-md-6">
-                <label asp-for="Ausencia" class="form-label">Ausencia</label>
-                <input asp-for="Ausencia" class="form-control" />
-                <span asp-validation-for="Ausencia" class="text-danger"></span>
+                <div class="from-group">
+                    <label asp-for="Ausencia" class="form-label">Asistencia</label>
+                    <select asp-for="Ausencia" class="form-control">
+                        <option value ="">Seleccione</option>
+                        <option value="Asistió">Asistió</option>
+                        <option value="Enfermedad">Enfermedad</option>
+                        <option value="Bautizo">Bautizo</option>
+                        <option value="Examen">Examen</option>
+                        <option value="Inasistencia">Inasistencia</option>
+                        <option value="Justificación">Justificación</option>
+                    </select>
+                </div>
             </div>
         </div>
 
-        <!-- Botones para Guardar y Cancelar -->
         <div class="form-group d-flex">
-            <button type="submit" class="btn btn-success flex-fill me-2">Guardar</button>
-            <a asp-action="Index" asp-controller="AsistenciaStaff" class="btn btn-danger flex-fill">Cancelar</a>
+            <button type="submit" class="btn btn-primary flex-fill me-2">Guardar</button>
+            <a asp-action="Index" class="btn btn-danger flex-fill me-2">Cancelar</a>
         </div>
+    </form>
 </div>
 
 @section Scripts {
