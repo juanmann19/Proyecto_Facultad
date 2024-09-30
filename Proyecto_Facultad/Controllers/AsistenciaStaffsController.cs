@@ -109,22 +109,62 @@ namespace Proyecto_Facultad.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdAsistenciaStaff,IdStaff,FechaClase,IdMesa,IdLeccion,IdBimestre,Ausencia")] AsistenciaStaff asistenciaStaff)
+        public async Task<IActionResult> Create([Bind("IdAsistenciaStaff,FechaClase,IdMesa,IdLeccion,IdBimestre,Ausencia")] AsistenciaStaff asistenciaStaff)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(asistenciaStaff);
-                await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Asistencia Maestro creada con exito.";
-                return RedirectToAction(nameof(Index));
+                // Aquí obtienes el nombre del usuario autenticado.
+                var userName = User.Identity.Name;
+
+                // Verificar si obtenemos el nombre de usuario autenticado.
+                if (string.IsNullOrEmpty(userName))
+                {
+                    TempData["ErrorMessage"] = "Usuario no autenticado.";
+                    return Unauthorized();
+                }
+
+                // Buscar el usuario basado en su nombre.
+                var usuario = _context.Usuarios.FirstOrDefault(u => u.NombreUsuario == userName);
+
+                if (usuario == null)
+                {
+                    TempData["ErrorMessage"] = "Usuario no encontrado.";
+                    return NotFound();
+                }
+
+                // Ahora, usa el IdUsuario para buscar el staff (maestro).
+                var staff = _context.Staff.FirstOrDefault(s => s.IdUsuario == usuario.IdUsuario);
+
+                if (staff == null)
+                {
+                    TempData["ErrorMessage"] = "No se encontró el maestro relacionado con el usuario.";
+                    return NotFound();
+                }
+
+                // Asignar correctamente el IdStaff
+                asistenciaStaff.IdStaff = staff.IdStaff;
+
+                try
+                {
+                    _context.Add(asistenciaStaff);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Asistencia Maestro creada con éxito.";
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    TempData["ErrorMessage"] = "Error al guardar los datos: " + ex.Message;
+                }
             }
-            TempData["ErrorMessage"] = "Se produjo un error al guardar los datos.";
+
+            // Si el modelo no es válido o hay un error, volvemos a cargar las listas de selección
             ViewData["IdBimestre"] = new SelectList(_context.Bimestres, "IdBimestre", "NombreBimestre", asistenciaStaff.IdBimestre);
             ViewData["IdLeccion"] = new SelectList(_context.Leccions, "IdLeccion", "Descripcion", asistenciaStaff.IdLeccion);
             ViewData["IdMesa"] = new SelectList(_context.Mesas, "IdMesa", "IdMesa", asistenciaStaff.IdMesa);
-            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "PrimerNombreStaff", asistenciaStaff.IdStaff);
+
             return View(asistenciaStaff);
         }
+
 
         // GET: AsistenciaStaffs/Edit/5
         public async Task<IActionResult> Edit(int? id)
