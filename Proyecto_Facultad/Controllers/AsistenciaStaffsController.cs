@@ -135,7 +135,7 @@ namespace Proyecto_Facultad.Controllers
 
             var ultimaasistencia = _context.AsistenciaStaffs.OrderByDescending(a => a.IdAsistenciaStaff).FirstOrDefault();
 
-            int nuevoId = ultimaasistencia.IdAsistenciaStaff + 1;
+            int nuevoId = (ultimaasistencia != null) ? ultimaasistencia.IdAsistenciaStaff + 1 : 1;
 
             asistenciaStaff.IdAsistenciaStaff = nuevoId;
             if (ModelState.IsValid)
@@ -222,7 +222,7 @@ namespace Proyecto_Facultad.Controllers
         // POST: AsistenciaStaffs/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdAsistenciaStaff,FechaClase,IdMesa,IdLeccion,IdBimestre,Ausencia")] AsistenciaStaff asistenciaStaff)
+        public async Task<IActionResult> Edit(int id, [Bind("IdAsistenciaStaff,IdStaff,FechaClase,IdMesa,IdLeccion,IdBimestre,Ausencia")] AsistenciaStaff asistenciaStaff)
         {
             if (id != asistenciaStaff.IdAsistenciaStaff)
             {
@@ -233,35 +233,12 @@ namespace Proyecto_Facultad.Controllers
             {
                 try
                 {
-                    _context.Add(asistenciaStaff); // No debes modificar IdAsistenciaStaff
+                    _context.Update(asistenciaStaff); // No debes modificar IdAsistenciaStaff
                     await _context.SaveChangesAsync();
                     TempData["SuccessMessage"] = "Asistencia guardada correctamente.";
                  
                     // Obtener la entidad existente desde la base de datos
-                    var existingAsistencia = await _context.AsistenciaStaffs.FindAsync(id);
-                    if (existingAsistencia != null)
-                    {
-                        // Asignar el IdStaff de la entidad existente si es necesario
-                        asistenciaStaff.IdStaff = existingAsistencia.IdStaff;
-
-                        // Actualizar las propiedades necesarias de la entidad existente
-                        existingAsistencia.FechaClase = asistenciaStaff.FechaClase;
-                        existingAsistencia.IdMesa = asistenciaStaff.IdMesa;
-                        existingAsistencia.IdLeccion = asistenciaStaff.IdLeccion;
-                        existingAsistencia.IdBimestre = asistenciaStaff.IdBimestre;
-                        existingAsistencia.Ausencia = asistenciaStaff.Ausencia;
-
-                        // Marcar la entidad como modificada
-                        _context.Entry(existingAsistencia).State = EntityState.Modified;
-
-                        // Guardar los cambios
-                        await _context.SaveChangesAsync();
-                        TempData["SuccessMessage"] = "Datos actualizados correctamente.";
-                    }
-                    else
-                    {
-                        return NotFound();
-                    }
+                  
                 }
                 catch (DbUpdateConcurrencyException)
                 {
