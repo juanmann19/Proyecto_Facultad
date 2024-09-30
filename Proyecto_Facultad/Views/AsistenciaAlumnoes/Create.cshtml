@@ -1,50 +1,57 @@
-﻿@model Proyecto_Facultad.Models.AsistenciaAlumno
+﻿@model List<Proyecto_Facultad.Models.AsistenciaAlumno>
 
 <div class="container">
     <h2 class="text-primary pt-3">Añadir Asistencia de Alumno</h2>
 
-    <form asp-action="Create" method="post">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-        <!---div class="row mb-3"-->
-          <!---<div class="col-md-6"-->
-                <!----<label asp-for="IdAsistenciaAlumno" class="form-label"></label-->
-                <!----<input asp-for="IdAsistenciaAlumno" class="form-control" /-->
-            <!----<span asp-validation-for="IdAsistenciaAlumno" class="text-danger"></span--->
-           <!----</div--->
-        <!---</div--->
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label class="control-label">Nombre Maestro</label>
-                <!-- Campo de solo lectura con el nombre del maestro -->
-                <input type="text" class="form-control" value="@ViewData["NombreMaestro"]" readonly />
-            </div>
+    <!-- Mostrar nombre del maestro -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="control-label">Nombre Maestro</label>
+            <input type="text" class="form-control" value="@ViewData["NombreMaestro"]" readonly />
         </div>
+    </div>
 
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label asp-for="IdAlumno" class="form-label"></label>
-                <select asp-for="IdAlumno" class="form-control" asp-items="ViewBag.IdAlumno"></select>
-                <span asp-validation-for="IdAlumno" class="text-danger"></span>
+    <!-- Control de asistencia de cada alumno -->
+    @for (int i = 0; i < ViewBag.Alumnos.Count; i++)
+    {
+        var alumno = ViewBag.Alumnos[i];
+        <div class="mb-2 d-flex align-items-center">
+            <div class="me-2">
+                <!-- Nombre del alumno (sólo lectura) -->
+                <input type="text" class="form-control" value="@alumno.NombreCompleto" readonly />
+                <input type="hidden" name="asistenciaAlumnos[@i].IdAlumno" value="@alumno.IdAlumno" />
             </div>
-        </div>
 
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label asp-for="Ausencia" class="form-label"></label>
-                <input asp-for="Ausencia" class="form-control" />
-                <span asp-validation-for="Ausencia" class="text-danger"></span>
+            <div class="col-md-3">
+                <!-- Asistencia (presente/ausente) -->
+                <select name="asistenciaAlumnos[@i].Ausencia" class="form-select">
+                    <option value="Presente">Presente</option>
+                        <option value="Ausente">Ausente</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <!-- Motivo de ausencia -->
+                    <select name="asistenciaAlumnos[@i].Ausencia" class="form-control">
+                        <option value="">Seleccione</option>
+                        <option value="Enfermedad">Enfermedad</option>
+                        <option value="Bautizo">Bautizo</option>
+                        <option value="Examen">Examen</option>
+                        <option value="Justificación">Justificación</option>
+                    </select>
+                </div>
             </div>
-        </div>
-
+        }
         <div class="form-group d-flex">
             <button type="submit" class="btn btn-primary flex-fill me-2">Guardar</button>
-            <a asp-action="Index" class="btn btn-danger flex-fill">Cancelar</a>
+            <a asp-action="Index" class="btn btn-warning flex-fill">Cancelar</a>
         </div>
     </form>
 </div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
-
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial"   />
+    }

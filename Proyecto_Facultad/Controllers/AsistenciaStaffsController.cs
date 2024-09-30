@@ -12,6 +12,7 @@ using System.Security.Claims;
 namespace Proyecto_Facultad.Controllers
 {
     [Authorize (Roles = "Maestro, Auxiliar, Admin")]
+
     public class AsistenciaStaffsController : Controller
     {
         private readonly BdfflContext _context;
@@ -103,28 +104,70 @@ namespace Proyecto_Facultad.Controllers
             return View();
         }
 
-
         // POST: AsistenciaStaffs/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: AsistenciaStaffs/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdAsistenciaStaff,IdStaff,FechaClase,IdMesa,IdLeccion,IdBimestre,Ausencia")] AsistenciaStaff asistenciaStaff)
+        public async Task<IActionResult> Create([Bind("FechaClase,IdMesa,IdLeccion,IdBimestre,Ausencia")] AsistenciaStaff asistenciaStaff)
         {
+            // Ensure you set the IdStaff here based on the logged-in user
+            var userName = User.Identity.Name;
+
+            if (string.IsNullOrEmpty(userName))
+            {
+                return Unauthorized("Usuario no autenticado.");
+            }
+
+            var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.NombreUsuario == userName);
+            if (usuario == null)
+            {
+                return NotFound("Usuario no encontrado.");
+            }
+
+            var staff = await _context.Staff.FirstOrDefaultAsync(s => s.IdUsuario == usuario.IdUsuario);
+            if (staff == null)
+            {
+                return NotFound("No se encontró el maestro relacionado con el usuario.");
+            }
+
+            // Set the IdStaff in the AsistenciaStaff object
+            asistenciaStaff.IdStaff = staff.IdStaff;
+
+            var ultimaasistencia = _context.AsistenciaStaffs.OrderByDescending(a => a.IdAsistenciaStaff).FirstOrDefault();
+
+            int nuevoId = ultimaasistencia.IdAsistenciaStaff + 1;
+
+            asistenciaStaff.IdAsistenciaStaff = nuevoId;
             if (ModelState.IsValid)
             {
                 _context.Add(asistenciaStaff);
                 await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Asistencia Maestro creada con exito.";
+                TempData["SuccessMessage"] = "Asistencia creada correctamente.";
                 return RedirectToAction(nameof(Index));
             }
-            TempData["ErrorMessage"] = "Se produjo un error al guardar los datos.";
-            ViewData["IdBimestre"] = new SelectList(_context.Bimestres, "IdBimestre", "NombreBimestre", asistenciaStaff.IdBimestre);
-            ViewData["IdLeccion"] = new SelectList(_context.Leccions, "IdLeccion", "Descripcion", asistenciaStaff.IdLeccion);
-            ViewData["IdMesa"] = new SelectList(_context.Mesas, "IdMesa", "IdMesa", asistenciaStaff.IdMesa);
-            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "PrimerNombreStaff", asistenciaStaff.IdStaff);
+
+            // Load data for dropdowns in case of errors
+            await LoadViewData(asistenciaStaff.IdStaff); // Refactor this to load the necessary data
+
             return View(asistenciaStaff);
         }
+
+        private async Task LoadViewData(int staffId)
+        {
+            var mesasAsignadas = await _context.AsignacionMaestros
+                .Where(am => am.IdStaff == staffId)
+                .Select(am => new
+                {
+                    am.IdMesa,
+                    MesaDescripcion = $"{am.IdMesaNavigation.IdMesa} - {am.IdMesaNavigation.NombreSedeNavigation.NombreSede} - {am.IdMesaNavigation.IdJornadaNavigation.DiaSemana} {am.IdMesaNavigation.IdJornadaNavigation.Horario}"
+                })
+                .ToListAsync();
+
+            ViewData["IdMesa"] = new SelectList(mesasAsignadas, "IdMesa", "MesaDescripcion");
+            ViewData["IdLeccion"] = new SelectList(await _context.Leccions.ToListAsync(), "IdLeccion", "Descripcion");
+            ViewData["IdBimestre"] = new SelectList(await _context.Bimestres.ToListAsync(), "IdBimestre", "NombreBimestre");
+        }
+
 
         // GET: AsistenciaStaffs/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -134,24 +177,52 @@ namespace Proyecto_Facultad.Controllers
                 return NotFound();
             }
 
-            var asistenciaStaff = await _context.AsistenciaStaffs.FindAsync(id);
+            var asistenciaStaff = await _context.AsistenciaStaffs
+                .Include(a => a.IdMesaNavigation)
+                .Include(a => a.IdLeccionNavigation)
+                .Include(a => a.IdBimestreNavigation)
+                .Include(a => a.IdStaffNavigation) // Incluye la navegación de Staff
+                .FirstOrDefaultAsync(a => a.IdAsistenciaStaff == id);
+
             if (asistenciaStaff == null)
             {
                 return NotFound();
             }
-            ViewData["IdBimestre"] = new SelectList(_context.Bimestres, "IdBimestre", "NombreBimestre", asistenciaStaff.IdBimestre);
-            ViewData["IdLeccion"] = new SelectList(_context.Leccions, "IdLeccion", "Descripcion", asistenciaStaff.IdLeccion);
-            ViewData["IdMesa"] = new SelectList(_context.Mesas, "IdMesa", "IdMesa", asistenciaStaff.IdMesa);
-            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "PrimerNombreStaff", asistenciaStaff.IdStaff);
+
+            // Cargar las mesas asignadas al Staff de la asistencia
+            var mesasAsignadas = _context.AsignacionMaestros
+                .Where(am => am.IdStaff == asistenciaStaff.IdStaff)
+                .Include(am => am.IdMesaNavigation)
+                .Include(am => am.IdStaffNavigation)
+                .Select(am => new
+                {
+                    am.IdMesa,
+                    MesaDescripcion = $"{am.IdMesaNavigation.IdMesa} - {am.IdMesaNavigation.NombreSedeNavigation.NombreSede} - {am.IdMesaNavigation.IdJornadaNavigation.DiaSemana} {am.IdMesaNavigation.IdJornadaNavigation.Horario}",
+                    NombreCompletoMaestro = $"{am.IdStaffNavigation.PrimerNombreStaff} {am.IdStaffNavigation.PrimerApellidoStaff}"
+                })
+                .ToList();
+
+            // Obtener el nombre del maestro para mostrarlo en la vista
+            var maestro = mesasAsignadas.FirstOrDefault()?.NombreCompletoMaestro;
+
+            if (maestro != null)
+            {
+                ViewData["NombreMaestro"] = maestro;
+            }
+
+            // Cargar las listas desplegables
+            ViewData["IdMesa"] = new SelectList(mesasAsignadas, "IdMesa", "MesaDescripcion", asistenciaStaff.IdMesa);
+            ViewData["IdLeccion"] = new SelectList(await _context.Leccions.ToListAsync(), "IdLeccion", "Descripcion", asistenciaStaff.IdLeccion);
+            ViewData["IdBimestre"] = new SelectList(await _context.Bimestres.ToListAsync(), "IdBimestre", "NombreBimestre", asistenciaStaff.IdBimestre);
+             // Incluye la lista de Staff
+
             return View(asistenciaStaff);
         }
 
         // POST: AsistenciaStaffs/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("IdAsistenciaStaff,IdStaff,FechaClase,IdMesa,IdLeccion,IdBimestre,Ausencia")] AsistenciaStaff asistenciaStaff)
+        public async Task<IActionResult> Edit(int id, [Bind("IdAsistenciaStaff,FechaClase,IdMesa,IdLeccion,IdBimestre,Ausencia")] AsistenciaStaff asistenciaStaff)
         {
             if (id != asistenciaStaff.IdAsistenciaStaff)
             {
@@ -162,9 +233,35 @@ namespace Proyecto_Facultad.Controllers
             {
                 try
                 {
-                    _context.Update(asistenciaStaff);
+                    _context.Add(asistenciaStaff); // No debes modificar IdAsistenciaStaff
                     await _context.SaveChangesAsync();
-                    TempData["ErrorMessage"] = "Datos actualizados correctamente.";
+                    TempData["SuccessMessage"] = "Asistencia guardada correctamente.";
+                 
+                    // Obtener la entidad existente desde la base de datos
+                    var existingAsistencia = await _context.AsistenciaStaffs.FindAsync(id);
+                    if (existingAsistencia != null)
+                    {
+                        // Asignar el IdStaff de la entidad existente si es necesario
+                        asistenciaStaff.IdStaff = existingAsistencia.IdStaff;
+
+                        // Actualizar las propiedades necesarias de la entidad existente
+                        existingAsistencia.FechaClase = asistenciaStaff.FechaClase;
+                        existingAsistencia.IdMesa = asistenciaStaff.IdMesa;
+                        existingAsistencia.IdLeccion = asistenciaStaff.IdLeccion;
+                        existingAsistencia.IdBimestre = asistenciaStaff.IdBimestre;
+                        existingAsistencia.Ausencia = asistenciaStaff.Ausencia;
+
+                        // Marcar la entidad como modificada
+                        _context.Entry(existingAsistencia).State = EntityState.Modified;
+
+                        // Guardar los cambios
+                        await _context.SaveChangesAsync();
+                        TempData["SuccessMessage"] = "Datos actualizados correctamente.";
+                    }
+                    else
+                    {
+                        return NotFound();
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -174,18 +271,31 @@ namespace Proyecto_Facultad.Controllers
                     }
                     else
                     {
-                        TempData["SuccessMessage"] = "Se produjo un error al actualizar datos.";
+                        TempData["ErrorMessage"] = "Se produjo un error al actualizar los datos.";
                         throw;
                     }
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdBimestre"] = new SelectList(_context.Bimestres, "IdBimestre", "NombreBimestre", asistenciaStaff.IdBimestre);
-            ViewData["IdLeccion"] = new SelectList(_context.Leccions, "IdLeccion", "Descripcion", asistenciaStaff.IdLeccion);
-            ViewData["IdMesa"] = new SelectList(_context.Mesas, "IdMesa", "IdMesa", asistenciaStaff.IdMesa);
-            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "PrimerNombreStaff", asistenciaStaff.IdStaff);
+
+            // Cargar valores en caso de error
+            var mesasAsignadas = _context.AsignacionMaestros
+                .Where(am => am.IdStaff == asistenciaStaff.IdStaff)
+                .Select(am => new
+                {
+                    am.IdMesa,
+                    MesaDescripcion = $"{am.IdMesaNavigation.IdMesa} - {am.IdMesaNavigation.NombreSedeNavigation.NombreSede} - {am.IdMesaNavigation.IdJornadaNavigation.DiaSemana}"
+                })
+                .ToList();
+
+            ViewData["IdMesa"] = new SelectList(mesasAsignadas, "IdMesa", "MesaDescripcion", asistenciaStaff.IdMesa);
+            ViewData["IdLeccion"] = new SelectList(await _context.Leccions.ToListAsync(), "IdLeccion", "Descripcion", asistenciaStaff.IdLeccion);
+            ViewData["IdBimestre"] = new SelectList(await _context.Bimestres.ToListAsync(), "IdBimestre", "NombreBimestre", asistenciaStaff.IdBimestre);
+
             return View(asistenciaStaff);
         }
+
+
 
         // GET: AsistenciaStaffs/Delete/5
         public async Task<IActionResult> Delete(int? id)

@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Proyecto_Facultad.Models;
 
 public partial class AsistenciaStaff
 {
+    [Key] // Asegúrate de tener este atributo
     public int IdAsistenciaStaff { get; set; }
 
     [DisplayName("Nombre")]

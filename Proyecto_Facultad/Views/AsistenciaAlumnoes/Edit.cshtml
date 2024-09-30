@@ -1,15 +1,15 @@
 ﻿@model Proyecto_Facultad.Models.AsistenciaAlumno
 
 <div class="container">
-
     <h2 class="text-primary pt-3">Editar Asistencia del Alumno</h2>
-    <!--form asp-controller="AsistenciaAlumno" asp-action="Edit" method="post"--->
-        <!---input type="hidden" asp-for="IdAsistenciaAlumno" />
+
+    <form asp-action="EditarAsistencia" method="post">
+        <input type="hidden" asp-for="IdAsistenciaAlumno" />
 
         <!-- Dropdown para seleccionar la Asistencia del Staff -->
         <div class="row mb-3">
             <div class="col-md-6">
-                <label asp-for="IdAsistenciaStaff" class="form-label"></label>
+                <label asp-for="IdAsistenciaStaff" class="form-label">Nombre Maestro</label>
                 <select asp-for="IdAsistenciaStaff" class="form-control" asp-items="ViewBag.IdAsistenciaStaff"></select>
                 <span asp-validation-for="IdAsistenciaStaff" class="text-danger"></span>
             </div>
@@ -18,12 +18,19 @@
         <!-- Dropdown para seleccionar el Alumno -->
         <div class="row mb-3">
             <div class="col-md-6">
-                <label asp-for="IdAlumno" class="form-label"></label>
+                <label asp-for="IdAlumno" class="form-label">Nombre Alumno</label>
                 <select asp-for="IdAlumno" class="form-control" asp-items="ViewBag.IdAlumno"></select>
                 <span asp-validation-for="IdAlumno" class="text-danger"></span>
             </div>
         </div>
 
+        <!-- Dropdown para editar la fecha -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label">Fecha de Asistencia</label>
+                <input type="date" class="form-control" name="FechaAsistencia" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+            </div>
+        </div>
         <!-- Campo para indicar la Ausencia -->
         <div class="row mb-3">
             <div class="col-md-6">
@@ -38,7 +45,7 @@
             <button type="submit" class="btn btn-success flex-fill me-2">Guardar</button>
             <a asp-action="Index" asp-controller="AsistenciaAlumno" class="btn btn-danger flex-fill">Cancelar</a>
         </div>
-    </!--form>
+    </form>
 </div>
 
 @section Scripts {
