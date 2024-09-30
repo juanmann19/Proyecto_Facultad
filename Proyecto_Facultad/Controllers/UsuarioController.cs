@@ -122,16 +122,17 @@ namespace Proyecto_Facultad.Controllers
                     existingUser.NombreUsuario = usuario.NombreUsuario;
                     existingUser.IdRol = usuario.IdRol;
 
-                    if (!string.IsNullOrEmpty(usuario.ContrasenaUsuario))
+                    if (ModelState.IsValid)
                     {
-                        var (hash, salt) = PasswordHasher.HashPassword(usuario.ContrasenaUsuario);
-                        existingUser.ContrasenaUsuario = hash;
-                        existingUser.ContrasenaUsuario = salt;
-                    }
+                        // Usar el método SetPassword del modelo Usuario para hashear la contraseña
+                        existingUser.SetPassword(usuario.ContrasenaUsuario);
+                        existingUser.EstadoUsuario = true;
 
-                    _context.Update(existingUser);
-                    await _context.SaveChangesAsync();
-                    TempData["SuccessMessage"] = "Datos actualizados correctamente";
+                        _context.Update(existingUser);
+                        await _context.SaveChangesAsync();
+                        TempData["SuccessMessage"] = "Usuario actualizado correctamente";
+                        //return RedirectToAction(nameof(Index));
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
