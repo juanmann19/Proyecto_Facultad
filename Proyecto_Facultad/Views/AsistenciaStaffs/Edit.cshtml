@@ -4,7 +4,8 @@
 
     <form asp-action="Edit" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
+        <input type="hidden" asp-for="IdAsistenciaStaff" />
+        <input type="hidden" asp-for="IdStaff"/>
         <div class="row mb-3">
             <div class="col-md-6">
                 <label class="control-label">Nombre Maestro</label>
