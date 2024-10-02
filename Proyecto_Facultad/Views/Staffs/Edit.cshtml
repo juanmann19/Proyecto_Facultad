@@ -104,12 +104,13 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label asp-for="EstadoCivil" class="form-label"></label>
-                <select asp-for="EstadoCivil" class="form-control">
-                    <option value="">Seleccione</option>
-                    <option value="Soltero" selected="@Model.EstadoCivil == " Soltero"">Soltero</option>
-                    <option value="Casado" selected="@Model.EstadoCivil == " Casado"">Casado</option>
-                    <option value="Divorciado" selected="@Model.EstadoCivil == " Divorciado"">Divorciado</option>
-                    <option value="Viudo" selected="@Model.EstadoCivil == " Viudo">Viudo</option>
+                <select asp-for="EstadoCivil" class="form-control" asp-items="@(new List<SelectListItem>
+                    {
+                        new SelectListItem { Value = "1", Text = "Soltero" },
+                        new SelectListItem { Value = "2", Text = "Casado" },
+                        new SelectListItem { Value = "3", Text = "Divorciado" },
+                        new SelectListItem { Value = "4", Text = "Viudo" }
+                    })">
                 </select>
                 <span asp-validation-for="EstadoCivil" class="text-danger"></span>
             </div>
@@ -117,10 +118,11 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label asp-for="Genero" class="form-label"></label>
-                <select asp-for="Genero" class="form-control">
-                    <option value="">Seleccione</option>
-                    <option value="Masculino" selected="@Model.Genero == " Masculino"">Masculino</option>
-                    <option value="Femenino" selected="@Model.Genero == " Femenino"">Femenino</option>
+                <select asp-for="Genero" class="form-control" asp-items="@(new List<SelectListItem>{
+                    new SelectListItem {Value = "Masculino", Text = "Masculino"},
+                    new SelectListItem {Value = "Femenino", Text = "Femenino"},
+                }
+                )">
                 </select>
                 <span asp-validation-for="Genero" class="text-danger"></span>
             </div>
@@ -129,15 +131,18 @@
 
     <div class="form-group">
         <label asp-for="NumeroCelula" class="form-label"></label>
-        <select asp-for="NumeroCelula" class="form-control">
-            <option value="">Seleccione</option>
-            <option value="Mujeres">Mujeres(Solteras o Casadas)</option>
-            <option value="Familiares">Familiares(Familia y Todo el que Necesita Familia)</option>
-            <option value="JovenesFrater">Jovenes Frater(15 a 23 Años)</option>
-            <option value="JovenesAdultosFrater">Jovenes Adultos Frater(23 Años en Adelante)</option>
-            <option value="MatrimoniosJovenes">Matrimonios Jovenes (0 a 15 Años Casados)</option>
-            <option value="MatrimoniosFrater">Matrimonios Frater(15 + Años casados)</option>
-            <option value="RDI">RDI(Hombres Solteros o Casados)</option>
+        <select asp-for="NumeroCelula" class="form-control" asp-items="@(new List<SelectListItem>
+                    {
+                        new SelectListItem { Value = "Mujeres", Text = "Mujeres(Solteras o Casadas)" },
+                        new SelectListItem { Value = "Familiares", Text = "Familiares(Familia y Todo el que Necesita Familia)" },
+                        new SelectListItem { Value = "JovenesFrater", Text = "Jovenes Frater(15 a 23 Años)" },
+                        new SelectListItem { Value = "JovenesAdultosFrater", Text = "Jovenes Adultos Frater(23 Años en Adelante)" },
+                        new SelectListItem { Value = "MatrimoniosJovenes", Text = "Matrimonios Jovenes (0 a 15 Años Casados)" },
+                        new SelectListItem { Value = "MatrimoniosFrater", Text = "Matrimonios Frater(15 + Años casados)" },
+                        new SelectListItem { Value = "RDI", Text = "RDI(Hombres Solteros o Casados)" },
+
+
+                    })">
         </select>
         <span asp-validation-for="NumeroCelula" class="text-danger"></span>
     </div>
@@ -170,11 +175,12 @@
 
     <div class="form-group">
         <label asp-for="IdUsuario" class="form-label"></label>
-        <select asp-for="IdUsuario" class="form-control" asp-items="ViewBag.Usuarios">
-            <option value="">Seleccione</option>
+        <select asp-for="IdUsuario" asp-items="ViewBag.Usuarios" class="form-control">
+            <option value="">Seleccione un Usuario</option>
         </select>
         <span asp-validation-for="IdUsuario" class="text-danger"></span>
     </div>
+
 
     <div class="form-group d-flex">
         <button type="submit" class="btn btn-primary flex-fill me-2">Guardar</button>

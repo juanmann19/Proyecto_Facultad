@@ -75,8 +75,8 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label asp-for="Dpi" class="form-label"></label>
-                <input asp-for="Dpi" class="form-control" maxlength="13" minlength="13" pattern="\d{13}" />
-                <span asp-validation-for="Dpi" class="text-danger"></span>
+                <input asp-for="Dpi" class="form-control"  />
+                <span asp-validation-for="Dpi" class="text-danger" maxlength="13" minlength="13" pattern="\d{13}"></span>
             </div>
         </div>
         <div class="col-md-6">
@@ -96,8 +96,8 @@
                     <option value="">Seleccione</option>
                     <option value="1">Soltero</option>
                     <option value="2">Casado</option>
-                    <option value="2">Divorciado</option>
-                    <option value="2">Viudo</option>
+                    <option value="3">Divorciado</option>
+                    <option value="4">Viudo</option>
                 </select>
                 <span asp-validation-for="EstadoCivil" class="text-danger"></span>
             </div>
@@ -106,7 +106,7 @@
             <div class="form-group">
                 <label asp-for="Genero" class="form-label"></label>
                 <select asp-for="Genero" class="form-control">
-                    <option value="">Seleccione</option>
+                    <option value="" default>Seleccione</option>
                     <option value="Masculino">Masculino</option>
                     <option value="Femenino">Femenino</option>
                 </select>
@@ -117,7 +117,16 @@
 
     <div class="form-group">
         <label asp-for="NumeroCelula" class="form-label"></label>
-        <input asp-for="NumeroCelula" class="form-control" />
+        <select asp-for="NumeroCelula" class="form-control">
+            <option value="">Ninguno</option>
+            <option value="Mujeres">Mujeres(Solteras o Casadas)</option>
+            <option value="Familiares">Familiares(Familia y Todo el que Necesita Familia)</option>
+            <option value="JovenesFrater">Jovenes Frater(15 a 23 Años)</option>
+            <option value="JovenesAdultosFrater">Jovenes Adultos Frater(23 Años en Adelante)</option>
+            <option value="MatrimoniosJovenes">Matrimonios Jovenes (0 a 15 Años Casados)</option>
+            <option value="MatrimoniosFrater">Matrimonios Frater(15 + Años casados)</option>
+            <option value="RDI">RDI(Hombres Solteros o Casados)</option>
+        </select>
         <span asp-validation-for="NumeroCelula" class="text-danger"></span>
     </div>
 

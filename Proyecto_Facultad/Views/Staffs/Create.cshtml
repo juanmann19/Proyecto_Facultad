@@ -91,8 +91,8 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label asp-for="Dpi" class="form-label"></label>
-                <input asp-for="Dpi" class="form-control" maxlength="13" minlength="13" pattern="\d{13}" />
-                <span asp-validation-for="Dpi" class="text-danger"></span>
+                <input asp-for="Dpi" class="form-control"  />
+                <span asp-validation-for="Dpi" class="text-danger" maxlength="13" minlength="13" pattern="\d{13}"></span>
             </div>
         </div>
         <div class="col-md-6">
@@ -110,10 +110,10 @@
                 <label asp-for="EstadoCivil" class="form-label"></label>
                 <select asp-for="EstadoCivil" class="form-control">
                     <option value="">Seleccione</option>
-                    <option value="Soltero">Soltero</option>
-                    <option value="Casado">Casado</option>
-                    <option value="Divorciado">Divorciado</option>
-                    <option value="Viudo">Viudo</option>
+                    <option value="1">Soltero</option>
+                    <option value="2">Casado</option>
+                    <option value="3">Divorciado</option>
+                    <option value="4">Viudo</option>
                 </select>
                 <span asp-validation-for="EstadoCivil" class="text-danger"></span>
             </div>

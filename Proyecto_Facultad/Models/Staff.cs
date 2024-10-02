@@ -80,9 +80,13 @@ public partial class Staff
     public string Genero { get; set; }
 
     [DisplayName("Pertenece a la Red")]
+    [Required(ErrorMessage = "Debe seleccionar una red")] 
     public string NumeroCelula { get; set; }
 
     [DisplayName("Nivel Aprobado")]
+    [Required(ErrorMessage = "Debe seleccionar un nivel")]
+
+
     public string NivelAprobado { get; set; }
 
     [DisplayName("Codigo Frater")]
@@ -92,6 +96,8 @@ public partial class Staff
     public bool EstatusStaff { get; set; }
 
     [DisplayName("Usuario")]
+    [Required(ErrorMessage = "Debe seleccionar un usuario")]
+
     public int IdUsuario { get; set; }
 
    

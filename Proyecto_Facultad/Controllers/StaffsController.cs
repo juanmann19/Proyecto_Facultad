@@ -104,6 +104,7 @@ namespace Proyecto_Facultad.Controllers
             {
                 return NotFound();
             }
+
             ViewBag.Usuarios = new SelectList(_context.Usuarios, "IdUsuario", "NombreUsuario");
             return View(staff);
         }

@@ -51,9 +51,7 @@ namespace Proyecto_Facultad.Controllers
             return View();
         }
 
-        // POST: Alumno/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+      
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdAlumno,PrimerNombreAlumno,SegundoNombreAlumno,OtrosNombresAlumno,PrimerApellidoAlumno,SegundoApellidoAlumno,ApellidoCasado,FechaNacimientoAlumno,FechaBautizoAlumno,Direccion,Telefono,Dpi,Nit,EstadoCivil,Genero,NumeroCelula,CodigoFrater,Becado,Retiro,ReunionesEnConfianza,Otros,EstatusAlumno")] Alumno alumno)

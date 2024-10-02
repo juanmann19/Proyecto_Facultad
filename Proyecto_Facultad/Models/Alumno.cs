@@ -90,7 +90,11 @@ public partial class Alumno
 
     public string Telefono { get; set; }
 
+
+
     [DisplayName("DPI")]
+    [StringLength(13, MinimumLength = 13, ErrorMessage = "El DPI debe tener 13 dígitos.")]
+    [RegularExpression(@"^\d{13}$", ErrorMessage = "El DPI debe contener exactamente 13 dígitos sin guiones.")]
     public string Dpi { get; set; }
 
     [DisplayName("NIT")]
@@ -101,7 +105,7 @@ public partial class Alumno
 
     public string Genero { get; set; }
 
-    [DisplayName("Numero de Celula")]
+    [DisplayName("Pertenece a la red")]
     public string NumeroCelula { get; set; }
 
     [DisplayName("Codigo Frater")]

@@ -61,7 +61,7 @@
                 <th>NIT</th>
                 <th>Género</th>
                 <th>Estado Civil</th>
-                <th>Número de Célula</th>
+                <th>Red</th>
                 <th>Código Frater</th>
                 <th>Inscrito</th>
                 <th>Retiro</th>
@@ -85,7 +85,24 @@
                     <td>@obj.Dpi</td>
                     <td>@obj.Nit</td>
                     <td>@obj.Genero</td>
-                    <td>@obj.EstadoCivil</td>
+                        @{
+                                switch (@obj.EstadoCivil)
+                                {
+                                    case "1":
+                                    <td>Soltero</td>
+                                        break;
+                                    case "2":
+                                    <td>Casado</td>
+                                        break;
+                                    case "3":
+                                    <td>Divorciado</td>
+                                        break;
+                                    case "4":
+                                    <td>Viudo</td>
+                                        break;
+                                }
+                            }
+                                @* 1=soltero 2=casado 3=divorciado 4=viudo *@
                     <td>@obj.NumeroCelula</td>
                     <td>@obj.CodigoFrater</td>
                     <td>@(obj.Becado == true ? "Sí" : "No")</td>
