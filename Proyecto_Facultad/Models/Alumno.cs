@@ -121,4 +121,5 @@ public partial class Alumno
     public virtual ICollection<AsignacionAlumno> AsignacionAlumnos { get; set; } = new List<AsignacionAlumno>();
 
     public virtual ICollection<AsistenciaAlumno> AsistenciaAlumnos { get; set; } = new List<AsistenciaAlumno>();
+    public string NombreCompleto => $"{PrimerNombreAlumno} {PrimerApellidoAlumno}";
 }

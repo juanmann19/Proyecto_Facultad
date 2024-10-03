@@ -1,57 +1,53 @@
 ﻿@model List<Proyecto_Facultad.Models.AsistenciaAlumno>
 
-<div class="container">
-    <h2 class="text-primary pt-3">Añadir Asistencia de Alumno</h2>
+<h2>Registrar Asistencia</h2>
+
+<h3>Maestro: @ViewData["NombreMaestro"]</h3>
 
 <form asp-action="Create" method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre Alumno</th>
+                <th>Asistencia</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Count > 0)
+            {
 
-    <!-- Mostrar nombre del maestro -->
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <label class="control-label">Nombre Maestro</label>
-            <input type="text" class="form-control" value="@ViewData["NombreMaestro"]" readonly />
-        </div>
-    </div>
+                for (var i = 0; i < Model.Count; i++)
 
-    <!-- Control de asistencia de cada alumno -->
-    @for (int i = 0; i < ViewBag.Alumnos.Count; i++)
-    {
-        var alumno = ViewBag.Alumnos[i];
-        <div class="mb-2 d-flex align-items-center">
-            <div class="me-2">
-                <!-- Nombre del alumno (sólo lectura) -->
-                <input type="text" class="form-control" value="@alumno.NombreCompleto" readonly />
-                <input type="hidden" name="asistenciaAlumnos[@i].IdAlumno" value="@alumno.IdAlumno" />
-            </div>
+                {
+                    <tr>
+                        <td>@Model[i].IdAlumnoNavigation?.NombreCompleto</td>
+                        <td>
+                            <select asp-for="@Model[i].Ausencia" class="form-control">
+                                <option value="">Seleccionar</option>
+                                <option value="Presente">Presente</option>
+                                <option value="Ausente">Ausente</option>
+                                <option value="Examen">Examen</option>
+                                <option value="Bautismo">Bautismo</option>
+                                <option value="Enfermedad">Enfermedad</option>
+                                <option value="Justificado">Justificado</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="hidden" asp-for="@Model[i].IdAlumno" />
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="3">No hay alumnos asignados.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button type="submit" class="btn btn-success">Guardar</button>
+</form>
 
-            <div class="col-md-3">
-                <!-- Asistencia (presente/ausente) -->
-                <select name="asistenciaAlumnos[@i].Ausencia" class="form-select">
-                    <option value="Presente">Presente</option>
-                        <option value="Ausente">Ausente</option>
-                    </select>
-                </div>
 
-                <div class="col-md-3">
-                    <!-- Motivo de ausencia -->
-                    <select name="asistenciaAlumnos[@i].Ausencia" class="form-control">
-                        <option value="">Seleccione</option>
-                        <option value="Enfermedad">Enfermedad</option>
-                        <option value="Bautizo">Bautizo</option>
-                        <option value="Examen">Examen</option>
-                        <option value="Justificación">Justificación</option>
-                    </select>
-                </div>
-            </div>
-        }
-        <div class="form-group d-flex">
-            <button type="submit" class="btn btn-primary flex-fill me-2">Guardar</button>
-            <a asp-action="Index" class="btn btn-warning flex-fill">Cancelar</a>
-        </div>
-    </form>
-</div>
-
-    @section Scripts {
-        <partial name="_ValidationScriptsPartial"   />
-    }

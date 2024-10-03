@@ -102,4 +102,5 @@ public partial class Staff
     public virtual ICollection<Capacitacion> Capacitacions { get; set; } = new List<Capacitacion>();
 
     public virtual Usuario IdUsuarioNavigation { get; set; }
+
 }

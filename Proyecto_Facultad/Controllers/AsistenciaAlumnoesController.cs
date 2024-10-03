@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore; 
+using Microsoft.EntityFrameworkCore;
 using Proyecto_Facultad.Models;
 
 namespace Proyecto_Facultad.Controllers
@@ -31,8 +31,99 @@ namespace Proyecto_Facultad.Controllers
             return View(asistencias);
         }
 
-        // GET: AsistenciaAlumnos/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: AsistenciaAlumnoes/Create
+        public IActionResult Create()
+        {
+            // Aquí obtienes el nombre del usuario autenticado
+            var userName = User.Identity.Name;
+
+            if (string.IsNullOrEmpty(userName))
+            {
+                return Unauthorized("Usuario no autenticado.");
+            }
+
+            // Buscar al usuario basado en su nombre
+            var usuario = _context.Usuarios.FirstOrDefault(u => u.NombreUsuario == userName);
+
+            if (usuario == null)
+            {
+                return NotFound("Usuario no encontrado.");
+            }
+
+            // Buscar el maestro basado en el IdUsuario
+            var staff = _context.Staff.FirstOrDefault(s => s.IdUsuario == usuario.IdUsuario);
+
+            if (staff == null)
+            {
+                return NotFound("No se encontró el maestro.");
+            }
+
+            // Buscar los alumnos asignados a la mesa del maestro
+            var alumnosAsignados = _context.AsignacionMaestros
+                .Where(am => am.IdStaff == staff.IdStaff)
+                .SelectMany(am => am.IdMesaNavigation.AsignacionAlumnos)
+                .Select(aa => new AsistenciaAlumno
+                {
+                    IdAlumno = aa.IdAlumno,
+                    IdAlumnoNavigation = aa.IdAlumnoNavigation 
+                })
+                .ToList();
+
+            // Crear la vista con la lista de alumnos asignados
+            ViewBag.Alumnos = alumnosAsignados;
+            ViewData["NombreMaestro"] = $"{staff.PrimerNombreStaff} {staff.PrimerApellidoStaff}";
+
+            // Pasar la lista de alumnos como modelo a la vista
+            return View(alumnosAsignados);
+        }
+
+        // POST: AsistenciaAlumnoes/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(List<AsistenciaAlumno> asistenciaAlumnos)
+        {
+            if (ModelState.IsValid)
+            {
+                // Obtener el ID del staff desde el usuario autenticado
+                var userName = User.Identity.Name;
+                var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.NombreUsuario == userName);
+                var staff = await _context.Staff.FirstOrDefaultAsync(s => s.IdUsuario == usuario.IdUsuario);
+
+                // Configurar cada asistencia alumno
+                foreach (var asistenciaAlumno in asistenciaAlumnos)
+                {
+                    asistenciaAlumno.IdAsistenciaStaff = staff.IdStaff;
+
+                    // Generar un nuevo Id para cada registro de asistencia alumno
+                    var ultimaAsistencia = await _context.AsistenciaAlumnos
+                        .OrderByDescending(a => a.IdAsistenciaAlumno)
+                        .FirstOrDefaultAsync();
+
+                    // Asignar nuevo Id
+                    asistenciaAlumno.IdAsistenciaAlumno = (ultimaAsistencia != null) ? ultimaAsistencia.IdAsistenciaAlumno + 1 : 1;
+
+                    // Agregar la asistencia al contexto
+                    await _context.AsistenciaAlumnos.AddAsync(asistenciaAlumno);
+
+                    // Guardar cambios en la base de datos para la asistencia actual
+                    await _context.SaveChangesAsync();
+
+                    // Mostrar mensaje de éxito para la asistencia actual
+                    TempData["SuccessMessage"] = "Asistencia guardada correctamente.";
+                    // Esperar un breve período para mostrar el mensaje
+                    await Task.Delay(2000); // Espera 2 segundos (puedes ajustar el tiempo según sea necesario)
+                }
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            // Recargar los datos en caso de error
+            return View(asistenciaAlumnos);
+        }
+
+
+        // GET: AsistenciaAlumnoes/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -40,173 +131,56 @@ namespace Proyecto_Facultad.Controllers
             }
 
             var asistenciaAlumno = await _context.AsistenciaAlumnos
-                .Include(a => a.IdAlumnoNavigation)        // Incluir datos del alumno
-                .Include(a => a.IdAsistenciaStaffNavigation) // Incluir datos del staff de asistencia
-                .FirstOrDefaultAsync(m => m.IdAsistenciaAlumno == id); // Buscar por IdAsistenciaAlumno
+                .Include(a => a.IdAlumnoNavigation) // Incluye la navegación al alumno
+                .FirstOrDefaultAsync(a => a.IdAsistenciaAlumno == id);
 
             if (asistenciaAlumno == null)
             {
                 return NotFound();
             }
-
             return View(asistenciaAlumno);
         }
 
-        // GET: AsistenciaAlumnoes/Create
-        public async Task<IActionResult> Create()
-        {
-            // Aquí obtienes el nombre del usuario autenticado.
-            var userName = User.Identity.Name;
-
-            // Verificar si obtenemos el nombre de usuario autenticado.
-            if (string.IsNullOrEmpty(userName))
-            {
-                return Unauthorized("Usuario no autenticado.");
-            }
-
-            // Buscar el usuario basado en su nombre de forma asincrónica.
-            var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.NombreUsuario == userName);
-
-            // Verificar si el usuario existe en la tabla Usuarios.
-            if (usuario == null)
-            {
-                return NotFound("Usuario no encontrado.");
-            }
-
-            // Ahora, usa el IdUsuario para buscar el staff (maestro) de forma asincrónica.
-            var staff = await _context.Staff.FirstOrDefaultAsync(s => s.IdUsuario == usuario.IdUsuario);
-
-            // Verificar si el staff existe en la tabla Staff.
-            if (staff == null)
-            {
-                return NotFound("No se encontró el maestro relacionado con el usuario.");
-            }
-
-            // Obtener mesas asignadas al maestro de forma asincrónica
-            var mesasAsignadas = await _context.AsignacionMaestros
-                .Where(am => am.IdStaff == staff.IdStaff)
-                .Select(am => new
-                {
-                    am.IdMesa,
-                    MesaDescripcion = $"{am.IdMesaNavigation.IdMesa}",
-
-                    // Obtener alumnos asignados a cada mesa
-                    Alumnos = _context.AsignacionAlumnos
-                        .Where(aa => aa.IdMesa == am.IdMesa)
-                        .Select(aa => new
-                        {
-                            aa.IdAlumnoNavigation.IdAlumno,
-                            NombreCompleto = $"{aa.IdAlumnoNavigation.PrimerNombreAlumno} {aa.IdAlumnoNavigation.PrimerApellidoAlumno}",
-                        }).ToList()
-                })
-                .ToListAsync();
-
-            // Combinar todos los alumnos en una sola lista
-            var listaAlumnos = mesasAsignadas.SelectMany(m => m.Alumnos)
-                .Distinct() // Para evitar duplicados si un alumno está en varias mesas
-                .ToList();
-
-            // Pasar la lista de alumnos a la vista
-            ViewBag.Alumnos = listaAlumnos;
-
-            // Pasar el nombre del maestro a la vista
-            ViewData["NombreMaestro"] = $"{staff.PrimerNombreStaff} {staff.PrimerApellidoStaff}";
-
-            // Crear un SelectList con las mesas asignadas.
-            ViewData["IdMesa"] = new SelectList(mesasAsignadas, "IdMesa", "MesaDescripcion");
-
-            // Otros datos necesarios para el formulario.
-            ViewData["IdAlumno"] = new SelectList(_context.Alumnos, "IdAlumno", "PrimerNombreAlumno");
-            ViewData["IdLeccion"] = new SelectList(_context.Leccions, "IdLeccion", "Descripcion");
-            ViewData["IdBimestre"] = new SelectList(_context.Bimestres, "IdBimestre", "NombreBimestre");
-
-            return View();
-        }
-        // POST: AsistenciaAlumnoes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-
+        // POST: AsistenciaAlumnoes/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(List<AsistenciaAlumno> asistenciaAlumnos)
+        public async Task<IActionResult> Edit(int id, [Bind("IdAsistenciaAlumno,IdAsistenciaStaff,IdAlumno,Ausencia")] AsistenciaAlumno asistenciaAlumno)
         {
-            if (asistenciaAlumnos == null || !asistenciaAlumnos.Any())
+            if (id != asistenciaAlumno.IdAsistenciaAlumno)
             {
-                return BadRequest("La lista de asistencia no puede ser nula o vacía.");
+                return NotFound();
             }
 
-            foreach (var asistencia in asistenciaAlumnos)
+            if (ModelState.IsValid)
             {
-                // Validar que el alumno esté seleccionado
-                if (asistencia.IdAlumno == 0)
+                try
                 {
-                    return BadRequest("Falta la información del alumno.");
+                    _context.Update(asistenciaAlumno);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-
-                // Verificar si ya existe una asistencia para el alumno y el maestro
-                var existingAsistencia = await _context.AsistenciaAlumnos
-                    .AsNoTracking()
-                    .FirstOrDefaultAsync(a => a.IdAlumno == asistencia.IdAlumno && a.IdAsistenciaStaff == asistencia.IdAsistenciaStaff);
-
-                // Si no existe, se agrega una nueva
-                if (existingAsistencia == null)
+                catch (DbUpdateConcurrencyException)
                 {
-                    _context.AsistenciaAlumnos.Add(asistencia);
-                }
-                else
-                {
-                    // Si existe, se puede actualizar solo si el estado de asistencia es "Ausente"
-                    if (asistencia.Ausencia.Contains("Ausente"))
+                    if (!AsistenciaAlumnoExists(asistenciaAlumno.IdAsistenciaAlumno))
                     {
-                        existingAsistencia.Ausencia = asistencia.Ausencia; // Actualiza solo si el alumno está ausente
-                        _context.AsistenciaAlumnos.Update(existingAsistencia);
+                        return NotFound();
                     }
+                    throw;
+                }
+                catch (DbUpdateException ex)
+                {
+                    ModelState.AddModelError("", "Ocurrió un error al actualizar la asistencia. Detalles: " + ex.Message);
                 }
             }
 
-            // Guardar todos los cambios al contexto
-            await _context.SaveChangesAsync();
-
-            TempData["SuccessMessage"] = "Asistencias guardadas correctamente.";
-            return RedirectToAction("Index");
+            // Si llegamos aquí, algo falló, vuelve a mostrar el formulario
+            return View(asistenciaAlumno);
         }
-
-
-        // POST: AsistenciaAlumnoes/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-
-        //[ValidateAntiForgeryToken]
-        //[HttpPost]
-        //public IActionResult Create (List<AsistenciaAlumno> asistenciaAlumnos, DateTime FechaAsistencia)
-        //{
-        //    if (asistenciaAlumnos == null || asistenciaAlumnos.Count == 0)
-        //    {
-        //        return BadRequest("No se ha recibido información de asistencia.");
-        //    }
-
-        //    // Guardar cada asistencia de alumno
-        //    foreach (var asistencia in asistenciaAlumnos)
-        //    {
-        //        var asistenciaAlumno = new AsistenciaAlumno
-        //        {
-        //            IdAlumno = asistencia.IdAlumno,
-
-        //            Ausencia = asistencia.Ausencia,
-
-        //        };
-
-        //        _context.AsistenciaAlumnos.Add(asistenciaAlumno);
-        //    }
-
-        //    _context.SaveChanges();
-        //    return RedirectToAction("Index");
 
         private bool AsistenciaAlumnoExists(int id)
         {
             return _context.AsistenciaAlumnos.Any(e => e.IdAsistenciaAlumno == id);
         }
+        
     }
 }
-
-

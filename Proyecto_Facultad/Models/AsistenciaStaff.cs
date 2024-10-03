@@ -8,7 +8,7 @@ namespace Proyecto_Facultad.Models;
 
 public partial class AsistenciaStaff
 {
-    [Key] // Asegúrate de tener este atributo
+    [Key] 
     public int IdAsistenciaStaff { get; set; }
 
     [DisplayName("Nombre")]
@@ -37,4 +37,5 @@ public partial class AsistenciaStaff
     public virtual Mesa IdMesaNavigation { get; set; }
 
     public virtual Staff IdStaffNavigation { get; set; }
+    
 }
