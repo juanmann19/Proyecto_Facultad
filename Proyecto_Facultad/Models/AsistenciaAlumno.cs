@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Proyecto_Facultad.Models;
 
@@ -17,7 +18,11 @@ public partial class AsistenciaAlumno
 
     public string Ausencia { get; set; }
 
+    [NotMapped]
+    public DateTime FechaAsistencia { get; set; }
     public virtual Alumno IdAlumnoNavigation { get; set; }
 
     public virtual AsistenciaStaff IdAsistenciaStaffNavigation { get; set; }
+
+
 }

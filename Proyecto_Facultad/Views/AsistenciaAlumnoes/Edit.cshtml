@@ -1,34 +1,34 @@
 ﻿@model Proyecto_Facultad.Models.AsistenciaAlumno
 
 <div class="container">
-
     <h2 class="text-primary pt-3">Editar Asistencia del Alumno</h2>
-    <!--form asp-controller="AsistenciaAlumno" asp-action="Edit" method="post"--->
-        <!---input type="hidden" asp-for="IdAsistenciaAlumno" />
 
-        <!-- Dropdown para seleccionar la Asistencia del Staff -->
+    <form asp-action="Edit" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="IdAsistenciaAlumno" />
+        <input type="hidden" asp-for="IdAlumno" /> <!-- Añadido para enviar el IdAlumno -->
+        <!-- Mostrar el Nombre del Alumno -->
         <div class="row mb-3">
             <div class="col-md-6">
-                <label asp-for="IdAsistenciaStaff" class="form-label"></label>
-                <select asp-for="IdAsistenciaStaff" class="form-control" asp-items="ViewBag.IdAsistenciaStaff"></select>
-                <span asp-validation-for="IdAsistenciaStaff" class="text-danger"></span>
-            </div>
-        </div>
-
-        <!-- Dropdown para seleccionar el Alumno -->
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label asp-for="IdAlumno" class="form-label"></label>
-                <select asp-for="IdAlumno" class="form-control" asp-items="ViewBag.IdAlumno"></select>
+                <label class="form-label">Nombre Alumno</label>
+                <input type="text" class="form-control" value="@Model.IdAlumnoNavigation?.NombreCompleto" readonly />
                 <span asp-validation-for="IdAlumno" class="text-danger"></span>
             </div>
         </div>
 
-        <!-- Campo para indicar la Ausencia -->
+        <!-- Campo de Ausencia -->
         <div class="row mb-3">
             <div class="col-md-6">
                 <label asp-for="Ausencia" class="form-label">Ausencia</label>
-                <input asp-for="Ausencia" class="form-control" />
+                <select asp-for="Ausencia" class="form-control" required>
+                    <option value="">Seleccione una opción</option>
+                    <option value="Presente">Presente</option>
+                    <option value="Ausente">Ausente</option>
+                    <option value="Examen">Examen</option>
+                    <option value="Bautizo">Bautizo</option>
+                    <option value="Enfermedad">Enfermedad</option>
+                    <option value="Justificado">Justificado</option>
+                </select>
                 <span asp-validation-for="Ausencia" class="text-danger"></span>
             </div>
         </div>
@@ -36,11 +36,15 @@
         <!-- Botones para Guardar y Cancelar -->
         <div class="form-group d-flex">
             <button type="submit" class="btn btn-success flex-fill me-2">Guardar</button>
-            <a asp-action="Index" asp-controller="AsistenciaAlumno" class="btn btn-danger flex-fill">Cancelar</a>
+            <a asp-action="Index" asp-controller="AsistenciaAlumnoes" class="btn btn-danger flex-fill">Cancelar</a>
         </div>
-    </!--form>
+    </form>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
+
+
+
