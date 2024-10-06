@@ -104,42 +104,50 @@ namespace Proyecto_Facultad.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdNota,IdAsignacionalumnos,IdBimestre,NotaObtenida")] Nota nota)
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> Create([Bind("IdNota,IdAsignacionalumnos,IdBimestre,NotaObtenida")] Nota nota)
+{
+    // Validar manualmente el rango de la nota
+    if (nota.NotaObtenida < 0)
+    {
+        ModelState.AddModelError("NotaObtenida", "La nota debe ser mayor a 0.");
+    }
+    else if (nota.NotaObtenida > 100)
+    {
+        ModelState.AddModelError("NotaObtenida", "La nota debe ser menor o igual a 100.");
+    }
+
+    if (ModelState.IsValid)
+    {
+        try
         {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    // Añadir la nueva nota a la base de datos
-                    _context.Add(nota);
-                    await _context.SaveChangesAsync();
-                    TempData["SuccessMessage"] = "Nota asignada correctamente.";
-                    return RedirectToAction(nameof(Index));
-                }
-                catch (Exception ex)
-                {
-                    // Manejar cualquier error al guardar en la base de datos
-                    TempData["ErrorMessage"] = "Ocurrió un error al guardar los datos: " + ex.Message;
-                }
-            }
-
-            // Si la validación falla, recargar los dropdowns
-            var asignaciones = _context.AsignacionAlumnos
-                .Include(a => a.IdAlumnoNavigation)  // Incluir la navegación hacia el alumno
-                .Select(a => new
-                {
-                    a.IdAsignacionalumnos,  // Utilizar IdAsignacionalumnos como valor
-                    NombreCompleto = $"{a.IdAlumnoNavigation.PrimerNombreAlumno} {a.IdAlumnoNavigation.PrimerApellidoAlumno}"
-                })
-                .ToList();
-
-            // Volver a cargar las listas en caso de error
-            ViewBag.IdAlumno = new SelectList(asignaciones, "IdAsignacionalumnos", "NombreCompleto", nota.IdAsignacionalumnos);
-            ViewBag.IdBimestre = new SelectList(_context.Bimestres, "IdBimestre", "NombreBimestre", nota.IdBimestre);
-
-            return View(nota);
+            _context.Add(nota);
+            await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = "Nota asignada correctamente.";
+            return RedirectToAction(nameof(Index));
         }
+        catch (Exception ex)
+        {
+            TempData["ErrorMessage"] = "Ocurrió un error al guardar los datos: " + ex.Message;
+        }
+    }
+
+    // Si la validación falla, recargar los dropdowns
+    var asignaciones = _context.AsignacionAlumnos
+        .Include(a => a.IdAlumnoNavigation)
+        .Select(a => new
+        {
+            a.IdAsignacionalumnos,
+            NombreCompleto = $"{a.IdAlumnoNavigation.PrimerNombreAlumno} {a.IdAlumnoNavigation.PrimerApellidoAlumno}"
+        })
+        .ToList();
+
+    ViewBag.IdAlumno = new SelectList(asignaciones, "IdAsignacionalumnos", "NombreCompleto", nota.IdAsignacionalumnos);
+    ViewBag.IdBimestre = new SelectList(_context.Bimestres, "IdBimestre", "NombreBimestre", nota.IdBimestre);
+
+    return View(nota);
+}
+
         //public async Task<IActionResult> Create([Bind("IdNota,IdAsignacionalumnos,IdBimestre,NotaObtenida")] Nota nota)
         //{
         //    if (ModelState.IsValid)
