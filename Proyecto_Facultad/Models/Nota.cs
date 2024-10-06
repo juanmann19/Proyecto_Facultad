@@ -20,6 +20,7 @@ public partial class Nota
     [DisplayName("Nota Obtenida en el examen")]
     [RegularExpression(@"^[0-9]+$", ErrorMessage = "Campo solo puede contener numeros")]
     [Required(ErrorMessage = "Todos los campos deben llenarse")]
+    [Range(0, 100, ErrorMessage = "La nota debe estar entre 0 y 100.")]
     public int NotaObtenida { get; set; }
 
     public virtual AsignacionAlumno IdAsignacionalumnosNavigation { get; set; }

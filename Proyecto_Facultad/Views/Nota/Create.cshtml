@@ -18,7 +18,7 @@
             </div>
             <div class="col-md-6">
                 <label asp-for="NotaObtenida" class="form-label"></label>
-                <input asp-for="NotaObtenida" class="form-control" type="number" min="0" max="100" />
+                <input asp-for="NotaObtenida" class="form-control" />
                 <span asp-validation-for="NotaObtenida" class="text-danger"></span>
             </div>
 
@@ -32,7 +32,4 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-    <script>
-        document.querySelector('form').addEventListener('submit', function (event)
-    </script>
 }
