@@ -484,3 +484,6 @@ $RECYCLE.BIN/
 # Vim temporary swap files
 *.swp
 /Proyecto_Facultad/wwwroot/images/logo.png
+
+#para que no se vaya appsettings
+appsettings.json
