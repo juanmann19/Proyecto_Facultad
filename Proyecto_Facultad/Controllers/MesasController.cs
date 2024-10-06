@@ -52,6 +52,7 @@ namespace Proyecto_Facultad.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdMesa,IdSede,IdJornada,FechaInicio,FechaFin,EstadoMesa")] Mesa mesa)
         {
+            mesa.EstadoMesa = true;
             if (ModelState.IsValid)
             {
                 _context.Add(mesa);

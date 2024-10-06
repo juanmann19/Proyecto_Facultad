@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Proyecto_Facultad.Controllers
 {
-    [Authorize (Roles = "Coordinador, Admin")]
+    [Authorize(Roles = "Coordinador, Admin")]
     public class LeccionController : Controller
     {
         private readonly BdfflContext _context;
@@ -91,7 +91,6 @@ namespace Proyecto_Facultad.Controllers
             return View(leccion);
         }
 
-        // POST: Leccion/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("IdLeccion,Descripcion,IdLibro")] Leccion leccion)
@@ -123,10 +122,10 @@ namespace Proyecto_Facultad.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // Reinitialize the ViewBag if the model state is not valid
             ViewBag.IdLibro = new SelectList(_context.Libros, "IdLibro", "NombreLibro", leccion.IdLibro);
             return View(leccion);
         }
+
 
         private bool LeccionExists(int id)
         {

@@ -16,6 +16,7 @@ public partial class Mesa
     [DisplayName("Jornada")]
     public int IdJornada { get; set; }
 
+    [Required(ErrorMessage = "La fecha de inicio es obligatoria.")]
     [DisplayName("Fecha de Inicio")]
     public DateOnly FechaInicio { get; set; }
 

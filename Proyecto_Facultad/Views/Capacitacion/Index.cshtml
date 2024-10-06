@@ -15,7 +15,7 @@
             @foreach (var capacitacion in Model)
             {
                 <tr>
-                    <td>@capacitacion.FechaCapacitacion.ToShortDateString()</td>
+                    <td>@capacitacion.FechaCapacitacion?.ToShortDateString()</td>
                     <td>@capacitacion.IdStaffNavigation.PrimerNombreStaff</td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@capacitacion.IdCapacitacion" class="btn btn-warning">Editar</a>
