@@ -160,7 +160,10 @@ namespace Proyecto_Facultad.Controllers
             }
 
             ViewData["IdMesa"] = new SelectList(await _context.Mesas.ToListAsync(), "IdMesa", "IdMesa", asignacionMaestro.IdMesa);
-            ViewData["IdStaff"] = new SelectList(await _context.Staff.ToListAsync(), "IdStaff", "NivelAprobado", asignacionMaestro.IdStaff);
+            ViewData["IdStaff"] = new SelectList(await _context.Staff
+            .Select(s => new { s.IdStaff, NombreCompleto = s.PrimerNombreStaff + " " + s.PrimerApellidoStaff })
+            .ToListAsync(), "IdStaff", "NombreCompleto", asignacionMaestro.IdStaff);
+
             return View(asignacionMaestro);
         }
 
@@ -196,7 +199,7 @@ namespace Proyecto_Facultad.Controllers
             }
 
             ViewData["IdMesa"] = new SelectList(await _context.Mesas.ToListAsync(), "IdMesa", "IdMesa", asignacionMaestro.IdMesa);
-            ViewData["IdStaff"] = new SelectList(await _context.Staff.ToListAsync(), "IdStaff", "NivelAprobado", asignacionMaestro.IdStaff);
+            ViewData["IdStaff"] = new SelectList(await _context.Staff.ToListAsync(), "IdStaff", "NombreCompleto", asignacionMaestro.IdStaff);
             return View(asignacionMaestro);
         }
 
