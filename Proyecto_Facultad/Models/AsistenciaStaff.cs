@@ -8,7 +8,6 @@ namespace Proyecto_Facultad.Models;
 
 public partial class AsistenciaStaff
 {
-    [Key] 
     public int IdAsistenciaStaff { get; set; }
 
     [DisplayName("Nombre")]

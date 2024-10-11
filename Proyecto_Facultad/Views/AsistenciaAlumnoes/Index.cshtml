@@ -12,6 +12,15 @@
         </div>
     </div>
 
+    @* Mostrar mensaje de éxito *@
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @* Mostrar mensaje de error *@
     @if (TempData["ErrorMessage"] != null)
     {
         <div class="alert alert-danger">
@@ -36,15 +45,15 @@
                         <td>@item.Ausencia</td>
                         <td>
                             <div class="btn-group w-100" role="group">
-                                <a asp-action="Edit" asp-route-id="@item.IdAsistenciaAlumno" class="btn btn-primary flex-grow-1">
+                                <a asp-action="Edit" asp-route-id="@item.IdAsistenciaAlumno" class="btn btn-warning flex-grow-1">
                                     <i class="bi bi-pencil-fill"></i> Editar
                                 </a>
-                               @*  <!-- Puedes agregar un botón para eliminar si es necesario -->
-                                <form asp-action="Delete" asp-route-id="@item.IdAsistenciaAlumno" method="post" class="d-inline">
-                                    <button type="submit" class="btn btn-danger flex-grow-1" onclick="return confirm('¿Estás seguro de que deseas eliminar esta asistencia?');">
-                                        <i class="bi bi-trash-fill"></i> Eliminar
-                                    </button>
-                                </form> *@
+                                @* Puedes agregar un botón para eliminar si es necesario *@
+                                @* <form asp-action="Delete" asp-route-id="@item.IdAsistenciaAlumno" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-danger flex-grow-1" onclick="return confirm('¿Estás seguro de que deseas eliminar esta asistencia?');">
+                            <i class="bi bi-trash-fill"></i> Eliminar
+                            </button>
+                            </form> *@
                             </div>
                         </td>
                     </tr>
@@ -53,10 +62,3 @@
         </table>
     </div>
 </div>
-
-
-
-
-
-
-

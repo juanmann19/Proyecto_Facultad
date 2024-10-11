@@ -24,5 +24,4 @@ public partial class AsistenciaAlumno
 
     public virtual AsistenciaStaff IdAsistenciaStaffNavigation { get; set; }
 
-
 }

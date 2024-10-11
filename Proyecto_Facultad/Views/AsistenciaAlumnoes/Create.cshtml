@@ -1,10 +1,11 @@
 ﻿@model List<Proyecto_Facultad.Models.AsistenciaAlumno>
 
-<h2>Registrar Asistencia</h2>
 
-<h3>Maestro: @ViewData["NombreMaestro"]</h3>
+<div class="container">
+    <h2 class="text-primary">Añadir Asistencia Alumnos</h2>
 
-<form asp-action="Create" method="post">
+    <h3>Maestro: @ViewData["NombreMaestro"]</h3>
+   <form asp-action="Create" method="post">
     <table class="table">
         <thead>
             <tr>
@@ -18,7 +19,7 @@
             {
 
                 for (var i = 0; i < Model.Count; i++)
-
+                
                 {
                     <tr>
                         <td>@Model[i].IdAlumnoNavigation?.NombreCompleto</td>
@@ -49,5 +50,8 @@
     </table>
     <button type="submit" class="btn btn-success">Guardar</button>
 </form>
+</div>
 
-
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
