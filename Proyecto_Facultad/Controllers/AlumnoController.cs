@@ -11,8 +11,8 @@ using Proyecto_Facultad.ViewModels;
 
 namespace Proyecto_Facultad.Controllers
 {
-    
-    [Authorize (Roles = "Coordinador, Admin")]
+
+    [Authorize(Roles = "Coordinador, Admin")]
     public class AlumnoController : Controller
     {
         private readonly BdfflContext _context;
@@ -51,7 +51,7 @@ namespace Proyecto_Facultad.Controllers
             return View();
         }
 
-      
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdAlumno,PrimerNombreAlumno,SegundoNombreAlumno,OtrosNombresAlumno,PrimerApellidoAlumno,SegundoApellidoAlumno,ApellidoCasado,FechaNacimientoAlumno,FechaBautizoAlumno,Direccion,Telefono,Dpi,Nit,EstadoCivil,Genero,NumeroCelula,CodigoFrater,Becado,Retiro,ReunionesEnConfianza,Otros,EstatusAlumno")] Alumno alumno)
@@ -286,21 +286,51 @@ namespace Proyecto_Facultad.Controllers
 
             return View("ReporteGraduadosNivel2", viewModel); // Especifica la vista aparte
         }
-        public async Task<IActionResult> BautizadosPorMes()
+
+        // Acción para mostrar la vista BautizadosPorMes
+        public IActionResult BautizadosPorMes(string nombre, DateOnly? fechaInicio, DateOnly? fechaFin)
         {
-            var alumnosBautizados = await _context.Alumnos
-                .Where(a => a.FechaBautizoAlumno.HasValue) // Asegúrate de filtrar por alumnos que tienen fecha de bautizo
-                .GroupBy(a => new { a.FechaBautizoAlumno.Value.Year, a.FechaBautizoAlumno.Value.Month }) // Agrupar por año y mes
+            // Inicializar la consulta base
+            var query = _context.Alumnos.Where(a => a.FechaBautizoAlumno.HasValue);
+
+            // Aplicar filtro por nombre si existe (evaluado en el lado del cliente)
+            if (!string.IsNullOrEmpty(nombre))
+            {
+                query = query.AsEnumerable().Where(a => (a.PrimerNombreAlumno + " " + a.PrimerApellidoAlumno)
+                                                         .Contains(nombre, StringComparison.OrdinalIgnoreCase))
+                                            .AsQueryable();
+            }
+
+            // Aplicar filtro por fecha de inicio si se ha proporcionado
+            if (fechaInicio.HasValue)
+            {
+                query = query.Where(a => a.FechaBautizoAlumno >= fechaInicio.Value);
+            }
+
+            // Aplicar filtro por fecha de fin si se ha proporcionado
+            if (fechaFin.HasValue)
+            {
+                query = query.Where(a => a.FechaBautizoAlumno <= fechaFin.Value);
+            }
+
+            // Obtener la lista final filtrada
+            var alumnosFiltrados = query.ToList();
+
+            // Enviar los resultados de la búsqueda al ViewBag
+            ViewBag.ResultadosBusqueda = alumnosFiltrados;
+
+            // Enviar el modelo a la vista
+            var alumnosBautizadosPorMes = alumnosFiltrados
+                .GroupBy(a => a.FechaBautizoAlumno.Value.Month)
                 .Select(g => new AlumnoBautizadoPorMesViewModel
                 {
-                    Anio = g.Key.Year,
-                    Mes = g.Key.Month,
+                    Mes = g.Key,
                     Cantidad = g.Count()
-                })
-                .ToListAsync();
+                }).ToList();
 
-            return View(alumnosBautizados);
+            return View(alumnosBautizadosPorMes);
         }
+
 
 
     }
