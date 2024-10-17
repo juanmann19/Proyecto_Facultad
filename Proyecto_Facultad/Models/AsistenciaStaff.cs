@@ -16,7 +16,7 @@ public partial class AsistenciaStaff
     [DisplayName("Fecha de clases")]
     public DateOnly FechaClase { get; set; }
 
-    [DisplayName("Numero de Mesa")]
+    [DisplayName("Numero de mesa")]
     public int IdMesa { get; set; }
 
     [DisplayName("Leccion")]

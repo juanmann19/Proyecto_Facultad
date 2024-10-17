@@ -11,27 +11,35 @@
     var capacitacionesConNombresPorMes = ViewBag.CapacitacionesConNombresPorMes as IEnumerable<dynamic>;
 }
 
-<h2 class="text-primary">Reporte de Capacitaciones por Mes</h2>
+<h2 class="text-primary">Reporte de capacitaciones por mes</h2>
 <br />
 <br />
 
 <form method="get" class="mb-4">
     <div class="row">
         <div class="col-md-4">
-            <label for="nombreStaff" class="form-label">Buscar por Nombre del Maestro</label>
+            <label for="nombreStaff" class="form-label">Buscar por nombre del maestro</label>
             <input type="text" class="form-control" id="nombreStaff" name="nombreStaff" value="@nombreStaff" placeholder="Nombre del maestro">
         </div>
         <div class="col-md-3">
-            <label for="fechaInicio" class="form-label">Fecha de Inicio</label>
+            <label for="fechaInicio" class="form-label">Fecha de inicio</label>
             <input type="date" class="form-control" id="fechaInicio" name="fechaInicio" value="@fechaInicio?.ToString("yyyy-MM-dd")">
         </div>
         <div class="col-md-3">
-            <label for="fechaFin" class="form-label">Fecha de Fin</label>
+            <label for="fechaFin" class="form-label">Fecha de fin</label>
             <input type="date" class="form-control" id="fechaFin" name="fechaFin" value="@fechaFin?.ToString("yyyy-MM-dd")">
         </div>
         <div class="col-md-2 d-flex align-items-end">
-            <button type="submit" class="btn btn-primary me-2">Buscar</button>
-            <a href="@Url.Action("Reporte", "Capacitacion")" class="btn btn-secondary">Limpiar</a>
+            <button type="submit" class="btn d-flex align-items-center" style="background-color: #1abc9c; color: white; width: 150px;">
+                <!-- Verde menta -->
+                <i class="bi bi-funnel me-2"></i>
+                Buscar
+            </button>
+            <a href="@Url.Action("Reporte", "Capacitacion")" class="btn d-flex align-items-center" style="background-color: #f39c12; color: white; width: 150px; margin-left: 10px;">
+                <!-- Amarillo fuerte -->
+                <i class="bi bi-trash me-2"></i>
+                Limpiar
+            </a>
         </div>
     </div>
 </form>
@@ -40,14 +48,14 @@
 
 @if (capacitacionesPorMes != null && capacitacionesPorMes.Any())
 {
-    <h3 class="text-primary mt-4">Resultados de la Búsqueda</h3>
+    <h3 class="text-primary mt-4">Resultados de la búsqueda</h3>
     <div class="table-responsive">
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Nombres de los Maestros</th>
+                    <th>Nombres de los maestros</th>
                     <th>Mes</th>
-                    <th>Total de Capacitaciones</th>
+                    <th>Total de capacitaciones</th>
                 </tr>
             </thead>
             <tbody>

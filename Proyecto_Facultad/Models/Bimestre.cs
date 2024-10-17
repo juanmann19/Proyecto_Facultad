@@ -9,7 +9,7 @@ public partial class Bimestre
 {
     public int IdBimestre { get; set; }
 
-    [DisplayName("Nombre Bimestre")]
+    [DisplayName("Nombre del bimestre")]
     [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ0-9 ]+$", ErrorMessage = "Campo puede contener letras y numeros")]
     [Required(ErrorMessage = "El Nombre de Lección es Obligatorio")]
     public string NombreBimestre { get; set; }

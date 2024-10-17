@@ -1,11 +1,10 @@
 ﻿@model Proyecto_Facultad.Models.Nivel
 
 <div class="container">
-    <h2 class="text-primary pt-3">Editar Nivel</h2>
 
+    <h2 class="text-primary pt-3">Editar Nivel</h2>
     <form asp-controller="Nivels" asp-action="Edit" method="post">
         <input type="hidden" asp-for="IdNivel" />
-
         <div class="row mb-3">
             <div class="col-md-6">
                 <label asp-for="NombreNivel" class="form-label"></label>
@@ -14,11 +13,14 @@
             </div>
         </div>
 
-        <div class="form-group d-flex">
-            <button type="submit" class="btn btn-success flex-fill me-2">Guardar</button>
-            <a asp-action="Index" asp-controller="Nivels" class="btn btn-danger flex-fill">Cancelar</a>
+        <div class="form-group text-end">
+            <button type="submit" class="btn btn-sm text-white" style="background-color: #00B6A6; padding: 8px 20px;">
+                <i class="bi bi-save me-2"></i> Guardar
+            </button>
+            <a asp-action="Index" class="btn btn-danger btn-sm" style="padding: 8px 20px;">
+                <i class="bi bi-x me-2"></i> Cancelar
+            </a>
         </div>
-
     </form>
 </div>
 

@@ -1,55 +1,63 @@
 ﻿@model List<Proyecto_Facultad.Models.AsistenciaAlumno>
 
-
 <div class="container">
-    <h2 class="text-primary">Añadir Asistencia Alumnos</h2>
+    <h2 class="text-primary">Crear asistencia alumnos</h2>
 
     <h3>Maestro: @ViewData["NombreMaestro"]</h3>
-   <form asp-action="Create" method="post">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Nombre Alumno</th>
-                <th>Asistencia</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model != null && Model.Count > 0)
-            {
+    <form asp-action="Create" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                for (var i = 0; i < Model.Count; i++)
-                
+        <!-- Tabla para la lista de alumnos -->
+        <table class="table table-bordered table-striped" >
+            <thead>
+                <tr class="table">
+                    <th>Nombre alumno</th>
+                    <th>Asistencia</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Count > 0)
+                {
+                    for (var i = 0; i < Model.Count; i++)
+                    {
+                        <tr>
+                            <td>@Model[i].IdAlumnoNavigation?.NombreCompleto</td>
+                            <td>
+                                <select asp-for="@Model[i].Ausencia" class="form-control">
+                                    <option value="">Seleccionar</option>
+                                    <option value="Presente">Presente</option>
+                                    <option value="Ausente">Ausente</option>
+                                    <option value="Examen">Examen</option>
+                                    <option value="Bautismo">Bautismo</option>
+                                    <option value="Enfermedad">Enfermedad</option>
+                                    <option value="Justificado">Justificado</option>
+                                </select>                               
+                            </td>
+                            <td>
+                                <input type="hidden" asp-for="@Model[i].IdAlumno" />
+                            </td>
+                        </tr>
+                    }
+                }
+                else
                 {
                     <tr>
-                        <td>@Model[i].IdAlumnoNavigation?.NombreCompleto</td>
-                        <td>
-                            <select asp-for="@Model[i].Ausencia" class="form-control">
-                                <option value="">Seleccionar</option>
-                                <option value="Presente">Presente</option>
-                                <option value="Ausente">Ausente</option>
-                                <option value="Examen">Examen</option>
-                                <option value="Bautismo">Bautismo</option>
-                                <option value="Enfermedad">Enfermedad</option>
-                                <option value="Justificado">Justificado</option>
-                            </select>
-                        </td>
-                        <td>
-                            <input type="hidden" asp-for="@Model[i].IdAlumno" />
-                        </td>
+                        <td colspan="2">No hay alumnos asignados.</td>
                     </tr>
                 }
-            }
-            else
-            {
-                <tr>
-                    <td colspan="3">No hay alumnos asignados.</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    <button type="submit" class="btn btn-success">Guardar</button>
-</form>
+            </tbody>
+        </table>
+
+        <div class="form-group text-end">
+            <button type="submit" class="btn btn-sm text-white" style="background-color: #00B6A6; padding: 8px 20px;">
+                <i class="bi bi-save me-2"></i> Guardar
+            </button>
+            <a asp-action="Index" class="btn btn-danger btn-sm" style="padding: 8px 20px;">
+                <i class="bi bi-x me-2"></i> Cancelar
+            </a>
+        </div>
+
+    </form>
 </div>
 
 @section Scripts {

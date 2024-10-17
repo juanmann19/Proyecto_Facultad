@@ -8,10 +8,10 @@ public partial class Capacitacion
 {
     public int IdCapacitacion { get; set; }
 
-    [DisplayName("Fecha de Capacitacion")]
+    [DisplayName("Fecha de capacitacion")]
     public DateTime FechaCapacitacion { get; set; }
 
-    [DisplayName("Nombre del Maestro")]
+    [DisplayName("Nombre del maestro")]
     public int IdStaff { get; set; }
 
     public virtual Staff IdStaffNavigation { get; set; }

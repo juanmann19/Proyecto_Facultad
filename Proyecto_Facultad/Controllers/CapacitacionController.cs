@@ -53,9 +53,21 @@ namespace Proyecto_Facultad.Controllers
         [Authorize (Roles = "Coordinador, Auxiliar, Admin")]
         public IActionResult Create()
         {
-            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "PrimerNombreStaff");
+            // Obtener los nombres completos de los maestros (staff).
+            var staffList = _context.Staff
+                .Select(s => new
+                {
+                    s.IdStaff,
+                    NombreCompleto = $"{s.PrimerNombreStaff} {s.PrimerApellidoStaff}"
+                })
+                .ToList();
+
+            // Crear el SelectList para los maestros, utilizando el nombre completo.
+            ViewData["IdStaff"] = new SelectList(staffList, "IdStaff", "NombreCompleto");
+
             return View();
         }
+
 
         // POST: Capacitacion/Create
         [HttpPost]
@@ -90,14 +102,28 @@ namespace Proyecto_Facultad.Controllers
                 return NotFound();
             }
 
-            var capacitacion = await _context.Capacitacions.FindAsync(id);
+
+        var capacitacion = await _context.Capacitacions.FindAsync(id);
             if (capacitacion == null)
             {
                 return NotFound();
             }
-            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "PrimerNombreStaff", capacitacion.IdStaff);
+
+            // Obtener los nombres completos de los maestros (staff).
+            var staffList = _context.Staff
+                .Select(s => new
+                {
+                    s.IdStaff,
+                    NombreCompleto = $"{s.PrimerNombreStaff} {s.PrimerApellidoStaff}"
+                })
+                .ToList();
+
+            // Crear el SelectList para los maestros, utilizando el nombre completo.
+            ViewData["IdStaff"] = new SelectList(staffList, "IdStaff", "NombreCompleto", capacitacion.IdStaff);
+
             return View(capacitacion);
         }
+
 
         // POST: Capacitacion/Edit/5
         [HttpPost]
@@ -132,12 +158,22 @@ namespace Proyecto_Facultad.Controllers
                     }
                 }
             }
-            ViewData["IdStaff"] = new SelectList(_context.Staff, "IdStaff", "PrimerNombreStaff", capacitacion.IdStaff);
+
+            // En caso de error, vuelve a cargar el SelectList con los nombres completos.
+            var staffList = _context.Staff
+                .Select(s => new
+                {
+                    s.IdStaff,
+                    NombreCompleto = $"{s.PrimerNombreStaff} {s.PrimerApellidoStaff}"
+                })
+                .ToList();
+            ViewData["IdStaff"] = new SelectList(staffList, "IdStaff", "NombreCompleto", capacitacion.IdStaff);
+
             return View(capacitacion);
         }
 
         // GET: Capacitacion/Delete/5
-        [Authorize (Roles = "Coordinador, Auxiliar, Admin")]
+        [Authorize(Roles = "Coordinador, Auxiliar, Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -146,12 +182,16 @@ namespace Proyecto_Facultad.Controllers
             }
 
             var capacitacion = await _context.Capacitacions
-                .Include(c => c.IdStaffNavigation)
+                .Include(c => c.IdStaffNavigation) // Incluir los datos del maestro
                 .FirstOrDefaultAsync(m => m.IdCapacitacion == id);
+
             if (capacitacion == null)
             {
                 return NotFound();
             }
+
+            // Concatenar el nombre completo del maestro en la vista.
+            ViewBag.NombreCompletoStaff = $"{capacitacion.IdStaffNavigation.PrimerNombreStaff} {capacitacion.IdStaffNavigation.PrimerApellidoStaff}";
 
             return View(capacitacion);
         }
@@ -159,15 +199,23 @@ namespace Proyecto_Facultad.Controllers
         // POST: Capacitacion/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize (Roles = "Coordinador, Auxiliar, Admin")]
+        [Authorize(Roles = "Coordinador, Auxiliar, Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var capacitacion = await _context.Capacitacions.FindAsync(id);
+            var capacitacion = await _context.Capacitacions
+                .Include(c => c.IdStaffNavigation) // Incluir nuevamente la navegación a Staff para obtener el nombre completo
+                .FirstOrDefaultAsync(c => c.IdCapacitacion == id);
+
             if (capacitacion != null)
             {
+                // Guardar el nombre completo para mostrar en el mensaje de confirmación
+                var nombreCompletoStaff = $"{capacitacion.IdStaffNavigation.PrimerNombreStaff} {capacitacion.IdStaffNavigation.PrimerApellidoStaff}";
+
                 _context.Capacitacions.Remove(capacitacion);
                 await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Capacitación eliminada correctamente.";
+
+                // Usar el nombre completo en el mensaje de éxito
+                TempData["SuccessMessage"] = $"Capacitación con el maestro {nombreCompletoStaff} eliminada correctamente.";
             }
             else
             {
@@ -176,6 +224,7 @@ namespace Proyecto_Facultad.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
 
         // Acción para el reporte de capacitaciones
         [Authorize (Roles = "Coordinador, Admin")]

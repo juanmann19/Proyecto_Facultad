@@ -10,7 +10,7 @@
 <form method="get" asp-action="FiltrarPorBimestre">
     <div class="form-group" style="padding-bottom: 1%;">
         <label for="bimestre">Seleccionar Bimestre:</label>
-        <select id="bimestre" name="bimestreId" class="form-control">
+        <select id="bimestre" name="bimestreId" class="form-control" style="width: 200px;">
             <option value="">Todos los bimestres</option>
             @foreach (var bimestre in ViewBag.Bimestres as List<SelectListItem>)
             {
@@ -18,18 +18,22 @@
             }
         </select>
     </div>
-    <button type="submit" class="btn btn-warning">Filtrar</button>
+    <button type="submit" class="btn" style="background-color: #0047AB; color: white;">
+        <i class="bi bi-funnel me-2"></i> Filtrar
+    </button>
+
+
 </form>
 
 <!-- Tabla de Datos -->
 <table class="table mt-4">
     <thead>
         <tr>
-            <th>Id Mesa</th>
-            <th>Nombre Nivel</th>
-            <th>Nombre Bimestre</th>
-            <th>Nombre Libro</th>
-            <th>Descripción Lección</th>
+            <th>Id mesa</th>
+            <th>Nombre nivel</th>
+            <th>Nombre bimestre</th>
+            <th>Nombre libro</th>
+            <th>Descripción lección</th>
         </tr>
     </thead>
     <tbody>

@@ -15,19 +15,26 @@
             <div class="col-md-6">
                 <label asp-for="IdAlumno" class="form-label"></label>
                 <select asp-for="IdAlumno" class="form-control" asp-items="ViewBag.IdAlumno">
+                    <option value="">Seleccione</option>
                 </select>
                 <span asp-validation-for="IdAlumno" class="text-danger"></span>
             </div>
+
             <div class="col-md-6">
                 <label asp-for="IdMesa" class="form-label"></label>
                 <select asp-for="IdMesa" class="form-control" asp-items="ViewBag.IdMesa">
+                    <option value="">Seleccione</option>
                 </select>
                 <span asp-validation-for="IdMesa" class="text-danger"></span>
             </div>
         </div>
-        <div class="form-group d-flex">
-            <button type="submit" class="btn btn-primary flex-fill me-2">Guardar</button>
-            <a asp-action="Index" class="btn btn-danger flex-fill">Cancelar</a>
+        <div class="form-group text-end">
+            <button type="submit" class="btn btn-sm text-white" style="background-color: #00B6A6; padding: 8px 20px;">
+                <i class="bi bi-save me-2"></i> Guardar
+            </button>
+            <a asp-action="Index" class="btn btn-danger btn-sm" style="padding: 8px 20px;">
+                <i class="bi bi-x me-2"></i> Cancelar
+            </a>
         </div>
     </form>
 </div>

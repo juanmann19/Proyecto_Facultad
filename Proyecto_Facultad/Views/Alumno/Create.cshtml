@@ -5,21 +5,21 @@
     Layout = "_Layout"; 
 }
 
-<h2 class="text-primary">Crear Alumno</h2>
+<h2 class="text-primary">Crear alumno</h2>
 
 <form asp-action="Create" method="post">
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
                 <label asp-for="PrimerNombreAlumno" class="form-label"></label>
-                <input asp-for="PrimerNombreAlumno" class="form-control" />
+                <input asp-for="PrimerNombreAlumno" class="form-control" style="width: 400px; height: 38px;" />
                 <span asp-validation-for="PrimerNombreAlumno" class="text-danger"></span>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
                 <label asp-for="SegundoNombreAlumno" class="form-label"></label>
-                <input asp-for="SegundoNombreAlumno" class="form-control" />
+                <input asp-for="SegundoNombreAlumno" class="form-control" style="width: 400px; height: 38px;" />
                 <span asp-validation-for="SegundoNombreAlumno" class="text-danger"></span>
             </div>
         </div>
@@ -29,14 +29,14 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label asp-for="PrimerApellidoAlumno" class="form-label"></label>
-                <input asp-for="PrimerApellidoAlumno" class="form-control" />
+                <input asp-for="PrimerApellidoAlumno" class="form-control" style="width: 400px; height: 38px;" />
                 <span asp-validation-for="PrimerApellidoAlumno" class="text-danger"></span>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
                 <label asp-for="SegundoApellidoAlumno" class="form-label"></label>
-                <input asp-for="SegundoApellidoAlumno" class="form-control" />
+                <input asp-for="SegundoApellidoAlumno" class="form-control" style="width: 400px; height: 38px;" />
                 <span asp-validation-for="SegundoApellidoAlumno" class="text-danger"></span>
             </div>
         </div>
@@ -46,43 +46,48 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label asp-for="FechaNacimientoAlumno" class="form-label"></label>
-                <input asp-for="FechaNacimientoAlumno" type="date" class="form-control" />
+                <input asp-for="FechaNacimientoAlumno" type="date" class="form-control" style="width: 400px; height: 38px;" />
                 <span asp-validation-for="FechaNacimientoAlumno" class="text-danger"></span>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
                 <label asp-for="FechaBautizoAlumno" class="form-label"></label>
-                <input asp-for="FechaBautizoAlumno" type="date" class="form-control" />
+                <input asp-for="FechaBautizoAlumno" type="date" class="form-control" style="width: 400px; height: 38px;" />
                 <span asp-validation-for="FechaBautizoAlumno" class="text-danger"></span>
             </div>
         </div>
     </div>
 
-    <div class="form-group">
+   <div class="row">
+    <div class="col-md-6">
+       <div class="form-group">
         <label asp-for="Direccion" class="form-label"></label>
-        <input asp-for="Direccion" class="form-control" />
+        <input asp-for="Direccion" class="form-control" style="width: 400px; height: 38px;" />
         <span asp-validation-for="Direccion" class="text-danger"></span>
+        </div>
     </div>
-
-    <div class="form-group">
+    <div class="col-md-6">
+       <div class="form-group">
         <label asp-for="Telefono" class="form-label"></label>
-        <input asp-for="Telefono" class="form-control" />
+        <input asp-for="Telefono" class="form-control" style="width: 400px; height: 38px;" />
         <span asp-validation-for="Telefono" class="text-danger" maxlength="8" minlength="8" pattern="\d{8}"></span>
+      </div>
     </div>
+   </div>
 
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
                 <label asp-for="Dpi" class="form-label"></label>
-                <input asp-for="Dpi" class="form-control"  />
+                <input asp-for="Dpi" class="form-control" style="width: 400px; height: 38px;" />
                 <span asp-validation-for="Dpi" class="text-danger" maxlength="13" minlength="13" pattern="\d{13}"></span>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
                 <label asp-for="Nit" class="form-label"></label>
-                <input asp-for="Nit" class="form-control" />
+                <input asp-for="Nit" class="form-control" style="width: 400px; height: 38px;" />
                 <span asp-validation-for="Nit" class="text-danger"></span>
             </div>
         </div>
@@ -92,7 +97,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label asp-for="EstadoCivil" class="form-label"></label>
-                <select asp-for="EstadoCivil" class="form-control">
+                <select asp-for="EstadoCivil" class="form-control" style="width: 400px; height: 38px;">
                     <option value="">Seleccione</option>
                     <option value="1">Soltero</option>
                     <option value="2">Casado</option>
@@ -105,7 +110,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label asp-for="Genero" class="form-label"></label>
-                <select asp-for="Genero" class="form-control">
+                <select asp-for="Genero" class="form-control" style="width: 400px; height: 38px;">
                     <option value="" default>Seleccione</option>
                     <option value="Masculino">Masculino</option>
                     <option value="Femenino">Femenino</option>
@@ -115,9 +120,11 @@
         </div>
     </div>
 
+<div class="row">
+  <div class="col-md-6">
     <div class="form-group">
         <label asp-for="NumeroCelula" class="form-label"></label>
-        <select asp-for="NumeroCelula" class="form-control">
+        <select asp-for="NumeroCelula" class="form-control" style="width: 400px; height: 38px;">
             <option value="">Ninguno</option>
             <option value="Mujeres">Mujeres(Solteras o Casadas)</option>
             <option value="Familiares">Familiares(Familia y Todo el que Necesita Familia)</option>
@@ -129,13 +136,15 @@
         </select>
         <span asp-validation-for="NumeroCelula" class="text-danger"></span>
     </div>
-
+  </div>
+  <div class="col-md-6">
     <div class="form-group">
         <label asp-for="CodigoFrater" class="form-label"></label>
-        <input asp-for="CodigoFrater" class="form-control" />
+        <input asp-for="CodigoFrater" class="form-control" style="width: 400px; height: 38px;" />
         <span asp-validation-for="CodigoFrater" class="text-danger"></span>
     </div>
-
+  </div>
+</div>
     <div class="row">
         <div class="col-md-4">
             <div class="form-group">
@@ -178,11 +187,13 @@
         <span asp-validation-for="Otros" class="text-danger"></span>
     </div>
 
-
-
-    <div class="form-group text-end">
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    <div class="form-group d-flex justify-content-end">
+        <button type="submit" class="btn text-white me-2" style="background-color: #00B6A6; padding: 8px 20px;">
+            <i class="bi bi-save me-2"></i> Guardar
+        </button>
+        <a asp-action="Index" class="btn btn-danger" style="padding: 8px 20px;">
+            <i class="bi bi-x me-2"></i> Cancelar
+        </a>
     </div>
 </form>
 @section Scripts {
