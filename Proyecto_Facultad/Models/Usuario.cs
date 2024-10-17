@@ -10,7 +10,7 @@ public partial class Usuario
 {
     public int IdUsuario { get; set; }
 
-    [DisplayName("Nombre Usuario")]
+    [DisplayName("Nombre de usuario")]
     [RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "Campo puede contener letras y numeros")]
     [Required(ErrorMessage = "El Nombre de usuario es Obligatorio")]
     public string NombreUsuario { get; set; }
@@ -23,6 +23,7 @@ public partial class Usuario
     [Required(ErrorMessage = "El rol es obligatorio")]
     public int IdRol { get; set; }
 
+    [DisplayName("Estado usuario")]
     public bool EstadoUsuario { get; set; }
    
     public virtual Rol IdRolNavigation { get; set; }

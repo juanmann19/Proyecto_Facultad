@@ -71,13 +71,30 @@
     <header>
         <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Proyecto_Facultad</a>
+                <a class="navbar-brand logo-link" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/Logo_website-LCPGT-removebg-preview(1).png" alt="Proyecto Facultad Logo" style="height: 60px;" class="logo-image">
+                </a>
+                <style>
+                    .logo-link {
+                        display: inline-block; /* Asegura que el enlace envuelva bien la imagen */
+                        
+                    }
+
+                    .logo-image {
+                        transition: filter 0.3s ease; /* Transición suave para el efecto */
+                        transition: transform 0.3s ease; /* Transición suave para la imagen */
+                    }
+
+                    .logo-link:hover .logo-image {
+                        filter: brightness(0) saturate(100%) invert(36%) sepia(99%) saturate(2634%) hue-rotate(178deg) brightness(91%) contrast(99%);
+                    }
+                </style>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    
+                   <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <br />
                     <ul class="navbar-nav flex-grow-1">
                           @if (User.IsInRole("Coordinador") || User.IsInRole("Admin"))
                         {
@@ -88,27 +105,31 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="gestionesDropdown">
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Usuario"
-                                        asp-action="Index">Registro usuario</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Alumno"
-                                        asp-action="Index">Registro alumno</a></li>
+                                        asp-action="Index">Registrar usuario</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Staffs"
-                                        asp-action="Index">Registro Personal</a></li>
+                                        asp-action="Index">Registrar personal</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Alumno"
+                                           asp-action="Index">Registrar alumno</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Sedes"
-                                        asp-action="Index">Registro sede</a></li>
+                                           asp-action="Index">Registrar sede</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Jornadums"
-                                        asp-action="Index">Registro jornada</a></li>
+                                           asp-action="Index">Registrar jornada</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Nivels"
-                                        asp-action="Index">Registro nivel</a></li>
+                                        asp-action="Index">Registrar nivel</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Bimestre"
-                                        asp-action="Index">Registro bimestre</a></li>
+                                           asp-action="Index">Registrar bimestre</a>
+                                    </li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Libro"
-                                        asp-action="Index">Registro Libro</a></li>
+                                           asp-action="Index">Registrar Libro</a>
+                                    </li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Leccion"
-                                        asp-action="Index">Registro lección</a></li>
+                                        asp-action="Index">Registrar lección</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Mesas"
-                                        asp-action="Index">Registro Mesa</a></li>
+                                           asp-action="Index">Registrar Mesa</a>
+                                    </li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Capacitacion"
-                                        asp-action="Create">Registro Capacitación</a></li>
+                                           asp-action="Create">Registrar Capacitación</a>
+                                    </li>
                             </ul>
                         </li>
                         }

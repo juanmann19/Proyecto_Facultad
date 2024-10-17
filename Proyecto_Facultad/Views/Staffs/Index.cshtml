@@ -43,7 +43,7 @@
                 <th>NIT</th>
                 <th>Estado Civil</th>
                 <th>Genero</th>
-                <th>Número Celula</th>
+                <th>Pertenece a red</th>
                 <th>Nivel Aprobado</th>
                 <th>Código Frater</th>
                 <th>Estatus</th>
@@ -77,24 +77,7 @@
                     <td>@staff.Telefono</td>
                     <td>@staff.Dpi</td>
                     <td>@staff.Nit</td>
-                        @{
-                            switch (@staff.EstadoCivil)
-                            {
-                                case "1":
-                                    <td>Soltero</td>
-                                    break;
-                                case "2":
-                                    <td>Casado</td>
-                                    break;
-                                case "3":
-                                    <td>Divorciado</td>
-                                    break;
-                                case "4":
-                                    <td>Viudo</td>
-                                    break;
-                            }
-                        }
-                        @* 1=soltero 2=casado 3=divorciado 4=viudo *@
+                    <td>@staff.EstadoCivil</td>
                     <td>@staff.Genero</td>
                     <td>@staff.NumeroCelula</td>
                     <td>@staff.NivelAprobado</td>
