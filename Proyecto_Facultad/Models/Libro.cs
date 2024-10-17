@@ -9,7 +9,7 @@ public partial class Libro
 {
     public int IdLibro { get; set; }
 
-    [DisplayName("Nombre Libro")]
+    [DisplayName("Nombre del libro")]
     [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ0-9 ]+$", ErrorMessage = "Campo puede contener letras y numeros")]
     [Required(ErrorMessage = "El Nombre de Libro es Obligatorio")]
     public string NombreLibro { get; set; }

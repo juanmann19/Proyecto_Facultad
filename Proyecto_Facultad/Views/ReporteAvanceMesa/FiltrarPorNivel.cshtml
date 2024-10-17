@@ -10,7 +10,7 @@
 <form method="get" asp-action="FiltrarPorNivel">
     <div class="form-group" style="padding-bottom: 1%;">
         <label for="nivel">Seleccionar Nivel:</label>
-        <select id="nivel" name="nivelId" class="form-control">
+        <select id="nivel" name="nivelId" class="form-control" style="width: 200px;">
             <option value="">Todos los niveles</option>
             @foreach (var nivel in ViewBag.Niveles as List<SelectListItem>)
             {
@@ -18,7 +18,10 @@
             }
         </select>
     </div>
-    <button type="submit" class="btn btn-warning">Filtrar</button>
+
+    <button type="submit" class="btn" style="background-color: #0047AB; color: white;">
+        <i class="bi bi-funnel me-2"></i> Filtrar
+    </button>
 </form>
 
 <!-- Tabla de Datos -->

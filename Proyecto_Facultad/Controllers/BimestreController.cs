@@ -150,13 +150,21 @@ public async Task<IActionResult> Edit(int id, [Bind("IdBimestre,NombreBimestre")
                     await _context.SaveChangesAsync();
                     TempData["SuccessMessage"] = "Dato eliminado correctamente";
                 }
+                else
+                {
+                    TempData["ErrorMessage"] = "El bimestre no existe.";
+                }
             }
-            catch (Exception)
+            catch (DbUpdateException ex)
             {
-                TempData["ErrorMessage"] = "Se produjo un error al eliminar los datos.";
+                // Capturar el error interno
+                Console.WriteLine(ex.InnerException?.Message);
+
+                TempData["ErrorMessage"] = "No se puede eliminar este dato, porque ya esta asignado";
             }
 
             return RedirectToAction(nameof(Index));
         }
+
     }
 }

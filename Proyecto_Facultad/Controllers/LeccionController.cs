@@ -165,7 +165,7 @@ namespace Proyecto_Facultad.Controllers
             }
             catch (Exception)
             {
-                TempData["ErrorMessage"] = "Se produjo un error al eliminar la lecci�n.";
+                TempData["ErrorMessage"] = "No se puede eliminar lección porque esta asignado.";
             }
 
             return RedirectToAction(nameof(Index));

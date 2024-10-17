@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_Facultad.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Proyecto_Facultad.Controllers
 {
@@ -60,11 +61,51 @@ namespace Proyecto_Facultad.Controllers
         // GET: AvanceMesa/Create
         public IActionResult Create()
         {
+            // Obtener el nombre de usuario autenticado
+            var nombreUsuario = User.Identity.Name;
+
+            // Verificar si el nombre de usuario está vacío
+            if (string.IsNullOrEmpty(nombreUsuario))
+            {
+                return Unauthorized("Usuario no autenticado.");
+            }
+
+            // Buscar el usuario en la tabla Usuarios basado en el nombre de usuario
+            var usuario = _context.Usuarios.FirstOrDefault(u => u.NombreUsuario == nombreUsuario);
+
+            // Verificar si el usuario fue encontrado
+            if (usuario == null)
+            {
+                return NotFound("Usuario no encontrado.");
+            }
+
+            // Buscar el staff (maestro) asociado al usuario autenticado
+            var staff = _context.Staff.FirstOrDefault(s => s.IdUsuario == usuario.IdUsuario);
+
+            // Verificar si el staff fue encontrado
+            if (staff == null)
+            {
+                return NotFound("No se encontró el maestro relacionado con el usuario.");
+            }
+
+            // Obtener las mesas asignadas al maestro usando su IdStaff
+            var mesasAsignadas = _context.AsignacionMaestros
+                .Where(am => am.IdStaff == staff.IdStaff)
+                .Select(am => new
+                {
+                    am.IdMesa,
+                    NombreMesa = $"Mesa {am.IdMesa} - {am.IdMesaNavigation.NombreSedeNavigation.NombreSede} - {am.IdMesaNavigation.IdJornadaNavigation.DiaSemana} {am.IdMesaNavigation.IdJornadaNavigation.Horario}"
+                })
+                .ToList();
+
+            // Pasar los datos de las mesas asignadas a la vista
+            ViewBag.IdMesa = new SelectList(mesasAsignadas, "IdMesa", "NombreMesa");
+
+            // Cargar otros datos necesarios para el formulario
             ViewBag.IdNivel = new SelectList(_context.Nivels, "IdNivel", "NombreNivel");
             ViewBag.IdBimestre = new SelectList(_context.Bimestres, "IdBimestre", "NombreBimestre");
             ViewBag.IdLibro = new SelectList(_context.Libros, "IdLibro", "NombreLibro");
             ViewBag.IdLeccion = new SelectList(_context.Leccions, "IdLeccion", "Descripcion");
-            ViewBag.IdMesa = new SelectList(_context.Mesas, "IdMesa", "IdMesa"); 
 
             return View();
         }
@@ -76,17 +117,21 @@ namespace Proyecto_Facultad.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Guardar el nuevo avance en la base de datos
                 _context.Add(avanceMesa);
                 await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Dato cargado correctamente";
+
+                // Mostrar un mensaje de éxito
+                TempData["SuccessMessage"] = "Avance de mesa creado correctamente";
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["IdBimestre"] = new SelectList(_context.Bimestres, "IdBimestre", "NombreBimestre", avanceMesa.IdBimestre);
-            ViewData["IdLeccion"] = new SelectList(_context.Leccions, "IdLeccion", "Descripcion", avanceMesa.IdLeccion);
-            ViewData["IdLibro"] = new SelectList(_context.Libros, "IdLibro", "NombreLibro", avanceMesa.IdLibro);
-            ViewData["IdMesa"] = new SelectList(_context.Mesas, "IdMesa", "IdMesa", avanceMesa.IdMesa);
-            ViewData["IdNivel"] = new SelectList(_context.Nivels, "IdNivel", "NombreNivel", avanceMesa.IdNivel);
+            // Si hay algún error, recargar los datos necesarios para el formulario
+            ViewBag.IdNivel = new SelectList(_context.Nivels, "IdNivel", "NombreNivel", avanceMesa.IdNivel);
+            ViewBag.IdBimestre = new SelectList(_context.Bimestres, "IdBimestre", "NombreBimestre", avanceMesa.IdBimestre);
+            ViewBag.IdLibro = new SelectList(_context.Libros, "IdLibro", "NombreLibro", avanceMesa.IdLibro);
+            ViewBag.IdLeccion = new SelectList(_context.Leccions, "IdLeccion", "Descripcion", avanceMesa.IdLeccion);
+            ViewBag.IdMesa = new SelectList(_context.Mesas, "IdMesa", "IdMesa", avanceMesa.IdMesa);
 
             return View(avanceMesa);
         }

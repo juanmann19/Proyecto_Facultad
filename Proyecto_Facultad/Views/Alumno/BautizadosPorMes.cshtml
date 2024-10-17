@@ -1,34 +1,77 @@
 ﻿@model IEnumerable<Proyecto_Facultad.ViewModels.AlumnoBautizadoPorMesViewModel>
 
+<style>
+    .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 1em;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+    }
+
+        .custom-table thead {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .custom-table th, .custom-table td {
+            padding: 12px 15px;
+            text-align: left;
+            white-space: nowrap; /* Esto evitará que el contenido se extienda innecesariamente */
+        }
+
+        .custom-table tbody tr {
+            transition: background-color 0.3s;
+        }
+
+            .custom-table tbody tr:hover {
+                background-color: #f2f2f2;
+            }
+
+        .custom-table a:hover {
+            text-decoration: underline;
+        }
+</style>
+
 @{
     ViewData["Title"] = "Alumnos Bautizados por Mes";
     var meses = new List<string> { "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" };
     var resultadosBusqueda = ViewBag.ResultadosBusqueda as List<Proyecto_Facultad.Models.Alumno>;
 }
 
-<h2 class="text-primary">Alumnos Bautizados por Mes</h2>
+<h2 class="text-primary">Alumnos bautizados por mes</h2>
 <br />
 <br />
 
 <!-- Formulario de búsqueda -->
 <form method="get" class="mb-4">
     <div class="row">
-        <div class="col-md-4">
-            <label for="nombre" class="form-label">Buscar por Nombre</label>
-            <input type="text" class="form-control" id="nombre" name="nombre" value="@Context.Request.Query["nombre"]" placeholder="Nombre del alumno">
+        <div class="col-md-3">
+            <label for="nombre" class="form-label">Buscar por nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" value="@Context.Request.Query["nombre"]" placeholder="Nombre del alumno" style="width: 260px;">
         </div>
         <div class="col-md-3">
-            <label for="fechaInicio" class="form-label">Fecha de Inicio</label>
+            <label for="fechaInicio" class="form-label">Fecha de inicio</label>
             <input type="date" class="form-control" id="fechaInicio" name="fechaInicio" value="@Context.Request.Query["fechaInicio"]">
         </div>
         <div class="col-md-3">
-            <label for="fechaFin" class="form-label">Fecha de Fin</label>
+            <label for="fechaFin" class="form-label">Fecha de fin</label>
             <input type="date" class="form-control" id="fechaFin" name="fechaFin" value="@Context.Request.Query["fechaFin"]">
         </div>
         <div class="col-md-2 d-flex align-items-end">
-            <button type="submit" class="btn btn-primary me-2">Buscar</button>
-            <a href="@Url.Action("BautizadosPorMes")" class="btn btn-secondary">Limpiar</a>
+            <button type="submit" class="btn d-flex align-items-center" style="background-color: #1abc9c; color: white; width: 150px;">
+                <!-- Verde menta -->
+                <i class="bi bi-funnel me-2"></i>
+                Buscar
+            </button>
+            <a href="@Url.Action("BautizadosPorMes")" class="btn d-flex align-items-center" style="background-color: #f39c12; color: white; width: 150px; margin-left: 10px;">
+                <!-- Amarillo fuerte -->
+                <i class="bi bi-trash me-2"></i>
+                Limpiar
+            </a>
         </div>
+
+
     </div>
 </form>
 
@@ -37,13 +80,13 @@
 <!-- Mostrar resultados de la búsqueda -->
 @if (resultadosBusqueda != null && resultadosBusqueda.Any())
 {
-    <h3 class="text-primary mt-4">Resultados de la Búsqueda</h3>
+    <h3 class="text-primary mt-4">Resultados de la búsqueda</h3>
     <div class="table-responsive">
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Nombre Completo</th>
-                    <th>Fecha de Bautizo</th>
+                    <th>Nombre completo</th>
+                    <th>Fecha de bautizo</th>
                     <th>Género</th>
 
                 </tr>

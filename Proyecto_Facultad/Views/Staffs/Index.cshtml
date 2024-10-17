@@ -1,5 +1,43 @@
 ﻿@model IEnumerable<Proyecto_Facultad.Models.Staff>
+<style>
+    .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 1em;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+    }
 
+        .custom-table thead {
+            background-color: #343a40;
+            color: white;
+        }
+
+    .btn-info-dark {
+        background-color: #017a8a; /* Un tono más oscuro de cian */
+        border-color: #017a8a;
+        color: white; /* Mantén el texto en blanco para el contraste */
+        .btn-info-dark:focus, .btn-info-dark:active
+    }
+
+    .custom-table th, .custom-table td {
+        padding: 12px 15px;
+        text-align: left;
+        white-space: nowrap; /* Esto evitará que el contenido se extienda innecesariamente */
+    }
+
+    .custom-table tbody tr {
+        transition: background-color 0.3s;
+    }
+
+        .custom-table tbody tr:hover {
+            background-color: #f2f2f2;
+        }
+
+    .custom-table a:hover {
+        text-decoration: underline;
+    }
+</style>
 <div class="container-fluid pt-4">
     @if (TempData["SuccessMessage"] != null)
     {
@@ -15,37 +53,46 @@
     }
     <div class="row mb-3">
         <div class="col-6">
-            <h2 class="text-primary">Lista de Personal</h2>
+            <h2 class="text-primary">Lista de personal</h2>
         </div>
         <div class="col-6 text-end">
             <a asp-controller="Staffs" asp-action="Create" class="btn btn-primary">
-                <i class="bi bi-plus-circle"></i> Agregar nuevo personal
+                <i class="bi bi-plus-circle"></i> Agregar personal
             </a>
         </div>
     </div>
 
 <div class="table-responsive">
+    <table class="table table-bordered table-striped">
     <table class="table table-striped table-bordered table-hover">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Primer Nombre</th>
-                <th>Segundo Nombre</th>
-                <th>Otros Nombres</th>
-                <th>Primer Apellido</th>
-                <th>Segundo Apellido</th>
-                <th>Apellido Casado</th>
-                <th>Fecha Nacimiento</th>
-                <th>Fecha Bautizo</th>
+                <th>No.</th>
+                <th>Primer nombre</th>
+                <th>Segundo nombre</th>
+                <th>Otros nombres</th>
+                <th>Primer apellido</th>
+                <th>Segundo apellido</th>
+                <th>Apellido casado</th>
+                <th>Fecha nacimiento</th>
+                <th>Fecha bautizo</th>
                 <th>Dirección</th>
                 <th>Teléfono</th>
                 <th>DPI</th>
                 <th>NIT</th>
+<<<<<<< HEAD
                 <th>Estado Civil</th>
                 <th>Genero</th>
                 <th>Pertenece a red</th>
                 <th>Nivel Aprobado</th>
                 <th>Código Frater</th>
+=======
+                <th>Estado civil</th>
+                <th>Género</th>
+                <th>Número celula</th>
+                <th>Nivel aprobado</th>
+                <th>Código frater</th>
+>>>>>>> df9eb81c9d1907581ce522d4cd1b9dbea105eec1
                 <th>Estatus</th>
                 <th>Usuario</th>
                 <th>Acciones</th>
@@ -63,16 +110,7 @@
                     <td>@staff.SegundoApellidoStaff</td>
                     <td>@staff.ApellidoCasado</td>
                     <td>@staff.FechaNacimientoStaff.ToShortDateString()</td>
-                    <td>
-                        @if (staff.FechaBautizoStaff.HasValue)
-                        {
-                            @staff.FechaBautizoStaff.Value.ToShortDateString()
-                        }
-                        else
-                        {
-                            <span>N/A</span>
-                        }
-                    </td>
+                    <td>@staff.FechaBautizoStaff</td>
                     <td>@staff.Direccion</td>
                     <td>@staff.Telefono</td>
                     <td>@staff.Dpi</td>
@@ -92,22 +130,27 @@
                             <span class="badge bg-danger">Inactivo</span>
                         }
                     </td>
-                    <td>@staff.IdUsuarioNavigation?.NombreUsuario</td> <!-- Asumiendo que el modelo Usuario tiene una propiedad NombreUsuario -->
+                    <td>@staff.IdUsuarioNavigation?.NombreUsuario</td> 
                     <td>
-                            <div class="d-grid gap-2">
-                                <a asp-controller="Staffs" asp-action="Edit" asp-route-id="@staff.IdStaff" class="btn btn-primary d-flex justify-content-center align-items-center">
-                                    <i class="bi bi-pencil-fill me-2"></i> Editar
-                                </a>
-                                <form asp-action="Deactivate" method="post" >
-                                    <button type="submit" asp-controller="Staffs" asp-action="Deactivate" asp-route-id="@staff.IdStaff" class="btn btn-danger d-flex justify-content-center align-items-center">
-                                        <i class="bi bi-trash-fill me-2"></i> Activar/Desactivar
-                                    </button>
-                                </form>
+                            <div class="btn-group w-100" role="group">
+                                <div class="me-2">
+                                    <a asp-controller="Staffs" asp-action="Edit" asp-route-id="@staff.IdStaff" class="btn btn-warning btn-sm" style="padding: 8px 20px;">
+                                        <i class="bi bi-pencil-fill me-2"></i> Editar
+                                    </a>
+                                </div>
+                                <div>
+                                    <form asp-action="Deactivate" method="post" class="d-inline">
+                                        <button type="submit" asp-controller="Staffs" asp-action="Deactivate" asp-route-id="@staff.IdStaff" class="btn btn-info-dark btn-sm" style="padding: 8px 20px;">
+                                            <i class="bi bi-power me-2"></i> Estado
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                     </td>
                 </tr>
             }
         </tbody>
+     </table>
     </table>
 </div>
 </div>

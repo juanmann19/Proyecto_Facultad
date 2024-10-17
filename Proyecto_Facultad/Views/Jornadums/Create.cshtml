@@ -1,13 +1,13 @@
 ﻿@model Proyecto_Facultad.Models.Jornadum
 
 <div class="container">
-    <h2 class="text-primary">Añadir Jornada</h2>
+    <h2 class="text-primary">Crear jornada</h2>
 
     <form asp-action="Create" method="post">
         <div class="row mb-3">
             <div class="col-md-6">
                 <label asp-for="DiaSemana" class="form-label"></label>
-                <input asp-for="DiaSemana" class="form-control" id="diaSemanaInput" />
+                <input asp-for="DiaSemana" class="form-control" id="diaSemanaInput" style="width: 400px; height: 38px;" />
                 <span asp-validation-for="DiaSemana" class="text-danger"></span>
             </div>
         </div>
@@ -15,7 +15,7 @@
         <div class="row mb-3">
             <div class="form-group">
                 <label asp-for="Horario" class="form-label"></label>
-                <select asp-for="Horario" class="form-control" id="horarioSelect">
+                <select asp-for="Horario" class="form-control" id="horarioSelect" style="width: 400px; height: 38px;">
                     <option value="">Seleccione horario</option>
                     <option value="7:00am">7:00am</option>
                     <option value="9:00am">9:00am</option>
@@ -29,13 +29,19 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <label asp-for="IdSede" class="form-label"></label>
-                <select asp-for="IdSede" class="form-control" asp-items="ViewBag.IdSede"></select>
+                <select asp-for="IdSede" class="form-control" style="width: 400px; height: 38px;" asp-items="ViewBag.IdSede">
+                    <option value="">Seleccione</option>
+                </select>
             </div>
         </div>
 
-        <div class="form-group d-flex">
-            <button type="submit" class="btn btn-primary flex-fill me-2">Guardar</button>
-            <a asp-action="Index" class="btn btn-danger flex-fill">Cancelar</a>
+        <div class="form-group text-end">
+            <button type="submit" class="btn btn-sm text-white" style="background-color: #00B6A6; padding: 8px 20px;">
+                <i class="bi bi-save me-2"></i> Guardar
+            </button>
+            <a asp-action="Index" class="btn btn-danger btn-sm" style="padding: 8px 20px;">
+                <i class="bi bi-x me-2"></i> Cancelar
+            </a>
         </div>
     </form>
 </div>

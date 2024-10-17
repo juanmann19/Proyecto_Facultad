@@ -1,23 +1,64 @@
 ﻿@model Proyecto_Facultad.Models.ReporteMaestrosViewModel
+<style>
+    .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 1em;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+    }
 
+        .custom-table thead {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .custom-table th, .custom-table td {
+            padding: 12px 15px;
+            text-align: left;
+            white-space: nowrap; /* Esto evitará que el contenido se extienda innecesariamente */
+        }
+
+        .custom-table tbody tr {
+            transition: background-color 0.3s;
+        }
+
+            .custom-table tbody tr:hover {
+                background-color: #f2f2f2;
+            }
+
+        .custom-table a:hover {
+            text-decoration: underline;
+        }
+</style>
 <div class="container-fluid pt-4">
     <!-- Mensajes de éxito o error -->
     <div class="row mb-3">
         <div class="col-6">
-            <h2 class="text-primary">Reporte de Maestros</h2>
+            <h2 class="text-primary">Reporte de maestros</h2>
         </div>
     </div>
 
-    <!-- Barra de búsqueda -->
+   <!-- Barra de búsqueda -->
     <div class="row mb-3">
         <div class="col">
-            <form asp-action="Reporte" method="get" class="d-flex align-items-center">
-                <div class="input-group" style="max-width: 600px;">
-                    <input type="text" name="searchTerm" value="@Model.SearchTerm" class="form-control" placeholder="Buscar por nombre" />
-                    <button type="submit" class="btn btn-primary ms-2">Buscar</button>
-                    <a asp-action="Reporte" class="btn btn-secondary ms-2" role="button">Limpiar búsqueda</a>
+            <form asp-action="Reporte" method="get" class="d-flex align-items-end">
+                <div class="input-group" style="max-width: 600px; flex-grow: 1;">
+                    <input type="text" name="searchTerm" value="@Model.SearchTerm" class="form-control rounded" placeholder="Buscar por nombre" style="border-radius: 8px; width: 40%; margin-right: 8px;" />
+
+                    <button type="submit" class="btn d-flex align-items-center" style="background-color: #1abc9c; color: white; width: 120px; border-radius: 8px;">
+                        <i class="bi bi-funnel me-2"></i>
+                        Buscar
+                    </button>
+
+                    <a href="@Url.Action("Reporte", "Capacitacion")" class="btn d-flex align-items-center" style="background-color: #f39c12; color: white; width: 120px; margin-left: 8px; border-radius: 8px;">
+                        <i class="bi bi-trash me-2"></i>
+                        Limpiar
+                    </a>
                 </div>
             </form>
+
+
         </div>
     </div>
 
@@ -32,10 +73,12 @@
     <div class="row">
         <div class="col">
             <h4>Maestros</h4>
-            <table class="table table-bordered table-striped">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <table class="table custom-table table-striped table-bordered">
                 <thead>
                     <tr>
-                        <th>Nombre Completo</th>
+                        <th>Nombre completo</th>
                         <th>Estado</th>
                     </tr>
                 </thead>
@@ -49,7 +92,9 @@
                         </tr>
                     }
                 </tbody>
-            </table>
+                    </table>
+                </table>
+            </div>
         </div>
     </div>
 </div>

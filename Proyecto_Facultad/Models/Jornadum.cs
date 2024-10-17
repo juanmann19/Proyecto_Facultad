@@ -9,10 +9,10 @@ public partial class Jornadum
 {
     public int IdJornada { get; set; }
 
-    [DisplayName("Dia de la Jornada")]
+    [DisplayName("Dia de la jornada")]
     public string DiaSemana { get; set; }
 
-    [DisplayName("Horario de la Jornada")]
+    [DisplayName("Horario de la jornada")]
     public string Horario { get; set; }
 
 

@@ -1,7 +1,7 @@
 ﻿@model Proyecto_Facultad.Models.AsistenciaAlumno
 
 <div class="container">
-    <h2 class="text-primary pt-3">Editar Asistencia del Alumno</h2>
+    <h2 class="text-primary pt-3">Editar asistencia de alumnos</h2>
 
     <form asp-action="Edit" method="post">
         @Html.AntiForgeryToken()
@@ -12,7 +12,8 @@
             <div class="col-md-6">
                 <label class="form-label">Nombre Alumno</label>
                 <input type="text" class="form-control" value="@Model.IdAlumnoNavigation?.NombreCompleto" readonly />
-                <span asp-validation-for="IdAlumno" class="text-danger"></span>
+                <span asp-validation-for="IdAlumno" class="text-danger">
+                </span>
             </div>
         </div>
 
@@ -33,10 +34,13 @@
             </div>
         </div>
 
-        <!-- Botones para Guardar y Cancelar -->
-        <div class="form-group d-flex">
-            <button type="submit" class="btn btn-success flex-fill me-2">Guardar</button>
-            <a asp-action="Index" asp-controller="AsistenciaAlumnoes" class="btn btn-danger flex-fill">Cancelar</a>
+        <div class="form-group text-end">
+            <button type="submit" class="btn btn-sm text-white" style="background-color: #00B6A6; padding: 8px 20px;">
+                <i class="bi bi-save me-2"></i> Guardar
+            </button>
+            <a asp-action="Index" class="btn btn-danger btn-sm" style="padding: 8px 20px;">
+                <i class="bi bi-x me-2"></i> Cancelar
+            </a>
         </div>
     </form>
 </div>
