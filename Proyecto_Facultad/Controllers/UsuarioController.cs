@@ -147,37 +147,40 @@ namespace Proyecto_Facultad.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Deactivate(int? id)
         {
             if (id == null)
             {
+                TempData["ErrorMessage"] = "El ID del usuario no es válido.";
                 return NotFound();
             }
 
             var usuario = await _context.Usuarios.FindAsync(id);
             if (usuario == null)
             {
+                TempData["ErrorMessage"] = "El usuario no se encontró.";
                 return NotFound();
             }
 
-            // Cambiar el estado del usuario
-            usuario.EstadoUsuario = !usuario.EstadoUsuario;
+            // Cambiar el estatus a desactivado
+            usuario.EstadoUsuario = false;
 
             try
             {
-                _context.Update(usuario);
+                _context.Update(usuario); // Asegúrate de actualizar el estado en el contexto
                 await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = usuario.EstadoUsuario ? "Usuario activado correctamente" : "Usuario desactivado correctamente";
+                TempData["SuccessMessage"] = "Usuario inactivado correctamente.";
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!UsuarioExists(usuario.IdUsuario))
                 {
+                    TempData["ErrorMessage"] = "Error al inactivar el usuario.";
                     return NotFound();
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "Se produjo un error al cambiar el estado.";
                     throw;
                 }
             }
@@ -185,7 +188,41 @@ namespace Proyecto_Facultad.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // Método para verificar si el usuario existe
+        [HttpPost]
+        public async Task<IActionResult> Activate(int? id)
+        {
+            var usuario = await _context.Usuarios.FindAsync(id);
+            if (usuario == null)
+            {
+                TempData["ErrorMessage"] = "El usuario no se encontró.";
+                return NotFound();
+            }
+
+            // Cambiar el estatus a activado
+            usuario.EstadoUsuario = true;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Usuario activado correctamente.";
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UsuarioExists(usuario.IdUsuario))
+                {
+                    TempData["ErrorMessage"] = "Error al activar el usuario.";
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+         // Método para verificar si el usuario existe
         private bool UsuarioExists(int id)
         {
             return _context.Usuarios.Any(e => e.IdUsuario == id);

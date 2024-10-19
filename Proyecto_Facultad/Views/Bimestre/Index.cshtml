@@ -82,15 +82,16 @@
                     <tr>
                         <td>@obj.NombreBimestre</td>
                         <td>
+
                             <div class="btn-group w-100" role="group">
-                                <a asp-controller="Bimestre" asp-action="Edit" asp-route-id="@obj.IdBimestre"
-                                    class="btn btn-warning flex-grow-1" style="padding: 8px;">
+                            <div class="form-group text-end">
+                                <a asp-controller="Bimestre" asp-action="Edit" asp-route-id="@obj.IdBimestre" class="btn btn-warning flex-grow-1" style="padding: 8px 70px;">
                                     <i class="bi bi-pencil-fill"></i> Editar
                                 </a>
-                                <a asp-controller="Bimestre" asp-action="Delete" asp-route-id="@obj.IdBimestre"
-                                    class="btn btn-danger flex-grow-1" style="padding: 8px 70px;">
+                                <a asp-controller="Bimestre" asp-action="Delete" asp-route-id="@obj.IdBimestre" class=" btn btn-danger flex-grow-1" style="padding: 8px 70px;">
                                     <i class="bi bi-trash-fill"></i> Eliminar
                                 </a>
+                            </div>
                             </div>
                         </td>
                     </tr>
