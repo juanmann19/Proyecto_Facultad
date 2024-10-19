@@ -147,7 +147,7 @@ namespace Proyecto_Facultad.Controllers
             }
             catch (DbUpdateException ex)
             {
-                TempData["ErrorMessage"] = $"Error al eliminar el nivel: {ex.Message}";
+                TempData["ErrorMessage"] = $"Error al eliminar el nivel: No se puede eliminar porque ya esta asignado";
             }
 
             return RedirectToAction(nameof(Index));
