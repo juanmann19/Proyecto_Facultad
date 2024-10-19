@@ -19,15 +19,17 @@
 
     <div class="row mb-3">
         <div class="col-6">
-            <h2 class="text-primary">Avance Mesas</h2>
+            <h2 class="text-primary">Avance mesas</h2>
         </div>
         <div class="col-6 text-end">
             <a asp-controller="AvanceMesa" asp-action="Create" class="btn btn-primary">
-                <i class="bi bi-plus-circle"></i> Agregar Avance
+                <i class="bi bi-plus-circle"></i> Agregar avance
             </a>
         </div>
     </div>
-    <table class="table">
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <table class="table custom-table table-striped table-bordered">
         <thead>
             <tr>
                 <th>
@@ -45,7 +47,9 @@
                 <th>
                     @Html.DisplayNameFor(model => model.IdMesaNavigation.IdMesa)
                 </th>
-                <th></th>
+                <th>
+                    Acciones
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -58,13 +62,15 @@
                     <td>@item.IdLeccionNavigation.Descripcion</td>
                     <td>@item.IdMesaNavigation.IdMesa</td>
                     <td>
-                        <a asp-controller="AvanceMesa" asp-action="Edit" asp-route-id="@item.IdAvancemesa"
-                            class="btn btn-warning flex-grow-1">
-                            <i class="bi bi-pencil-fill"></i> Editar
-                        </a>
+                      <div class="btn-group w-100" role="group">
+                        <a asp-action="Edit" asp-route-id="@item.IdAvancemesa" class="btn btn-warning w-100">
+                           <i class="bi bi-pencil-fill"></i> Editar
+                          </a>
+                        </div>
                     </td>
                 </tr>
             }
         </tbody>
+            </table>
     </table>
 </div>

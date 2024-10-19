@@ -11,46 +11,46 @@ public partial class Staff
 {
     public int IdStaff { get; set; }
 
-    [DisplayName("Primer Nombre")]
+    [DisplayName("Primer nombre")]
     [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ]+$", ErrorMessage = "Campo solo puede contener letras")]
     [Required(ErrorMessage = "El primer Nombre es Obligatorio")]
     public string PrimerNombreStaff { get; set; }
 
 
 
-    [DisplayName("Segundo Nombre")]
+    [DisplayName("Segundo nombre")]
     [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ]+$", ErrorMessage = "Campo solo puede contener letras")]
     public string SegundoNombreStaff { get; set; }
 
-    [DisplayName("Otros Nombres")]
+    [DisplayName("Otros nombres")]
     [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ\s]+$", ErrorMessage = "Campo solo puede contener letras")]
     public string OtrosNombresStaff { get; set; }
 
 
-    [DisplayName("Primer Apellido")]
+    [DisplayName("Primer apellido")]
     [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ]+$", ErrorMessage = "Campo solo puede contener letras")]
     [Required(ErrorMessage = "El primer apellido es obligatorio")]
     public string PrimerApellidoStaff { get; set; }
 
 
-    [DisplayName("Segundo Apellido")]
+    [DisplayName("Segundo apellido")]
     [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ]+$", ErrorMessage = "Campo solo puede contener letras")]
     public string SegundoApellidoStaff { get; set; }
 
 
-    [DisplayName("Apellido Casado")]
+    [DisplayName("Apellido casado")]
     [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚÜüñÑ]+$", ErrorMessage = "Campo solo puede contener letras")]
     public string ApellidoCasado { get; set; }
 
 
-    [DisplayName("Fecha de Nacimiento")]
+    [DisplayName("Fecha de nacimiento")]
     [Required(ErrorMessage = "Ingrese su fecha de nacimiento")]
     [FechaNoFutura(ErrorMessage = "La fecha de nacimiento no puede ser mayor que la fecha actual.")]
     public DateOnly FechaNacimientoStaff { get; set; }
 
 
 
-    [DisplayName("Fecha de Bautizo")]
+    [DisplayName("Fecha de bautizo")]
     [FechaNoFutura(ErrorMessage = "La fecha de nacimiento no puede ser mayor que la fecha actual.")]
     public DateOnly? FechaBautizoStaff { get; set; }
 
@@ -58,7 +58,7 @@ public partial class Staff
     public string Direccion { get; set; }
 
 
-    [DisplayName("Telefono")]
+    [DisplayName("Teléfono")]
     [StringLength(8, MinimumLength = 8, ErrorMessage = "El telefono debe tener 8 digitos")]
     [RegularExpression(@"^\d{8}$", ErrorMessage = "El telefono debe contener exactamente 8 dígitos sin guiones.")]
     public string Telefono { get; set; }
@@ -71,11 +71,11 @@ public partial class Staff
     [DisplayName("NIT")]
     public string Nit { get; set; }
 
-    [DisplayName("Estado Civil")]
+    [DisplayName("Estado civil")]
     public string EstadoCivil { get; set; }
 
 
-    [Required(ErrorMessage = "Ingrese su genero")]
+    [Required(ErrorMessage = "Ingrese su género")]
 
     public string Genero { get; set; }
 
@@ -83,13 +83,13 @@ public partial class Staff
     [Required(ErrorMessage = "Debe seleccionar una red")] 
     public string NumeroCelula { get; set; }
 
-    [DisplayName("Nivel Aprobado")]
+    [DisplayName("Nivel aprobado")]
     [Required(ErrorMessage = "Debe seleccionar un nivel")]
 
 
     public string NivelAprobado { get; set; }
 
-    [DisplayName("Codigo Frater")]
+    [DisplayName("Codigo frater")]
     public string CodigoFrater { get; set; }
 
     [DisplayName("Estatus")]

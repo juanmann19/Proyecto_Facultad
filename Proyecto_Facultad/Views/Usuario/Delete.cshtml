@@ -1,7 +1,7 @@
 @model Proyecto_Facultad.Models.Nivel
 
 <div class="container">
-    <h2 class="text-primary">Eliminar Usuario</h2>
+    <h2 class="text-primary">Eliminar usuario</h2>
     <form id="UsuarioForm" asp-action="Delete" method="post">
         <div class="row mb-3">
             <div class="col-md-6">
@@ -11,9 +11,13 @@
             </div>
         </div>
 
-        <div class="form-group d-flex">
-            <button type="submit" class="btn btn-primary flex-fill me-2">Eliminar</button>
-            <a asp-action="Index" class="btn btn-danger flex-fill">Cancelar</a>
+        <div class="form-group text-end">
+            <button type="submit" class="btn btn-sm text-white" style="background-color: #00B6A6; padding: 8px 20px;">
+                <i class="bi bi-save me-2"></i> Eliminar
+            </button>
+            <a asp-action="Index" class="btn btn-danger btn-sm" style="padding: 8px 20px;">
+                <i class="bi bi-x me-2"></i> Cancelar
+            </a>
         </div>
     </form>
 </div>

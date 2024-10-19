@@ -5,30 +5,34 @@
 }
 
 <div class="container">
-    <h2 class="text-primary">Crear Usuario</h2>
+    <h2 class="text-primary">Crear un usuario</h2>
     <form id="usuarioForm" asp-action="Create" method="post">
         <div class="form-group">
             <label asp-for="NombreUsuario" class="control-label"></label>
-            <input asp-for="NombreUsuario" class="form-control" />
+            <input asp-for="NombreUsuario" class="form-control" style="width: 400px; height: 38px;" />
             <span asp-validation-for="NombreUsuario" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label asp-for="ContrasenaUsuario" class="control-label"></label>
-            <input asp-for="ContrasenaUsuario" type="password" class="form-control" />
+            <input asp-for="ContrasenaUsuario" type="password" class="form-control" style="width: 400px; height: 38px;" />
             <span asp-validation-for="ContrasenaUsuario" class="text-danger"></span>
         </div>
         <div class="form-group" style="padding-bottom: 2%;">
             <label asp-for="IdRol" class="control-label"></label>
-            <select asp-for="IdRol" class="form-control" asp-items="ViewBag.Roles"></select>
+            <select asp-for="IdRol" class="form-control" asp-items="ViewBag.Roles" style="width: 400px; height: 38px;">
+                <option value="">Seleccione</option>
+            </select>
             <span asp-validation-for="IdRol" class="text-danger"></span>
         </div>
-        <div class="text-center" style="width: 100%;">
-            <div class="form-group d-flex"
-                style="width: 40%; justify-content: center; align-items: center; display: flex;">
-                <button type="submit" class="btn btn-primary flex-fill me-2">Guardar</button>
-                <a asp-action="Index" asp-controller="Usuario" class="btn btn-danger flex-fill">Cancelar</a>
-            </div>
 
+        <!-- Botones alineados con flexbox -->
+        <div class="form-group d-flex justify-content-end">
+            <button type="submit" class="btn text-white me-2" style="background-color: #00B6A6; padding: 8px 20px;">
+                <i class="bi bi-save me-2"></i> Guardar
+            </button>
+            <a asp-action="Index" class="btn btn-danger" style="padding: 8px 20px;">
+                <i class="bi bi-x me-2"></i> Cancelar
+            </a>
         </div>
     </form>
 </div>

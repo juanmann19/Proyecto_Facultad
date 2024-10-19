@@ -25,9 +25,44 @@ namespace Proyecto_Facultad.Controllers
         // GET: AsistenciaStaffs
         public async Task<IActionResult> Index()
         {
-            var bdfflContext = _context.AsistenciaStaffs.Include(a => a.IdBimestreNavigation).Include(a => a.IdLeccionNavigation).Include(a => a.IdMesaNavigation).Include(a => a.IdStaffNavigation);
+            // Obtener el nombre del usuario autenticado
+            var userName = User.Identity.Name;
+
+            // Verificar si obtenemos el nombre de usuario autenticado
+            if (string.IsNullOrEmpty(userName))
+            {
+                return Unauthorized("Usuario no autenticado.");
+            }
+
+            // Buscar el usuario basado en su nombre
+            var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.NombreUsuario == userName);
+
+            // Verificar si el usuario existe en la tabla Usuarios
+            if (usuario == null)
+            {
+                return NotFound("Usuario no encontrado.");
+            }
+
+            // Ahora, usa el IdUsuario para buscar el staff (maestro)
+            var staff = await _context.Staff.FirstOrDefaultAsync(s => s.IdUsuario == usuario.IdUsuario);
+
+            // Verificar si el staff existe en la tabla Staff
+            if (staff == null)
+            {
+                return NotFound("No se encontró el maestro relacionado con el usuario.");
+            }
+
+            // Filtrar las asistencias del staff autenticado
+            var bdfflContext = _context.AsistenciaStaffs
+                .Where(a => a.IdStaff == staff.IdStaff)  // Solo las asistencias del staff actual
+                .Include(a => a.IdBimestreNavigation)
+                .Include(a => a.IdLeccionNavigation)
+                .Include(a => a.IdMesaNavigation)
+                .Include(a => a.IdStaffNavigation);
+
             return View(await bdfflContext.ToListAsync());
         }
+
 
         // GET: AsistenciaStaffs/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -104,7 +139,6 @@ namespace Proyecto_Facultad.Controllers
             return View();
         }
 
-        // POST: AsistenciaStaffs/Create
         // POST: AsistenciaStaffs/Create
         [HttpPost]
         [ValidateAntiForgeryToken]

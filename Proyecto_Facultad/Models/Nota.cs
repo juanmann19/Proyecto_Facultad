@@ -17,7 +17,7 @@ public partial class Nota
     [Required(ErrorMessage = "Todos los campos deben llenarse")]
     public int IdBimestre { get; set; }
 
-    [DisplayName("Nota Obtenida en el examen")]
+    [DisplayName("Nota obtenida en el examen")]
     [RegularExpression(@"^[0-9]+$", ErrorMessage = "Campo solo puede contener numeros")]
     [Required(ErrorMessage = "Todos los campos deben llenarse")]
     [Range(0, 100, ErrorMessage = "La nota debe estar entre 0 y 100.")]

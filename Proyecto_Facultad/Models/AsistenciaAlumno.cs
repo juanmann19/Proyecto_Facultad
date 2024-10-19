@@ -10,10 +10,10 @@ public partial class AsistenciaAlumno
 {
     public int IdAsistenciaAlumno { get; set; }
 
-    [DisplayName("Nombre Maestro")]
+    [DisplayName("Nombre maestro")]
     public int IdAsistenciaStaff { get; set; }
 
-    [DisplayName("Nombre Alumno")]
+    [DisplayName("Nombre alumno")]
     public int IdAlumno { get; set; }
 
     public string Ausencia { get; set; }
@@ -23,6 +23,5 @@ public partial class AsistenciaAlumno
     public virtual Alumno IdAlumnoNavigation { get; set; }
 
     public virtual AsistenciaStaff IdAsistenciaStaffNavigation { get; set; }
-
 
 }

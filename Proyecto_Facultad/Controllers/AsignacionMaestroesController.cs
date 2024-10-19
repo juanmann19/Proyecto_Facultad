@@ -104,6 +104,7 @@ namespace Proyecto_Facultad.Controllers
         }
 
         // GET: AsignacionMaestroes/Create
+        // GET: AsignacionMaestroes/Create
         public async Task<IActionResult> Create()
         {
             // Cargar datos para los select
@@ -113,7 +114,7 @@ namespace Proyecto_Facultad.Controllers
                 .Select(m => new
                 {
                     m.IdMesa,
-                    DisplayText = $"{m.NombreSedeNavigation.NombreSede} - {m.IdJornadaNavigation.DiaSemana} - {m.IdJornadaNavigation.Horario}"
+                    DisplayText = $"Mesa{m.IdMesa} - {m.NombreSedeNavigation.NombreSede} - {m.IdJornadaNavigation.DiaSemana} - {m.IdJornadaNavigation.Horario}"
                 })
                 .ToListAsync();
 
@@ -159,10 +160,24 @@ namespace Proyecto_Facultad.Controllers
                 return NotFound();
             }
 
-            ViewData["IdMesa"] = new SelectList(await _context.Mesas.ToListAsync(), "IdMesa", "IdMesa", asignacionMaestro.IdMesa);
-            ViewData["IdStaff"] = new SelectList(await _context.Staff.ToListAsync(), "IdStaff", "NivelAprobado", asignacionMaestro.IdStaff);
+            var mesas = await _context.Mesas
+                .Include(m => m.IdJornadaNavigation)
+                .Include(m => m.NombreSedeNavigation)
+                .Select(m => new
+                {
+                    m.IdMesa,
+                    DisplayText = $"Mesa{m.IdMesa} - {m.NombreSedeNavigation.NombreSede} - {m.IdJornadaNavigation.DiaSemana} - {m.IdJornadaNavigation.Horario}"
+                })
+                .ToListAsync();
+
+            ViewData["IdMesa"] = new SelectList(mesas, "IdMesa", "DisplayText", asignacionMaestro.IdMesa);
+            ViewData["IdStaff"] = new SelectList(await _context.Staff
+                .Select(s => new { s.IdStaff, NombreCompleto = s.PrimerNombreStaff + " " + s.PrimerApellidoStaff })
+                .ToListAsync(), "IdStaff", "NombreCompleto", asignacionMaestro.IdStaff);
+
             return View(asignacionMaestro);
         }
+
 
         // POST: AsignacionMaestroes/Edit/5
         [HttpPost]
@@ -196,7 +211,7 @@ namespace Proyecto_Facultad.Controllers
             }
 
             ViewData["IdMesa"] = new SelectList(await _context.Mesas.ToListAsync(), "IdMesa", "IdMesa", asignacionMaestro.IdMesa);
-            ViewData["IdStaff"] = new SelectList(await _context.Staff.ToListAsync(), "IdStaff", "NivelAprobado", asignacionMaestro.IdStaff);
+            ViewData["IdStaff"] = new SelectList(await _context.Staff.ToListAsync(), "IdStaff", "NombreCompleto", asignacionMaestro.IdStaff);
             return View(asignacionMaestro);
         }
 

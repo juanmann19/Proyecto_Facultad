@@ -10,17 +10,18 @@ public partial class Mesa
     [DisplayName ("Mesa")]
     public int IdMesa { get; set; }
 
-    [DisplayName("Nombre Sede")]
+    [DisplayName("Nombre sede")]
     public int IdSede { get; set; }
 
     [DisplayName("Jornada")]
     public int IdJornada { get; set; }
 
     [Required(ErrorMessage = "La fecha de inicio es obligatoria.")]
-    [DisplayName("Fecha de Inicio")]
+    [DisplayName("Fecha de inicio")]
     public DateOnly FechaInicio { get; set; }
+    
 
-    [DisplayName("Fecha Fin")]
+    [DisplayName("Fecha fin")]
     public DateOnly? FechaFin { get; set; }
 
     public bool EstadoMesa { get; set; }

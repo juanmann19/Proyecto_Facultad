@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_Facultad.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Proyecto_Facultad.Controllers
 {
@@ -22,11 +23,52 @@ namespace Proyecto_Facultad.Controllers
         }
 
         // GET: Nota
+        // GET: Nota
         public async Task<IActionResult> Index()
         {
-            var bdfflContext = _context.Notas.Include(n => n.IdAsignacionalumnosNavigation).ThenInclude(aa => aa.IdAlumnoNavigation).Include(n => n.IdBimestreNavigation);
-            return View(await bdfflContext.ToListAsync());
+            // Obtener el nombre del usuario autenticado
+            var userName = User.Identity.Name;
+
+            // Verificar si el usuario está autenticado
+            if (string.IsNullOrEmpty(userName))
+            {
+                return Unauthorized("Usuario no autenticado.");
+            }
+
+            // Buscar al usuario basado en su nombre
+            var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.NombreUsuario == userName);
+            if (usuario == null)
+            {
+                return NotFound("Usuario no encontrado.");
+            }
+
+            // Buscar el maestro basado en el IdUsuario
+            var staff = await _context.Staff.FirstOrDefaultAsync(s => s.IdUsuario == usuario.IdUsuario);
+            if (staff == null)
+            {
+                return NotFound("No se encontró el maestro.");
+            }
+
+            // Obtener el ID del maestro
+            int maestroId = staff.IdStaff;
+
+            // Filtrar las mesas asignadas al maestro actual
+            var mesasDelMaestro = await _context.AsignacionMaestros
+                .Where(am => am.IdStaff == maestroId)  // Filtrar por el maestro actual
+                .Select(am => am.IdMesa)                // Seleccionar las mesas asignadas
+                .ToListAsync();
+
+            // Filtrar las notas que corresponden a los alumnos en las mesas del maestro
+            var notasDelMaestro = await _context.Notas
+                .Include(n => n.IdAsignacionalumnosNavigation)
+                    .ThenInclude(a => a.IdAlumnoNavigation)
+                .Include(n => n.IdBimestreNavigation)
+                .Where(n => mesasDelMaestro.Contains(n.IdAsignacionalumnosNavigation.IdMesa)) // Filtrar notas por las mesas
+                .ToListAsync();
+
+            return View(notasDelMaestro);
         }
+
 
         // GET: Nota/Details/5
         // public async Task<IActionResult> Details(int? id)
@@ -49,26 +91,66 @@ namespace Proyecto_Facultad.Controllers
         // }
 
         // GET: Nota/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            // Obtener las asignaciones de alumnos con su nombre completo
-            var asignaciones = _context.AsignacionAlumnos
-                .Include(a => a.IdAlumnoNavigation)  // Incluir la navegación hacia el alumno
+            // Obtener el nombre del usuario autenticado
+            var userName = User.Identity.Name;
+
+            // Verificar si el usuario está autenticado
+            if (string.IsNullOrEmpty(userName))
+            {
+                return Unauthorized("Usuario no autenticado.");
+            }
+
+            // Buscar al usuario basado en su nombre
+            var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.NombreUsuario == userName);
+            if (usuario == null)
+            {
+                return NotFound("Usuario no encontrado.");
+            }
+
+            // Buscar el maestro basado en el IdUsuario
+            var staff = await _context.Staff.FirstOrDefaultAsync(s => s.IdUsuario == usuario.IdUsuario);
+            if (staff == null)
+            {
+                return NotFound("No se encontró el maestro.");
+            }
+
+            // Obtener el ID del maestro
+            int maestroId = staff.IdStaff;
+
+            // Filtrar las mesas asignadas al maestro actual
+            var mesasDelMaestro = await _context.AsignacionMaestros
+                .Where(am => am.IdStaff == maestroId)  // Filtrar por el maestro actual
+                .Select(am => am.IdMesa)                // Seleccionar las mesas asignadas
+                .ToListAsync();
+
+            // Filtrar las asignaciones de alumnos que estén en las mesas del maestro
+            var asignaciones = await _context.AsignacionAlumnos
+                .Include(a => a.IdAlumnoNavigation)
+                .Where(a => mesasDelMaestro.Contains(a.IdMesa))
                 .Select(a => new
                 {
-                    a.IdAsignacionalumnos,  // Utilizar IdAsignacionalumnos como valor
+                    a.IdAsignacionalumnos,
                     NombreCompleto = $"{a.IdAlumnoNavigation.PrimerNombreAlumno} {a.IdAlumnoNavigation.PrimerApellidoAlumno}"
                 })
-                .ToList();
+                .ToListAsync();
+
+            // Verificar si hay asignaciones para este maestro
+            if (!asignaciones.Any())
+            {
+                TempData["ErrorMessage"] = "No tienes alumnos asignados a tus mesas.";
+                return RedirectToAction(nameof(Index));
+            }
 
             // Pasar la lista de asignaciones de alumnos a la vista
             ViewBag.IdAlumno = new SelectList(asignaciones, "IdAsignacionalumnos", "NombreCompleto");
-
-            // Cargar bimestres en el dropdown
             ViewBag.IdBimestre = new SelectList(_context.Bimestres, "IdBimestre", "NombreBimestre");
 
             return View();
         }
+
+
         //public IActionResult Create()
         //{
         //    // Obtener todas las mesas

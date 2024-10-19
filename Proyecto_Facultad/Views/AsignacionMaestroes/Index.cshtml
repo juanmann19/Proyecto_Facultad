@@ -1,23 +1,68 @@
 ﻿@model IEnumerable<Proyecto_Facultad.Models.AsignacionMaestro>
 
+<style>
+    .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 1em;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+    }
+
+        .custom-table thead {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .custom-table th, .custom-table td {
+            padding: 12px 15px;
+            text-align: left;
+            white-space: nowrap; /* Esto evitará que el contenido se extienda innecesariamente */
+        }
+
+        .custom-table tbody tr {
+            transition: background-color 0.3s;
+        }
+
+            .custom-table tbody tr:hover {
+                background-color: #f2f2f2;
+            }
+
+        .custom-table a:hover {
+            text-decoration: underline;
+        }
+
+        /* Ajustamos el ancho de las columnas */
+        .custom-table th:nth-child(1),
+        .custom-table td:nth-child(1) {
+            width: 20%; /* Ajusta según sea necesario */
+        }
+
+        .custom-table th:nth-child(2),
+        .custom-table td:nth-child(2) {
+            width: 20%; /* Ajusta según sea necesario */
+        }
+</style>
+
 <div class="container-fluid pt-4">
     <div class="row mb-3">
         <div class="col-6">
-            <h2 class="text-primary">Asignar personal a mesa</h2>
+            <h2 class="text-primary">Listado de personal asignado a mesa</h2>
         </div>
         <div class="col-6 text-end">
             <a asp-controller="AsignacionMaestroes" asp-action="Create" class="btn btn-primary">
-                <i class="bi bi-plus-circle"></i> Asignar un maestro a una mesa
+                <i class="bi bi-plus-circle"></i> Agregar personal a una mesa
             </a>
         </div>
     </div>
 
     <div class="table-responsive">
         <table class="table table-bordered table-striped">
+            <table class="table custom-table table-striped table-bordered">
             <thead>
                 <tr>
                     <th>Nombre del maestro</th>
-                    <th>Número de Mesa</th>
+                    <th>Número de mesa</th>
                     <th>Sede</th>
                     <th>Jornada (Día - Horario)</th>
                     <th>Acciones</th>
@@ -73,34 +118,32 @@
                         <td>
                             @{
                                 string jornadaInfo = "Jornada desconocida"; // Valor por defecto
-
                                 if (obj.IdMesaNavigation?.IdJornadaNavigation != null)
-
                                 {
-
                                     jornadaInfo = $"{obj.IdMesaNavigation.IdJornadaNavigation.DiaSemana} - {obj.IdMesaNavigation.IdJornadaNavigation.Horario}";
 
                                 }
                             }
                             <span>@jornadaInfo</span>
                         </td>
-
-
                         <td>
                             <div class="btn-group w-100" role="group">
-                                <a asp-controller="AsignacionMaestroes" asp-action="Edit" asp-route-id="@obj.IdAsignacionmaestros" class="btn btn-primary flex-grow-1">
+                                    <div class="form-group text-end">
+                                        <a asp-controller="AsignacionMaestroes" asp-action="Edit" asp-route-id="@obj.IdAsignacionmaestros" method="post" class="btn btn-warning flex-grow-1" style="padding: 8px 50px;">
                                     <i class="bi bi-pencil-fill"></i> Editar
                                 </a>
-                                <form asp-controller="AsignacionMaestroes" asp-action="Delete" asp-route-id="@obj.IdAsignacionmaestros" method="post" class="d-inline">
-                                    <button type="submit" class="btn btn-danger flex-grow-1" onclick="return confirm('¿Estás seguro de que deseas eliminar esta asignación?');">
-                                        <i class="bi bi-trash-fill"></i> Eliminar
-                                    </button>
-                                </form>
+                                        <form asp-controller="AsignacionMaestroes" asp-action="Delete" asp-route-id="@obj.IdAsignacionmaestros" method="post" class="d-inline">
+                                            <button type="submit" class="btn btn-danger flex-grow-1" style="padding: 8px 50px;" onclick="return confirm('¿Estás seguro de que deseas eliminar esta asignación?');">
+                                                <i class="bi bi-trash-fill"></i> Eliminar
+                                            </button>
+                                        </form>
+                                    </div>
                             </div>
                         </td>
                     </tr>
                 }
             </tbody>
+            </table>
         </table>
     </div>
 </div>

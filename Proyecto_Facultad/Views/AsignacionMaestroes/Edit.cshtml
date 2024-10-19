@@ -1,29 +1,30 @@
 ﻿@model Proyecto_Facultad.Models.AsignacionMaestro
 
 <div class="container">
-    <h2 class="text-primary">Asignar personal a una mesa</h2>
+    <h2 class="text-primary">Editar Asignación de Personal a una Mesa</h2>
+    <br />
+    <br />
 
     @if (!ViewData.ModelState.IsValid)
+
     {
         <div class="alert alert-danger">
             @Html.ValidationSummary()
         </div>
     }
-    <form id="sedeForm" asp-action="Create" method="post">
+
+    <form id="asignacionForm" asp-action="Edit" method="post">
+        <input type="hidden" asp-for="IdAsignacionmaestros" />
+
         <div class="row mb-3">
             <div class="col-md-6">
                 <label asp-for="IdStaff" class="control-label"></label>
-                <select asp-for="IdStaff" asp-items="ViewBag.IdStaff" class="form-control">
-                    <option value="">Seleccione</option>
-                </select>              
+                <select asp-for="IdStaff" asp-items="ViewBag.IdStaff" class="form-control"></select>
                 <span asp-validation-for="IdStaff" class="text-danger"></span>
             </div>
-
             <div class="col-md-6">
                 <label asp-for="IdMesa" class="form-label"></label>
-                <select asp-for="IdMesa" class="form-control" asp-items="ViewBag.IdMesa">
-                    <option value="">Seleccione</option>
-                </select>
+                <select asp-for="IdMesa" asp-items="ViewBag.IdMesa" class="form-control"></select>
                 <span asp-validation-for="IdMesa" class="text-danger"></span>
             </div>
         </div>

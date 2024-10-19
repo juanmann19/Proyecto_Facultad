@@ -1,23 +1,23 @@
 ﻿@model Proyecto_Facultad.Models.AsistenciaStaff
 
 <div class="container">
-    <h2 class="text-primary">Añadir Asistencia</h2>
+    <h2 class="text-primary">Crear asistencia personal</h2>
 
     <form asp-action="Create" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
         <div class="row mb-3">
             <div class="col-md-6">
-                <label class="control-label">Nombre Maestro</label>
+                <label class="control-label">Nombre maestro</label>
                 <!-- Campo de solo lectura con el nombre del maestro -->
-                <input type="text" class="form-control" value="@ViewData["NombreMaestro"]" readonly />
+                <input type="text" class="form-control" value="@ViewData["Nombremaestro"]" readonly />
 
             </div>
         </div>
 
         <div class="row mb-3">
             <div class="col-md-6">
-                <label asp-for="FechaClase" class="form-label">Fecha de Clase</label>
+                <label asp-for="FechaClase" class="form-label">Fecha de clase</label>
                 <input asp-for="FechaClase" class="form-control" type="date" />
                 <span asp-validation-for="FechaClase" class="text-danger"></span>
             </div>
@@ -27,21 +27,27 @@
             <div class="col-md-6">
                 <label asp-for="IdMesa" class="form-label">Mesa</label>
                 <!-- Mostrar solo las mesas asignadas al maestro -->
-                <select asp-for="IdMesa" class="form-control" asp-items="ViewBag.IdMesa"></select>
+                <select asp-for="IdMesa" class="form-control" asp-items="ViewBag.IdMesa">
+                    <option value="">Seleccione</option>
+                </select>
             </div>
         </div>
 
         <div class="row mb-3">
             <div class="col-md-6">
                 <label asp-for="IdLeccion" class="form-label">Lección</label>
-                <select asp-for="IdLeccion" class="form-control" asp-items="ViewBag.IdLeccion"></select>
+                <select asp-for="IdLeccion" class="form-control" asp-items="ViewBag.IdLeccion">
+                    <option value="">Seleccione</option>
+                </select>
             </div>
         </div>
 
         <div class="row mb-3">
             <div class="col-md-6">
                 <label asp-for="IdBimestre" class="form-label">Bimestre</label>
-                <select asp-for="IdBimestre" class="form-control" asp-items="ViewBag.IdBimestre"></select>
+                <select asp-for="IdBimestre" class="form-control" asp-items="ViewBag.IdBimestre">
+                    <option value="">Seleccione</option>
+                </select>
             </div>
         </div>
 
@@ -62,10 +68,13 @@
             </div>
         </div>
 
-        <div class="form-group d-flex">
-            <button type="submit" class="btn btn-primary flex-fill me-2">Guardar</button>
-            <button type="button" class="btn btn-success flex-fill me-2" onclick="window.location.href='/AsistenciaAlumnoes/Create'">Siguiente</button>
-            <a asp-action="Index" class="btn btn-danger flex-fill me-2">Cancelar</a>
+        <div class="form-group text-end">
+            <button type="submit" class="btn btn-sm text-white" style="background-color: #00B6A6; padding: 8px 20px;">
+                <i class="bi bi-save me-2"></i> Guardar
+            </button>
+            <a asp-action="Index" class="btn btn-danger btn-sm" style="padding: 8px 20px;">
+                <i class="bi bi-x me-2"></i> Cancelar
+            </a>
         </div>
     </form>
 </div>

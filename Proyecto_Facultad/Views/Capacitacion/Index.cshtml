@@ -1,30 +1,114 @@
 ﻿@model IEnumerable<Proyecto_Facultad.Models.Capacitacion>
 
-<div class="container">
-    <h2 class="text-primary">Listado de capacitaciones</h2>
+<style>
+    .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 1em;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+    }
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Fecha de Capacitación</th>
-                <th>Nombre del Maestro</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var capacitacion in Model)
-            {
-                <tr>
-                    <td>@capacitacion.FechaCapacitacion.ToShortDateString()</td>
-                    <td>@capacitacion.IdStaffNavigation.PrimerNombreStaff</td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@capacitacion.IdCapacitacion" class="btn btn-warning">Editar</a>
-                        <a asp-action="Delete" asp-route-id="@capacitacion.IdCapacitacion" class="btn btn-danger">Eliminar</a>
-                    </td>
-                </tr>
+        .custom-table thead {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .custom-table th, .custom-table td {
+            padding: 12px 15px;
+            text-align: left;
+            white-space: nowrap; /* Esto evitará que el contenido se extienda innecesariamente */
+        }
+
+        .custom-table tbody tr {
+            transition: background-color 0.3s;
+        }
+
+            .custom-table tbody tr:hover {
+                background-color: #f2f2f2;
             }
-        </tbody>
-    </table>
 
-    <a asp-action="Create" class="btn btn-primary">Añadir capacitación</a>
+        .custom-table a:hover {
+            text-decoration: underline;
+        }
+
+        /* Ajustamos el ancho de las columnas */
+        .custom-table th:nth-child(1),
+        .custom-table td:nth-child(1) {
+            width: 50%; /* Ajusta según sea necesario */
+        }
+
+        .custom-table th:nth-child(2),
+        .custom-table td:nth-child(2) {
+            width: 50%; /* Ajusta según sea necesario */
+        }
+</style>
+
+<div class="container-fluid pt-4">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <div class="row mb-3">
+        <div class="col-6">
+            <h2 class="text-primary">Listado de capacitaciones</h2>
+        </div>
+
+        <div class="col-6 text-end">
+            <a asp-controller="Capacitacion" asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Agregar capacitación
+            </a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table custom-table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Fecha de capacitación</th>
+                    <th>Nombre del maestro</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var capacitacion in Model)
+                {
+                    <tr>
+                        <td>@capacitacion.FechaCapacitacion.ToShortDateString()</td>
+                        <td>
+                            @if (capacitacion.IdStaffNavigation != null)
+                            {
+                                @($"{capacitacion.IdStaffNavigation.PrimerNombreStaff} {capacitacion.IdStaffNavigation.PrimerApellidoStaff}")
+                            }
+                            else
+                            {
+                                <span>No asignado</span>
+                            }
+                        </td>
+                        <td>
+                            <div class="btn-group w-100" role="group">
+                                <div class="form-group text-end">
+                                    <a asp-controller="Capacitacion" asp-action="Edit" asp-route-id="@capacitacion.IdCapacitacion" class="btn btn-warning flex-grow-1" style="padding: 8px 70px;">
+                                        <i class="bi bi-pencil-fill"></i> Editar
+                                    </a>
+                                    <a asp-controller="Capacitacion" asp-action="Delete" asp-route-id="@capacitacion.IdCapacitacion" class=" btn btn-danger flex-grow-1" style="padding: 8px 70px;">
+                                        <i class="bi bi-trash-fill"></i> Eliminar
+                                    </a>
+                                </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
+

@@ -8,7 +8,6 @@ namespace Proyecto_Facultad.Models;
 
 public partial class AsistenciaStaff
 {
-    [Key] 
     public int IdAsistenciaStaff { get; set; }
 
     [DisplayName("Nombre")]
@@ -17,7 +16,7 @@ public partial class AsistenciaStaff
     [DisplayName("Fecha de clases")]
     public DateOnly FechaClase { get; set; }
 
-    [DisplayName("Numero de Mesa")]
+    [DisplayName("Numero de mesa")]
     public int IdMesa { get; set; }
 
     [DisplayName("Leccion")]

@@ -1,5 +1,42 @@
 ﻿@model List<Proyecto_Facultad.Models.Alumno>
+<style>
+    .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 1em;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+    }
 
+        .custom-table thead {
+            background-color: #343a40;
+            color: white;
+        }
+
+    .btn-info-dark {
+        background-color: #017a8a; /* Un tono más oscuro de cian */
+        border-color: #017a8a;
+        color: white; /* Mantén el texto en blanco para el contraste */
+        .btn-info-dark:focus, .btn-info-dark:active
+    }
+
+    .custom-table th, .custom-table td {
+        padding: 12px 15px;
+        text-align: left;
+        white-space: nowrap; /* Esto evitará que el contenido se extienda innecesariamente */
+    }
+
+    .custom-table tbody tr {
+        transition: background-color 0.3s;
+    }
+
+        .custom-table tbody tr:hover {
+            background-color: #f2f2f2;
+        }
+
+    .custom-table a:hover {
+        text-decoration: underline;}
+</style>
 @{
     // Función para calcular la edad a partir de la fecha de nacimiento
     int? CalcularEdad(DateOnly? fechaNacimiento)
@@ -48,33 +85,36 @@
 
 <div class="table-responsive">
     <table class="table table-bordered table-striped">
+    <table class="table custom-table table-striped table-bordered">
         <thead>
             <tr>
-                <th>Nombre Completo</th>
-                <th>Otros Nombres</th>
-                <th>Apellido de Casado</th>
-                <th>Fecha de Nacimiento</th>
-                <th>Fecha de Bautizo</th>
+                <th>No.</th>
+                <th>Nombre completo</th>
+                <th>Otros nombres</th>
+                <th>Apellido de casado</th>
+                <th>Fecha de nacimiento</th>
+                <th>Fecha de bautizo</th>
                 <th>Dirección</th>
                 <th>Teléfono</th>
                 <th>DPI</th>
                 <th>NIT</th>
                 <th>Género</th>
-                <th>Estado Civil</th>
+                <th>Estado civil</th>
                 <th>Red</th>
-                <th>Código Frater</th>
+                <th>Código frater</th>
                 <th>Inscrito</th>
                 <th>Retiro</th>
-                <th>Reuniones en Confianza</th>
+                <th>Reuniones en confianza</th>
                 <th>Otros</th>
                 <th>Estatus</th>
-                <th></th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var obj in Model.OrderBy(u => u.PrimerApellidoAlumno))
             {
                 <tr>
+                    <td>@obj.IdAlumno</td>
                     <td>@($"{obj.PrimerNombreAlumno} {obj.SegundoNombreAlumno} {obj.PrimerApellidoAlumno} {obj.SegundoApellidoAlumno}")</td>
                     <td>@obj.OtrosNombresAlumno</td>
                     <td>@obj.ApellidoCasado</td>
@@ -120,24 +160,25 @@
                             }
                         </td>
                     <td>
-                            <div class="d-grid gap-2">
-                                <a asp-controller="Alumno" asp-action="Edit" asp-route-id="@obj.IdAlumno" class="btn btn-primary d-flex justify-content-center align-items-center">
-                                    <i class="bi bi-pencil-fill me-2"></i> Editar
-                                </a>
-                                <form asp-action="Deactivate" method="post">
-                                    <button type="submit" asp-controller="Alumno" asp-action="Deactivate" asp-route-id="@obj.IdAlumno" class="btn btn-danger d-flex justify-content-center align-items-center">
-                                        <i class="bi bi-trash-fill me-2"></i> Activar/Desactivar
-                                    </button>
-                                </form>
+
+                            <div class="btn-group w-100" role="group">
+                                <div class="me-2">
+                                    <a asp-controller="Alumno" asp-action="Edit" asp-route-id="@obj.IdAlumno" class="btn btn-warning btn-sm" style="padding: 8px 20px;">
+                                        <i class="bi bi-pencil-fill me-2"></i> Editar
+                                    </a>
+                                </div>
+                                <div>
+                                    <form asp-action="Deactivate" method="post" class="d-inline">
+                                        <button type="submit" asp-controller="Alumno" asp-action="Deactivate" asp-route-id="@obj.IdAlumno" class="btn btn-info-dark btn-sm" style="padding: 8px 20px;">
+                                            <i class="bi bi-power me-2"></i> Estado
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
-
-
-
-
-
                     </td>
                 </tr>
             }
         </tbody>
+         </table>
     </table>
 </div>

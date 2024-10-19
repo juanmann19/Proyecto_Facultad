@@ -1,5 +1,49 @@
 ﻿@model IEnumerable<Proyecto_Facultad.Models.Nivel>
 
+<style>
+    .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 1em;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+    }
+
+        .custom-table thead {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .custom-table th, .custom-table td {
+            padding: 12px 15px;
+            text-align: left;
+            white-space: nowrap; /* Esto evitará que el contenido se extienda innecesariamente */
+        }
+
+        .custom-table tbody tr {
+            transition: background-color 0.3s;
+        }
+
+        .custom-table tbody tr:hover {
+                background-color: #f2f2f2;
+        }
+
+       .custom-table a:hover {
+           text-decoration: underline;
+       }
+
+        /* Ajustamos el ancho de las columnas */
+        .custom-table th:nth-child(1),
+        .custom-table td:nth-child(1) {
+            width: 50%; /* Ajusta según sea necesario */
+        }
+
+        .custom-table th:nth-child(2),
+        .custom-table td:nth-child(2) {
+            width:90%; /* Ajusta según sea necesario */
+        }
+ </style>
+
 <div class="container-fluid pt-4">
     @if (TempData["SuccessMessage"] != null)
 
@@ -18,20 +62,21 @@
 
     <div class="row mb-3">
         <div class="col-6">
-            <h2 class="text-primary">Listado de Niveles</h2>
+            <h2 class="text-primary">Listado de niveles</h2>
         </div>
         <div class="col-6 text-end">
             <a asp-controller="Nivels" asp-action="Create" class="btn btn-primary">
-                <i class="bi bi-plus-circle"></i> Agregar Nivel
+                <i class="bi bi-plus-circle"></i> Agregar nivel
             </a>
         </div>
     </div>
 
     <div class="table-responsive">
         <table class="table table-bordered table-striped">
+          <table class="table custom-table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th>Nombre del Nivel</th>
+                    <th>Nombre del nivel</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -42,18 +87,21 @@
                     <tr>
                         <td>@item.NombreNivel</td>
                         <td>
-                            <div class="btn-group w-100" role="group">
-                                <a asp-controller="Nivels" asp-action="Edit" asp-route-id="@item.IdNivel" class="btn btn-primary flex-grow-1">
-                                    <i class="bi bi-pencil-fill"></i> Editar
-                                </a>
-                                <a asp-controller="Nivels" asp-action="Delete" asp-route-id="@item.IdNivel" class="btn btn-danger flex-grow-1">
-                                    <i class="bi bi-trash-fill"></i> Eliminar
-                                </a>
-                            </div>
+                                <div class="btn-group w-100" role="group">
+                                 <div class="form-group text-end">
+                                        <a asp-controller="Nivels" asp-action="Edit" asp-route-id="@item.IdNivel" class="btn btn-warning flex-grow-1" style="padding: 8px 70px;">
+                                        <i class="bi bi-pencil-fill"></i> Editar
+                                    </a>
+                                        <a asp-controller="Nivels" asp-action="Delete" asp-route-id="@item.IdNivel" class=" btn btn-danger flex-grow-1" style="padding: 8px 70px;">
+                                            <i class="bi bi-trash-fill"></i> Eliminar
+                                    </a>
+                                </div>
+                              </div>
                         </td>
                     </tr>
                 }
-            </tbody>
+               </tbody>
+            </table>
         </table>
     </div>
 </div>
