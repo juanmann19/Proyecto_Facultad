@@ -3,20 +3,33 @@
 }
 <style>
     .logo {
-        width: 200px; /* Ajusta el tamaño del logo */
-        height: auto; /* Mantén la proporción del logo */
-        margin-bottom: 8px; /* Espacio debajo del logo */
+        width: 200px;
+        height: auto;
+        margin-bottom: 8px;
     }
+
+
+body {
+    background-image: url('@Url.Content("~/images/Banner inicio-LCP.png")'); /* Imagen de fondo */
+    background-size: cover; /* Mantener la imagen ajustada */
+    background-position: center; /* Centrar la imagen */
+    background-repeat: no-repeat; /* Evitar que se repita */
+    min-height: 100vh; /* Altura mínima de la pantalla */
+    width: 100%; /* Asegurar que cubra el ancho completo */
+    display: flex; /* Usar flexbox para alinear el contenido */
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+}
+
 </style>
 <div class="text-center">
     <br />
     <br />
     <br />
     <br />
-    <!-- Aquí se inserta el logo, colocarlo en la carpeta de ~/images/logo.png es relativa a la carpeta wwwroot. -->
     <img src="~/images/logo.jpg" alt="LCP Logo" class="logo">
-    <h1 class="display-4">Ministerio de la Facultad de la Fe y Liderazgo</h1>
+    <h1 class="display-4 text-light">Ministerio de la Facultad de la Fe y Liderazgo</h1>
     <br />
-    <h4 class="display-6">Fraternidad Cristiana de Guatemala</h4>
+    <h4 class="display-6 text-light">Fraternidad Cristiana de Guatemala</h4>
     @* k<p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p> *@
 </div>

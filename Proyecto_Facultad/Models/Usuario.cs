@@ -23,6 +23,7 @@ public partial class Usuario
     [Required(ErrorMessage = "El rol es obligatorio")]
     public int IdRol { get; set; }
 
+    [DisplayName("Estado usuario")]
     public bool EstadoUsuario { get; set; }
    
     public virtual Rol IdRolNavigation { get; set; }

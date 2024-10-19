@@ -158,6 +158,40 @@ namespace Proyecto_Facultad.Controllers
         //}
 
         [HttpPost]
+        public async Task<IActionResult> Activate(int? id)
+        {
+            var alumno = await _context.Alumnos.FindAsync(id);
+            if (alumno == null)
+            {
+                TempData["ErrorMessage"] = "El alumno no se encontró.";
+                return NotFound();
+            }
+
+            // Cambiar el estatus a activado
+            alumno.EstatusAlumno = true;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Alumno activado correctamente.";
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!AlumnoExists(alumno.IdAlumno))
+                {
+                    TempData["ErrorMessage"] = "Error al activar el alumno.";
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Deactivate(int? id)
         {
             var alumno = await _context.Alumnos.FindAsync(id);
@@ -167,22 +201,20 @@ namespace Proyecto_Facultad.Controllers
                 return NotFound();
             }
 
-            // Cambiar el estatus
-            alumno.EstatusAlumno = !alumno.EstatusAlumno;
+            // Cambiar el estatus a desactivado
+            alumno.EstatusAlumno = false;
 
             try
             {
                 await _context.SaveChangesAsync();
-                TempData["SuccessMessage"] = alumno.EstatusAlumno ? "Alumno activado correctamente" : "Alumno desactivado correctamente";
-
+                TempData["SuccessMessage"] = "Alumno inactivado correctamente.";
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!AlumnoExists(alumno.IdAlumno))
                 {
-                    TempData["ErrorMessage"] = "Error al actualizar el estatus del alumno.";
+                    TempData["ErrorMessage"] = "Error al inactivar el alumno.";
                     return NotFound();
-
                 }
                 else
                 {
@@ -191,8 +223,6 @@ namespace Proyecto_Facultad.Controllers
             }
 
             return RedirectToAction(nameof(Index));
-            //return View(alumno);
-
         }
 
 
