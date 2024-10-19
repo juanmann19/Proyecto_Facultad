@@ -189,8 +189,15 @@ namespace Proyecto_Facultad.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Activate(int? id)
         {
+            if (id == null)
+            {
+                TempData["ErrorMessage"] = "El ID del usuario no es válido.";
+                return NotFound();
+            }
+
             var usuario = await _context.Usuarios.FindAsync(id);
             if (usuario == null)
             {
@@ -203,6 +210,7 @@ namespace Proyecto_Facultad.Controllers
 
             try
             {
+                _context.Update(usuario); // Asegúrate de actualizar el estado en el contexto
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Usuario activado correctamente.";
             }
@@ -222,11 +230,12 @@ namespace Proyecto_Facultad.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-         // Método para verificar si el usuario existe
+        // Método para verificar si el usuario existe
         private bool UsuarioExists(int id)
         {
             return _context.Usuarios.Any(e => e.IdUsuario == id);
         }
+
 
     }
 }
