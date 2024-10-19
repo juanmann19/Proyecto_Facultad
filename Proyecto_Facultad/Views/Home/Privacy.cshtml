@@ -1,6 +1,52 @@
 ﻿@{
-    ViewData["Title"] = "Privacidad";
+    ViewData["Title"] = "Ayuda";
 }
+
 <h1>@ViewData["Title"]</h1>
 
-<p>Nos preocupamos por tu privacidad por ello...</p>
+<div class="help-container">
+    <h2>Documentación</h2>
+    <ul>
+        <li>
+            <a href="@Url.Action("GetManual", "Privacy")" class="btn btn-primary">Descargar Manual PDF</a>
+        </li>
+        <li>
+            <a href="@Url.Action("PreviewManual", "Privacy")" class="btn btn-secondary" target="_blank">Previsualizar Manual PDF</a>
+        </li>
+    </ul>
+
+    <h2>Otras Opciones de Ayuda</h2>
+    <p>A continuación, encontrarás más recursos para ayudarte:</p>
+    <ul>
+        <li><a href="https://drive.google.com/drive/folders/1T3IfPuuNDbB82qqEBXV-nupeJ1RjoljU?usp=sharing">Video</a></li>
+    </ul>
+</div>
+
+<style>
+    .help-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
+    .help-container h2 {
+        margin-top: 20px;
+    }
+    .btn {
+        display: inline-block;
+        padding: 10px 15px;
+        margin: 5px 0;
+        border: none;
+        border-radius: 4px;
+        color: white;
+        text-decoration: none;
+    }
+    .btn-primary {
+        background-color: #007bff;
+    }
+    .btn-secondary {
+        background-color: #6c757d;
+    }
+</style>
