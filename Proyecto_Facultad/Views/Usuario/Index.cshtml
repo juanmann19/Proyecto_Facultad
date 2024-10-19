@@ -127,9 +127,10 @@
                         <td style="align-items: center;">
                                 <div class="btn-group w-100" role="group">
                                         <div class="me-2">
-                                            <a asp-controller="Usuario" asp-action="Edit" asp-route-id="@usuario.IdUsuario" class="btn btn-warning btn-sm" style="padding: 8px 30px;">
-                                                <i class="bi bi-pencil-fill me-2"></i> Editar
-                                            </a>
+                                        <a asp-controller="Usuario" asp-action="Edit" asp-route-id="@usuario.IdUsuario" class="btn btn-warning btn-sm" style="padding: 8px 30px; color: white;">
+                                            <i class="bi bi-pencil-fill me-2"></i> Editar
+                                        </a>
+
                                         </div>
                                         <div>
                                             <form asp-action="Deactivate" method="post" class="d-inline">

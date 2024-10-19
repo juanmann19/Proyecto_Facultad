@@ -147,8 +147,15 @@ namespace Proyecto_Facultad.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Deactivate(int? id)
         {
+            if (id == null)
+            {
+                TempData["ErrorMessage"] = "El ID del usuario no es válido.";
+                return NotFound();
+            }
+
             var usuario = await _context.Usuarios.FindAsync(id);
             if (usuario == null)
             {
@@ -161,6 +168,7 @@ namespace Proyecto_Facultad.Controllers
 
             try
             {
+                _context.Update(usuario); // Asegúrate de actualizar el estado en el contexto
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Usuario inactivado correctamente.";
             }
