@@ -219,7 +219,17 @@
                             </ul>
                         </li>
                         }
+
                     </ul>
+                    @if (User.IsInRole("Coordinador") || User.IsInRole("Admin")||User.IsInRole("Auxiliar") || User.IsInRole("Maestro") )
+                    {
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Home"
+                                        asp-action="Privacy">Ayuda</a>
+                        </li>
+                    </ul>
+                    }
                     <ul class="navbar-nav d-flex align-items-center">
                         <!-- Verifica si el usuario está autenticado -->
                         @if (User.Identity.IsAuthenticated)

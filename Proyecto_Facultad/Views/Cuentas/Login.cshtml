@@ -14,21 +14,42 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            background-color: #f8f9fa;
+            background: #001f3f; /* Azul marino oscuro */
+            font-family: Arial, sans-serif;
         }
         .login-container {
             max-width: 400px;
-            margin: 50px auto;
-            padding: 20px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 100px auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.9); /* Fondo blanco con transparencia */
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Sombra más suave */
+            transition: transform 0.3s; /* Transición para el aumento */
+        }
+        .login-container:focus-within {
+            transform: scale(1.05); /* Aumento al enfocar */
         }
         .login-title {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            color: #333; /* Color del título */
         }
         .login-button {
             width: 100%;
+        }
+        .footer-links {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .password-container {
+            position: relative;
+        }
+        .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #007bff; /* Color del icono */
         }
     </style>
 </head>
@@ -37,18 +58,19 @@
         <h2 class="login-title text-center">Iniciar Sesión</h2>
         
         <form asp-action="Login" method="post">
-    <div class="form-group">
-        <label asp-for="NombreUsuario" class="control-label"></label>
-        <input asp-for="NombreUsuario" class="form-control" />
-        <span asp-validation-for="NombreUsuario" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="ContrasenaUsuario" class="control-label"></label>
-        <input asp-for="ContrasenaUsuario" type="password" class="form-control" />
-        <span asp-validation-for="ContrasenaUsuario" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary">Login</button>
-</form>
+            <div class="form-group">
+                <label asp-for="NombreUsuario" class="control-label">Nombre de Usuario</label>
+                <input asp-for="NombreUsuario" class="form-control" placeholder="Ingrese su nombre de usuario" required />
+                <span asp-validation-for="NombreUsuario" class="text-danger"></span>
+            </div>
+            <div class="form-group password-container">
+                <label asp-for="ContrasenaUsuario" class="control-label">Contraseña</label>
+                <input asp-for="ContrasenaUsuario" type="password" class="form-control" placeholder="Ingrese su contraseña" required id="password" />
+                <span asp-validation-for="ContrasenaUsuario" class="text-danger"></span>
+                <i class="toggle-password" id="togglePassword">🔓</i> <!-- Icono de ojo -->
+            </div>
+            <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+        </form>
 
         <div class="text-danger mt-3">
             @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
@@ -56,11 +78,19 @@
                 <p>@error.ErrorMessage</p>
             }
         </div>
-    </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+    <script>
+        $(document).ready(function() {
+            $('#togglePassword').click(function() {
+                const passwordInput = $('#password');
+                const type = passwordInput.attr('type') === 'password' ? 'text' : 'password';
+                passwordInput.attr('type', type);
+                $(this).text(type === 'password' ? '🔓' : '🔒'); // Cambia el icono
+            });
+        });
+    </script>
     @section Scripts {
         @{
             await Html.RenderPartialAsync("_ValidationScriptsPartial");

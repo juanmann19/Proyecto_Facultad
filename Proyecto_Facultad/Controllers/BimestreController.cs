@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Proyecto_Facultad.Controllers
 {
-    [Authorize (Roles = "Coordinador, Admin")]
+    [Authorize(Roles = "Coordinador, Admin")]
     public class BimestreController : Controller
     {
         private readonly BdfflContext _context;
@@ -72,62 +72,63 @@ namespace Proyecto_Facultad.Controllers
                 return View(bimestre);
             }
         }
-       // GET: Bimestre/Edit/5
-public async Task<IActionResult> Edit(int? id)
-{
-    if (id == null)
-    {
-        return NotFound();
-    }
-
-    var bimestre = await _context.Bimestres.FindAsync(id);
-    if (bimestre == null)
-    {
-        return NotFound();
-    }
-    return View(bimestre);
-}
-
-// POST: Bimestre/Edit/5
-[HttpPost]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> Edit(int id, [Bind("IdBimestre,NombreBimestre")] Bimestre bimestre)
-{
-    if (id != bimestre.IdBimestre)
-    {
-        return NotFound();
-    }
-
-    if (ModelState.IsValid)
-    {
-        try
-        {
-            _context.Update(bimestre);
-            await _context.SaveChangesAsync();
-            TempData["SuccessMessage"] = "Datos actualizados correctamente";
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            
-                TempData["ErrorMessage"] = "Se produjo un error al actualizar los datos.";
-                throw;
-            
-        }
-        return RedirectToAction(nameof(Index));
-    }
-    return View(bimestre);
-}
-
-        // GET: Bimestre/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // GET: Bimestre/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var bimestre = await _context.Bimestres
-                .FirstOrDefaultAsync(m => m.IdBimestre == id);
+            var bimestre = await _context.Bimestres.FindAsync(id);
+            if (bimestre == null)
+            {
+                return NotFound();
+            }
+            return View(bimestre);
+        }
+
+        // POST: Bimestre/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("IdBimestre,NombreBimestre")] Bimestre bimestre)
+        {
+            if (id != bimestre.IdBimestre)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(bimestre);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Datos actualizados correctamente";
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+
+                    TempData["ErrorMessage"] = "Se produjo un error al actualizar los datos.";
+                    throw;
+
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return View(bimestre);
+        }
+
+        // GET: Bimestre/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            Console.WriteLine($"ID recibido para vista de eliminación: {id}"); // Agrega esto para verificar el ID
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var bimestre = await _context.Bimestres.FirstOrDefaultAsync(m => m.IdBimestre == id);
             if (bimestre == null)
             {
                 return NotFound();
@@ -136,11 +137,14 @@ public async Task<IActionResult> Edit(int id, [Bind("IdBimestre,NombreBimestre")
             return View(bimestre);
         }
 
+
         // POST: Bimestre/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            Console.WriteLine($"ID recibido para eliminación: {id}"); // Verificar el ID
+
             try
             {
                 var bimestre = await _context.Bimestres.FindAsync(id);
@@ -157,14 +161,14 @@ public async Task<IActionResult> Edit(int id, [Bind("IdBimestre,NombreBimestre")
             }
             catch (DbUpdateException ex)
             {
-                // Capturar el error interno
                 Console.WriteLine(ex.InnerException?.Message);
-
-                TempData["ErrorMessage"] = "No se puede eliminar este dato, porque ya esta asignado";
+                TempData["ErrorMessage"] = "No se puede eliminar este dato, porque ya está asignado.";
             }
 
             return RedirectToAction(nameof(Index));
         }
+
+
 
     }
 }
