@@ -36,40 +36,43 @@
             </tr>
         </tbody>
     </table>
-
-    <h3>Manual Técnico</h3>
-    <table class="styled-table">
-        <thead>
-            <tr>
-                <th>Acción</th>
-                <th>Enlace</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Descargar Manual PDF</td>
-                <td>
-                    <a href="@Url.Action("GetGuia", "Privacy")" class="download-link">
-                        <i class="fas fa-download" style="margin-right: 8px;"></i> Descargar
-                    </a>
-                </td>
-            </tr>
-            <tr>
-                <td>Previsualizar Manual PDF</td>
-                <td>
-                    <a href="@Url.Action("PreviewGuia", "Privacy")" class="preview-link" target="_blank">
-                        <i class="fas fa-eye" style="margin-right: 8px;"></i> Previsualizar
-                    </a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
+     @if (User.IsInRole("Admin"))
+    {
+        <h3>Manual Técnico</h3>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Acción</th>
+                    <th>Enlace</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Descargar Manual PDF</td>
+                    <td>
+                        <a href="@Url.Action("GetGuia", "Privacy")" class="download-link">
+                            <i class="fas fa-download" style="margin-right: 8px;"></i> Descargar
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Previsualizar Manual PDF</td>
+                    <td>
+                        <a href="@Url.Action("PreviewGuia", "Privacy")" class="preview-link" target="_blank">
+                            <i class="fas fa-eye" style="margin-right: 8px;"></i> Previsualizar
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    }
+    
     <h2>Otras Opciones de Ayuda</h2>
     <div class="video-option">
         <h4>Video de Ayuda</h4>
         <p>A continuación, encontrarás un video que puede ser útil:</p>
-        <a href="https://drive.google.com/drive/folders/1T3IfPuuNDbB82qqEBXV-nupeJ1RjoljU?usp=sharing" class="video-link">
+        <a href="https://drive.google.com/drive/folders/1T3IfPuuNDbB82qqEBXV-nupeJ1RjoljU?usp=sharing"
+            class="video-link">
             <i class="fas fa-video" style="margin-right: 8px;"></i> Ver Video
         </a>
     </div>
@@ -85,7 +88,8 @@
         background-color: #f9f9f9;
     }
 
-    .help-container h2, .help-container h3 {
+    .help-container h2,
+    .help-container h3 {
         margin-top: 20px;
     }
 
@@ -106,7 +110,8 @@
         text-align: left;
     }
 
-    .styled-table th, .styled-table td {
+    .styled-table th,
+    .styled-table td {
         padding: 12px 15px;
     }
 
@@ -118,7 +123,9 @@
         background-color: #f1f1f1;
     }
 
-    .download-link, .preview-link, .video-link {
+    .download-link,
+    .preview-link,
+    .video-link {
         display: flex;
         align-items: center;
         padding: 10px 0;
@@ -127,7 +134,9 @@
         font-size: 16px;
     }
 
-    .download-link:hover, .preview-link:hover, .video-link:hover {
+    .download-link:hover,
+    .preview-link:hover,
+    .video-link:hover {
         text-decoration: underline;
     }
 
