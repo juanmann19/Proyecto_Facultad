@@ -5,12 +5,7 @@
 }
 
 <div class="container">
-<<<<<<< HEAD
-    <br />
-    <h2 class="text-primary">Editar suario</h2>
-=======
     <h2 class="text-primary">Editar usuario</h2>
->>>>>>> df9eb81c9d1907581ce522d4cd1b9dbea105eec1
     <form id="usuarioForm" asp-action="Edit" method="post">
         <input type="hidden" asp-for ="IdUsuario"/>
         <div class="form-group">
@@ -33,23 +28,14 @@
             <input asp-for="EstadoUsuario" type="checkbox" />
             <span asp-validation-for="EstadoUsuario" class="text-danger"></span>
         </div>
-<<<<<<< HEAD
-        <div class="form-group text-end">
-            <button type="submit" class="btn btn-sm text-white" style="background-color: #00B6A6; padding: 8px 20px;">
-                <i class="bi bi-save me-2"></i> Guardar
-            </button>
-            <a asp-action="Index" class="btn btn-danger btn-sm" style="padding: 8px 18px;">
-=======
         <div class="form-group d-flex justify-content-end">
             <button type="submit" class="btn text-white me-2" style="background-color: #00B6A6; padding: 8px 20px;">
                 <i class="bi bi-save me-2"></i> Guardar
             </button>
             <a asp-action="Index" class="btn btn-danger" style="padding: 8px 20px;">
->>>>>>> df9eb81c9d1907581ce522d4cd1b9dbea105eec1
                 <i class="bi bi-x me-2"></i> Cancelar
             </a>
         </div>
-
     </form>
 </div>
 

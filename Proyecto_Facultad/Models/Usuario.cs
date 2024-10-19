@@ -10,11 +10,7 @@ public partial class Usuario
 {
     public int IdUsuario { get; set; }
 
-<<<<<<< HEAD
-    [DisplayName("Nombre de usuario")]
-=======
     [DisplayName("Nombre usuario")]
->>>>>>> df9eb81c9d1907581ce522d4cd1b9dbea105eec1
     [RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "Campo puede contener letras y numeros")]
     [Required(ErrorMessage = "El Nombre de usuario es Obligatorio")]
     public string NombreUsuario { get; set; }

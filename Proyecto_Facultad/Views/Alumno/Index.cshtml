@@ -126,7 +126,6 @@
 =======
     <table class="table table-bordered table-striped">
     <table class="table custom-table table-striped table-bordered">
->>>>>>> df9eb81c9d1907581ce522d4cd1b9dbea105eec1
         <thead>
             <tr>
                 <th>No.</th>
@@ -201,30 +200,6 @@
                             }
                         </td>
                     <td>
-<<<<<<< HEAD
-                            <div class="d-grid gap-2">
-                                <a asp-controller="Alumno" asp-action="Edit" asp-route-id="@obj.IdAlumno" class="btn btn-warning text-white d-flex justify-content-center align-items-center">
-                                    <i class="bi bi-pencil-fill me-2"></i> Editar
-                                </a>
-                                <!-- Botón de Activar (solo aparece si el alumno está inactivo) -->
-                                @if (!obj.EstatusAlumno)
-                                {
-                                    <form asp-action="Activate" method="post">
-                                        <button type="submit" asp-controller="Alumno" asp-action="Activate" asp-route-id="@obj.IdAlumno" class="btn text-white" style="background-color: #00A1A9;">
-                                            <i class="bi bi-check-lg me-2"></i> Activar
-                                        </button>
-                                    </form>
-                                }
-                                <!-- Botón de Inactivar (solo aparece si el alumno está activo)-->
-                                @if (obj.EstatusAlumno)
-                                {
-                                    <form asp-action="Deactivate" method="post">
-                                        <button type="submit" asp-controller="Alumno" asp-action="Deactivate" asp-route-id="@obj.IdAlumno" class="btn btn-danger d-flex justify-content-center align-items-center">
-                                            <i class="bi bi-x-lg me-2"></i> Inactivar
-                                        </button>
-                                    </form>
-                                }
-=======
 
                             <div class="btn-group w-100" role="group">
                                 <div class="me-2">
@@ -239,7 +214,6 @@
                                         </button>
                                     </form>
                                 </div>
->>>>>>> df9eb81c9d1907581ce522d4cd1b9dbea105eec1
                             </div>
                     </td>
                 </tr>
