@@ -1,12 +1,13 @@
-﻿@model Proyecto_Facultad.Models.Bimestre
+﻿@model Proyecto_Facultad.Models.Bimestre 
 
 <div class="container">
     <h2 class="text-primary">Eliminar bimestre</h2>
     <form id="BimestreForm" asp-action="Delete" method="post">
+        <input type="hidden" asp-for="IdBimestre" /> <!-- Campo oculto para el ID -->
         <div class="row mb-3">
             <div class="col-md-6">
                 <label asp-for="NombreBimestre" class="form-label"></label>
-                <input asp-for="NombreBimestre" class="form-control" />
+                <input asp-for="NombreBimestre" class="form-control" readonly /> <!-- Hacerlo solo lectura -->
                 <span asp-validation-for="NombreBimestre" class="text-danger"></span>
             </div>
         </div>
@@ -22,10 +23,7 @@
     </form>
 </div>
 
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-
 }
-
-
-
