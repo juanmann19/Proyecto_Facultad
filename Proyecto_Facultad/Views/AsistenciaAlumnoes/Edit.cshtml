@@ -22,13 +22,12 @@
             <div class="col-md-6">
                 <label asp-for="Ausencia" class="form-label">Ausencia</label>
                 <select asp-for="Ausencia" class="form-control" required>
-                    <option value="">Seleccione una opción</option>
-                    <option value="Presente">Presente</option>
-                    <option value="Ausente">Ausente</option>
+                    <option value="">Seleccionar</option>
+                    <option value="Presente">Asistió</option>
+                    <option value="Inasistencia">Ausente</option>
                     <option value="Examen">Examen</option>
-                    <option value="Bautizo">Bautizo</option>
+                    <option value="Bautismo">Bautizo</option>
                     <option value="Enfermedad">Enfermedad</option>
-                    <option value="Justificado">Justificado</option>
                 </select>
                 <span asp-validation-for="Ausencia" class="text-danger"></span>
             </div>
