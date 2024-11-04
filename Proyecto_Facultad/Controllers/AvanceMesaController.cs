@@ -24,15 +24,49 @@ namespace Proyecto_Facultad.Controllers
         // GET: AvanceMesa
         public async Task<IActionResult> Index()
         {
+            // Obtener el nombre de usuario autenticado
+            var nombreUsuario = User.Identity.Name;
+
+            // Verificar si el nombre de usuario está vacío
+            if (string.IsNullOrEmpty(nombreUsuario))
+            {
+                return Unauthorized("Usuario no autenticado.");
+            }
+
+            // Buscar el usuario en la tabla Usuarios basado en el nombre de usuario
+            var usuario = _context.Usuarios.FirstOrDefault(u => u.NombreUsuario == nombreUsuario);
+
+            if (usuario == null)
+            {
+                return NotFound("Usuario no encontrado.");
+            }
+
+            // Buscar el staff (maestro) asociado al usuario autenticado
+            var staff = _context.Staff.FirstOrDefault(s => s.IdUsuario == usuario.IdUsuario);
+
+            if (staff == null)
+            {
+                return NotFound("No se encontró el maestro relacionado con el usuario.");
+            }
+
+            // Obtener los IDs de las mesas asignadas al maestro
+            var mesasAsignadasIds = _context.AsignacionMaestros
+                .Where(am => am.IdStaff == staff.IdStaff)
+                .Select(am => am.IdMesa)
+                .ToList();
+
+            // Filtrar los avances de mesa para mostrar solo los de las mesas asignadas
             var avances = _context.AvanceMesas
                 .Include(a => a.IdBimestreNavigation)
                 .Include(a => a.IdLeccionNavigation)
                 .Include(a => a.IdLibroNavigation)
                 .Include(a => a.IdMesaNavigation)
-                .Include(a => a.IdNivelNavigation);
+                .Include(a => a.IdNivelNavigation)
+                .Where(a => mesasAsignadasIds.Contains(a.IdMesa)); // Filtrar por mesas asignadas
 
             return View(await avances.ToListAsync());
         }
+
 
         // GET: AvanceMesa/Details/5
         public async Task<IActionResult> Details(int? id)

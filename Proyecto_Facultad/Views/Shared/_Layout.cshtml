@@ -193,7 +193,7 @@
                                         asp-action="Index">Avance mesa</a>
                                 </li>
                                 }
-                                @if (User.IsInRole("Coordinador") || User.IsInRole("Admin") || User.IsInRole("Maestro")||User.IsInRole("Auxiliar") )
+                                @if (User.IsInRole("Coordinador") || User.IsInRole("Admin") ||User.IsInRole("Auxiliar") )
                                 {
                                 <li><a class="dropdown-item" asp-area="" asp-controller="MesaDetalle"
                                         asp-action="Index">Detalle mesas</a>
