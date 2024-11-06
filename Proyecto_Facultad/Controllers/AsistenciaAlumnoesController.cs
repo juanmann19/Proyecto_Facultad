@@ -21,7 +21,10 @@ namespace Proyecto_Facultad.Controllers
         }
 
         // GET: AsistenciaAlumnoes
-        public async Task<IActionResult> Index()
+       
+
+        // GET: AsistenciaAlumnoes/Create
+        public async Task<IActionResult> Create(int idAsistenciaStaff)
         {
             // Obtener el nombre del usuario autenticado.
             var userName = User.Identity.Name;
@@ -33,7 +36,6 @@ namespace Proyecto_Facultad.Controllers
 
             // Buscar al usuario basado en su nombre.
             var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.NombreUsuario == userName);
-
             if (usuario == null)
             {
                 return NotFound("Usuario no encontrado.");
@@ -41,72 +43,48 @@ namespace Proyecto_Facultad.Controllers
 
             // Buscar el maestro basado en el IdUsuario.
             var staff = await _context.Staff.FirstOrDefaultAsync(s => s.IdUsuario == usuario.IdUsuario);
-
             if (staff == null)
             {
                 return NotFound("No se encontró el maestro.");
             }
 
-            // Obtener las asistencias solo de los alumnos asignados a las mesas del maestro autenticado.
-            var asistencias = await _context.AsistenciaAlumnos
-                .Include(a => a.IdAlumnoNavigation)
-                .Include(a => a.IdAsistenciaStaffNavigation)
-                .Where(a => a.IdAsistenciaStaffNavigation.IdStaff == staff.IdStaff)
+            // Obtener el registro de AsistenciaStaff
+            var asistenciaStaff = await _context.AsistenciaStaffs
+                .FirstOrDefaultAsync(a => a.IdAsistenciaStaff == idAsistenciaStaff && a.IdStaff == staff.IdStaff);
+
+            if (asistenciaStaff == null)
+            {
+                return NotFound("No se encontró la asistencia del maestro para la mesa seleccionada.");
+            }
+
+            // Obtener los alumnos asignados a la mesa específica
+            var alumnosAsignados = await _context.AsignacionAlumnos
+                .Where(aa => aa.IdMesa == asistenciaStaff.IdMesa)
+                .Include(a => a.IdAlumnoNavigation) // Incluir la información del alumno
                 .ToListAsync();
 
-            return View(asistencias);
-        }
+            var modelo = new List<AsistenciaAlumno>();
 
-        // GET: AsistenciaAlumnoes/Create
-        public IActionResult Create()
-        {
-            // Obtener el nombre del usuario autenticado.
-            var userName = User.Identity.Name;
-
-            if (string.IsNullOrEmpty(userName))
+            foreach (var asignacion in alumnosAsignados)
             {
-                return Unauthorized("Usuario no autenticado.");
-            }
-
-            // Buscar al usuario basado en su nombre.
-            var usuario = _context.Usuarios.FirstOrDefault(u => u.NombreUsuario == userName);
-
-            if (usuario == null)
-            {
-                return NotFound("Usuario no encontrado.");
-            }
-
-            // Buscar el maestro basado en el IdUsuario.
-            var staff = _context.Staff.FirstOrDefault(s => s.IdUsuario == usuario.IdUsuario);
-
-            if (staff == null)
-            {
-                return NotFound("No se encontró el maestro.");
-            }
-
-            // Buscar los alumnos asignados a la mesa del maestro.
-            var alumnosAsignados = _context.AsignacionMaestros
-                .Where(am => am.IdStaff == staff.IdStaff)
-                .SelectMany(am => am.IdMesaNavigation.AsignacionAlumnos)
-                .Select(aa => new AsistenciaAlumno
+                modelo.Add(new AsistenciaAlumno
                 {
-                    IdAlumno = aa.IdAlumno,
-                    IdAlumnoNavigation = aa.IdAlumnoNavigation
-                })
-                .ToList();
+                    IdAlumno = asignacion.IdAlumno,
+                    IdAlumnoNavigation = asignacion.IdAlumnoNavigation
+                });
+            }
 
-            // Crear la vista con la lista de alumnos asignados.
-            ViewBag.Alumnos = alumnosAsignados;
+            // Enviar el nombre del maestro y el IdAsistenciaStaff a la vista.
             ViewData["NombreMaestro"] = $"{staff.PrimerNombreStaff} {staff.PrimerApellidoStaff}";
+            ViewData["IdAsistenciaStaff"] = idAsistenciaStaff;
 
-            // Pasar la lista de alumnos como modelo a la vista.
-            return View(alumnosAsignados);
+            return View(modelo);
         }
 
         // POST: AsistenciaAlumnoes/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(List<AsistenciaAlumno> asistencias)
+        public async Task<IActionResult> Create(List<AsistenciaAlumno> asistencias, int idAsistenciaStaff)
         {
             // Obtener el nombre del usuario autenticado.
             var userName = User.Identity.Name;
@@ -118,7 +96,6 @@ namespace Proyecto_Facultad.Controllers
 
             // Buscar al usuario basado en su nombre.
             var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.NombreUsuario == userName);
-
             if (usuario == null)
             {
                 return NotFound("Usuario no encontrado.");
@@ -126,23 +103,18 @@ namespace Proyecto_Facultad.Controllers
 
             // Buscar el maestro basado en el IdUsuario.
             var staff = await _context.Staff.FirstOrDefaultAsync(s => s.IdUsuario == usuario.IdUsuario);
-
             if (staff == null)
             {
                 return NotFound("No se encontró el maestro.");
             }
 
-            // Convertir la fecha actual a DateOnly
-            var fechaClaseActual = DateOnly.FromDateTime(DateTime.Now);
-
-            // Encontrar el registro de AsistenciaStaff para la clase actual.
-            var asistenciaStaff = await _context.AsistenciaStaffs.FirstOrDefaultAsync(a =>
-                a.IdStaff == staff.IdStaff &&
-                a.FechaClase == fechaClaseActual); // Usamos DateOnly para comparar correctamente
+            // Buscar el registro de AsistenciaStaff
+            var asistenciaStaff = await _context.AsistenciaStaffs
+                .FirstOrDefaultAsync(a => a.IdAsistenciaStaff == idAsistenciaStaff && a.IdStaff == staff.IdStaff);
 
             if (asistenciaStaff == null)
             {
-                return NotFound("No se encontró la asistencia del maestro para la fecha actual.");
+                return NotFound("No se encontró la asistencia del maestro para la mesa seleccionada.");
             }
 
             // Guardar las asistencias de los alumnos.
@@ -158,17 +130,17 @@ namespace Proyecto_Facultad.Controllers
 
                 foreach (var asistencia in asistencias)
                 {
-                    // Asignar el IdAsistenciaStaff correcto (la clase actual).
+                    // Asignar el IdAsistenciaStaff correcto.
                     asistencia.IdAsistenciaStaff = asistenciaStaff.IdAsistenciaStaff;
 
                     // Generar un nuevo ID para AsistenciaAlumno basado en el ID secuencial.
                     asistencia.IdAsistenciaAlumno = nuevoIdAsistenciaAlumno++;
 
-                    // Verificar si la asistencia ya existe en el contexto y desconectarla
+                    // Verificar si la asistencia ya existe en el contexto y desconectarla.
                     var existingEntity = _context.AsistenciaAlumnos.Local.FirstOrDefault(a => a.IdAsistenciaAlumno == asistencia.IdAsistenciaAlumno);
                     if (existingEntity != null)
                     {
-                        _context.Entry(existingEntity).State = EntityState.Detached; // Desconectar la entidad
+                        _context.Entry(existingEntity).State = EntityState.Detached; // Desconectar la entidad.
                     }
 
                     // Agregar la asistencia del alumno.
@@ -180,12 +152,52 @@ namespace Proyecto_Facultad.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            // Si hay errores, vuelve a la vista con los datos.
+            // Reobtener la información necesaria para la vista.
+            ViewData["NombreMaestro"] = $"{staff.PrimerNombreStaff} {staff.PrimerApellidoStaff}";
+            ViewData["IdAsistenciaStaff"] = idAsistenciaStaff;
+
             return View(asistencias);
         }
 
+        // GET: AsistenciaAlumnoes/Index
+        public async Task<IActionResult> Index()
+        {
+            // Obtener el nombre del usuario autenticado.
+            var userName = User.Identity.Name;
 
-        // GET: AsistenciaAlumnoes/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+            if (string.IsNullOrEmpty(userName))
+            {
+                return Unauthorized("Usuario no autenticado.");
+            }
+
+            // Buscar al usuario basado en su nombre.
+            var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.NombreUsuario == userName);
+            if (usuario == null)
+            {
+                return NotFound("Usuario no encontrado.");
+            }
+
+            // Buscar el maestro basado en el IdUsuario.
+            var staff = await _context.Staff.FirstOrDefaultAsync(s => s.IdUsuario == usuario.IdUsuario);
+            if (staff == null)
+            {
+                return NotFound("No se encontró el maestro.");
+            }
+
+            // Obtener las asistencias solo de los alumnos asignados a las mesas del maestro autenticado.
+            var asistencias = await _context.AsistenciaAlumnos
+                .Include(a => a.IdAlumnoNavigation)
+                .Include(a => a.IdAsistenciaStaffNavigation)
+                .Where(a => a.IdAsistenciaStaffNavigation.IdStaff == staff.IdStaff)
+                .ToListAsync();
+
+            return View(asistencias);
+        }
+   
+
+// GET: AsistenciaAlumnoes/Edit/5
+public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
