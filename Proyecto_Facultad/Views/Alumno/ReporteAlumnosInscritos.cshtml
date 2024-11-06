@@ -17,7 +17,7 @@
         .custom-table th, .custom-table td {
             padding: 12px 15px;
             text-align: left;
-            white-space: nowrap; /* Esto evitará que el contenido se extienda innecesariamente */
+            white-space: nowrap;
         }
 
         .custom-table tbody tr {
@@ -39,29 +39,31 @@
 <h1>@ViewData["Title"]</h1>
 
 <div class="table-responsive">
-    <table class="table table-bordered table-striped">
-        <table class="table custom-table table-striped table-bordered">
-    <thead>
-        <tr>
-            <th>Nombre completo</th>
-            <th>Código frater</th>
-            <th>Teléfono</th>
-            <th>Dirección</th>
-
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var alumno in Model)
-        {
+    <table class="table custom-table table-striped table-bordered">
+        <thead>
             <tr>
-                <td>@($"{alumno.PrimerNombreAlumno} {alumno.SegundoNombreAlumno} {alumno.OtrosNombresAlumno} {alumno.PrimerApellidoAlumno} {alumno.SegundoApellidoAlumno} {alumno.ApellidoCasado}")</td>
-                <td>@alumno.CodigoFrater</td>
-                <td>@alumno.Telefono</td>
-                <td>@alumno.Direccion</td>
+                <th>No.</th> 
+                <th>Nombre completo</th>
+                <th>Código frater</th>
+                <th>Teléfono</th>
+                <th>Dirección</th>
             </tr>
-        }
-    </tbody>
-    </table>
+        </thead>
+        <tbody>
+            @{
+                var index = 1; // contador 
+            }
+            @foreach (var alumno in Model)
+            {
+                <tr>
+                    <td>@index</td> <!-- Display the current count -->
+                    <td>@($"{alumno.PrimerNombreAlumno} {alumno.SegundoNombreAlumno} {alumno.OtrosNombresAlumno} {alumno.PrimerApellidoAlumno} {alumno.SegundoApellidoAlumno} {alumno.ApellidoCasado}")</td>
+                    <td>@alumno.CodigoFrater</td>
+                    <td>@alumno.Telefono</td>
+                    <td>@alumno.Direccion</td>
+                </tr>
+                index++; //incremento 
+            }
+        </tbody>
     </table>
 </div>
-
