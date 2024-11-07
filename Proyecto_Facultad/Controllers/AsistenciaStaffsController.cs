@@ -89,10 +89,9 @@ namespace Proyecto_Facultad.Controllers
         // GET: AsistenciaStaffs/Create
         public IActionResult Create()
         {
-            // Aquí obtienes el nombre del usuario autenticado.
+            // Obtener el nombre del usuario autenticado.
             var userName = User.Identity.Name;
 
-            // Verificar si obtenemos el nombre de usuario autenticado.
             if (string.IsNullOrEmpty(userName))
             {
                 return Unauthorized("Usuario no autenticado.");
@@ -101,22 +100,20 @@ namespace Proyecto_Facultad.Controllers
             // Buscar el usuario basado en su nombre.
             var usuario = _context.Usuarios.FirstOrDefault(u => u.NombreUsuario == userName);
 
-            // Verificar si el usuario existe en la tabla Usuarios.
             if (usuario == null)
             {
                 return NotFound("Usuario no encontrado.");
             }
 
-            // Ahora, usa el IdUsuario para buscar el staff (maestro).
+            // Buscar el staff (maestro) basado en el IdUsuario.
             var staff = _context.Staff.FirstOrDefault(s => s.IdUsuario == usuario.IdUsuario);
 
-            // Verificar si el staff existe en la tabla Staff.
             if (staff == null)
             {
                 return NotFound("No se encontró el maestro relacionado con el usuario.");
             }
 
-            // Si todo va bien, continuamos con el código normal.
+            // Obtener las mesas asignadas al maestro.
             var mesasAsignadas = _context.AsignacionMaestros
                 .Where(am => am.IdStaff == staff.IdStaff)
                 .Select(am => new
@@ -144,7 +141,7 @@ namespace Proyecto_Facultad.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("FechaClase,IdMesa,IdLeccion,IdBimestre,Ausencia")] AsistenciaStaff asistenciaStaff)
         {
-            // Ensure you set the IdStaff here based on the logged-in user
+            // Obtener el nombre del usuario autenticado.
             var userName = User.Identity.Name;
 
             if (string.IsNullOrEmpty(userName))
@@ -152,37 +149,38 @@ namespace Proyecto_Facultad.Controllers
                 return Unauthorized("Usuario no autenticado.");
             }
 
+            // Buscar el usuario basado en su nombre.
             var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.NombreUsuario == userName);
             if (usuario == null)
             {
                 return NotFound("Usuario no encontrado.");
             }
 
+            // Buscar el staff (maestro) basado en el IdUsuario.
             var staff = await _context.Staff.FirstOrDefaultAsync(s => s.IdUsuario == usuario.IdUsuario);
             if (staff == null)
             {
                 return NotFound("No se encontró el maestro relacionado con el usuario.");
             }
 
-            // Set the IdStaff in the AsistenciaStaff object
+            // Asignar el IdStaff al objeto AsistenciaStaff.
             asistenciaStaff.IdStaff = staff.IdStaff;
 
-            var ultimaasistencia = _context.AsistenciaStaffs.OrderByDescending(a => a.IdAsistenciaStaff).FirstOrDefault();
+            // Generar un nuevo IdAsistenciaStaff.
+            var ultimaAsistencia = await _context.AsistenciaStaffs.OrderByDescending(a => a.IdAsistenciaStaff).FirstOrDefaultAsync();
+            asistenciaStaff.IdAsistenciaStaff = (ultimaAsistencia != null) ? ultimaAsistencia.IdAsistenciaStaff + 1 : 1;
 
-            int nuevoId = (ultimaasistencia != null) ? ultimaasistencia.IdAsistenciaStaff + 1 : 1;
-
-            asistenciaStaff.IdAsistenciaStaff = nuevoId;
             if (ModelState.IsValid)
             {
-                _context.Add(asistenciaStaff);
+                // Guardar la asistencia del maestro.
+                _context.AsistenciaStaffs.Add(asistenciaStaff);
                 await _context.SaveChangesAsync();
+
                 TempData["SuccessMessage"] = "Asistencia creada correctamente.";
-                return RedirectToAction(nameof(Index));
+
+                // Redirigir al método Create del controlador AsistenciaAlumnoes, pasando el IdAsistenciaStaff.
+                return RedirectToAction("Create", "AsistenciaAlumnoes", new { idAsistenciaStaff = asistenciaStaff.IdAsistenciaStaff });
             }
-
-            // Load data for dropdowns in case of errors
-            await LoadViewData(asistenciaStaff.IdStaff); // Refactor this to load the necessary data
-
             return View(asistenciaStaff);
         }
 
@@ -201,7 +199,7 @@ namespace Proyecto_Facultad.Controllers
             ViewData["IdLeccion"] = new SelectList(await _context.Leccions.ToListAsync(), "IdLeccion", "Descripcion");
             ViewData["IdBimestre"] = new SelectList(await _context.Bimestres.ToListAsync(), "IdBimestre", "NombreBimestre");
         }
-
+    
 
         // GET: AsistenciaStaffs/Edit/5
         public async Task<IActionResult> Edit(int? id)
