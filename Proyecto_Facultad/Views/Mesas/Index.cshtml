@@ -1,5 +1,53 @@
 ﻿@model IEnumerable<Proyecto_Facultad.Models.Mesa>
 
+<style>
+    .custom-table-container {
+        max-height: 400px; /* Define la altura máxima del contenedor */
+        overflow-y: auto; /* Habilita el desplazamiento vertical */
+        margin: 20px 0;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 1em;
+    }
+
+        .custom-table thead {
+            position: sticky;
+            top: 0;
+            background-color: #343a40; /* Fondo oscuro para el encabezado */
+            color: white;
+            z-index: 1;
+        }
+
+        .custom-table th,
+        .custom-table td {
+            padding: 12px 15px;
+            text-align: left;
+            white-space: nowrap; /* Evita que el contenido se extienda innecesariamente */
+            border: 1px solid #ddd; /* Añade bordes a las celdas */
+        }
+
+        .custom-table tbody tr {
+            transition: background-color 0.3s;
+        }
+
+            .custom-table tbody tr:hover {
+                background-color: #f2f2f2; /* Color de fondo al pasar el cursor */
+            }
+
+    .btn-info-dark {
+        background-color: #017a8a;
+        border-color: #017a8a;
+        color: white;
+    }
+
+        .btn-info-dark:focus, .btn-info-dark:active {
+            color: white;
+        }
+</style>
 <div class="container-fluid pt-4">
     @if (TempData["SuccessMessage"] != null)
 
@@ -26,8 +74,8 @@
             </a>
         </div>
     </div>
-
-    <div class="table-responsive">
+   <div class="table-responsive">
+    <div class="custom-table-container">
         <table class="table table-bordered table-striped">
             <table class="table custom-table table-striped table-bordered">
             <thead>
@@ -65,4 +113,5 @@
             </table>
         </table>
     </div>
+   </div>
 </div>

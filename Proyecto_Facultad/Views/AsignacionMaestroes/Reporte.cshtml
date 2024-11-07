@@ -32,33 +32,29 @@
         }
 </style>
 <div class="container-fluid pt-4">
-    <!-- Mensajes de éxito o error -->
+   
     <div class="row mb-3">
         <div class="col-6">
             <h2 class="text-primary">Reporte de maestros</h2>
         </div>
     </div>
 
-   <!-- Barra de búsqueda -->
+    <!-- Barra de búsqueda -->
     <div class="row mb-3">
         <div class="col">
             <form asp-action="Reporte" method="get" class="d-flex align-items-end">
                 <div class="input-group" style="max-width: 600px; flex-grow: 1;">
                     <input type="text" name="searchTerm" value="@Model.SearchTerm" class="form-control rounded" placeholder="Buscar por nombre" style="border-radius: 8px; width: 40%; margin-right: 8px;" />
-
                     <button type="submit" class="btn d-flex align-items-center" style="background-color: #1abc9c; color: white; width: 120px; border-radius: 8px;">
                         <i class="bi bi-funnel me-2"></i>
                         Buscar
                     </button>
-
                     <a href="@Url.Action("Reporte", "Capacitacion")" class="btn d-flex align-items-center" style="background-color: #f39c12; color: white; width: 120px; margin-left: 8px; border-radius: 8px;">
                         <i class="bi bi-trash me-2"></i>
                         Limpiar
                     </a>
                 </div>
             </form>
-
-
         </div>
     </div>
 
@@ -74,26 +70,32 @@
         <div class="col">
             <h4>Maestros</h4>
             <div class="table-responsive">
-                <table class="table table-bordered table-striped">
+                <div class="custom-table-container">
                     <table class="table custom-table table-striped table-bordered">
-                <thead>
-                    <tr>
-                        <th>Nombre completo</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var maestro in Model.MaestrosNoAsignados)
-
-                    {
-                        <tr>
-                            <td>@maestro.NombreCompleto</td>
-                            <td>@(maestro.EstaAsignado ? "Asignado" : "No asignado")</td>
-                        </tr>
-                    }
-                </tbody>
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Nombre completo</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int counter = 1;
+                            }
+                            @foreach (var maestro in Model.MaestrosNoAsignados)
+                            {
+                                <tr>
+                                    <td>@counter</td>
+                                    <td>@maestro.NombreCompleto</td>
+                                    <td>@(maestro.EstaAsignado ? "Asignado" : "No asignado")</td>
+                                </tr>
+                                counter++;
+                            }
+                        </tbody>
                     </table>
-                </table>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

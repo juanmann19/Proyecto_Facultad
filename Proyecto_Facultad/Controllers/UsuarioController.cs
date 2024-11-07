@@ -21,14 +21,18 @@ namespace Proyecto_Facultad.Controllers
             _context = context;
         }
         // GET: usuario
+        // GET: Usuario
         public async Task<IActionResult> Index()
         {
+            // Obtiene la lista de usuarios y la ordena por NombreUsuario
             var usuarios = await _context.Usuarios
-            .Include(u => u.IdRolNavigation) // Incluye la información del rol
-            .ToListAsync();
+                .Include(u => u.IdRolNavigation) // Incluye la información del rol
+                .OrderBy(u => u.NombreUsuario)   // Ordena por NombreUsuario
+                .ToListAsync(); // Convierte la consulta a una lista
 
-            return View(usuarios);
+            return View(usuarios); // Envía la lista ordenada a la vista
         }
+
 
         // GET: usuario/Details/5
         public async Task<IActionResult> Details(int? id)

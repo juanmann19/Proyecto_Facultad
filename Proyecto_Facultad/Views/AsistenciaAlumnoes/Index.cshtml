@@ -1,22 +1,31 @@
 ﻿@model IEnumerable<Proyecto_Facultad.Models.AsistenciaAlumno>
 <style>
-    .custom-table {
-        width: 100%;
-        border-collapse: collapse;
+    .custom-table-container {
+        max-height: 400px;
+        overflow-y: auto;
         margin: 20px 0;
-        font-size: 1em;
         box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
     }
 
+    .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 1em;
+    }
+
         .custom-table thead {
+            position: sticky;
+            top: 0;
             background-color: #343a40;
             color: white;
+            z-index: 1;
         }
 
         .custom-table th, .custom-table td {
             padding: 12px 15px;
             text-align: left;
-            white-space: nowrap; /* Esto evitará que el contenido se extienda innecesariamente */
+            white-space: nowrap;
+            border: 1px solid #ddd;
         }
 
         .custom-table tbody tr {
@@ -27,11 +36,16 @@
                 background-color: #f2f2f2;
             }
 
-        .custom-table a:hover {
-            text-decoration: underline;
+    .btn-info-dark {
+        background-color: #017a8a;
+        border-color: #017a8a;
+        color: white;
+    }
+
+        .btn-info-dark:focus, .btn-info-dark:active {
+            color: white;
         }
 </style>
-
 <div class="container-fluid pt-4">
     <div class="row mb-3">
         <div class="col-6">
@@ -61,7 +75,7 @@
     }
 
     <div class="table-responsive">
-        <table class="table table-bordered table-striped">
+        <div class="custom-table-container">
             <table class="table custom-table table-striped table-bordered">
             <thead>
                    <tr class="table">

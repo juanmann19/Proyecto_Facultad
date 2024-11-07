@@ -97,7 +97,7 @@
                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <br />
                     <ul class="navbar-nav flex-grow-1">
-                          @if (User.IsInRole("Coordinador") || User.IsInRole("Admin"))
+                        @if (User.IsInRole("Coordinador") || User.IsInRole("Admin") || User.IsInRole("Coordinador Auxiliar"))
                         {
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="gestionesDropdown" role="button"
@@ -159,7 +159,7 @@
                             </ul>
                         </li>
                         } *@
-                        @if (User.IsInRole("Auxiliar") || User.IsInRole("Maestro") || User.IsInRole("Admin"))
+                        @if (User.IsInRole("Coordinador Auxiliar") || User.IsInRole("Maestro") || User.IsInRole("Admin") || User.IsInRole("Coordinador"))
                         {
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="alumnosDropdown" role="button"
@@ -180,20 +180,20 @@
                                 Mesa
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="mesasDropdown">
-                                @if (User.IsInRole("Coordinador") || User.IsInRole("Admin"))
+                                @if (User.IsInRole("Coordinador") || User.IsInRole("Admin") || User.IsInRole("Coordinador Auxiliar"))
                                 {
                                 <li><a class="dropdown-item" asp-area="" asp-controller="AsignacionAlumno"
                                         asp-action="Index">Asignar alumno a mesa</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="AsignacionMaestroes"
                                         asp-action="Index">Asignar personal a mesa</a></li>
                                 }
-                                @if (User.IsInRole("Auxiliar") || User.IsInRole("Maestro")|| User.IsInRole("Admin"))
+                                @if (User.IsInRole("Coordinador Auxiliar") || User.IsInRole("Maestro") || User.IsInRole("Admin") || User.IsInRole("Coordinador"))
                                 {
                                 <li><a class="dropdown-item" asp-area="" asp-controller="AvanceMesa"
                                         asp-action="Index">Avance mesa</a>
                                 </li>
                                 }
-                                @if (User.IsInRole("Coordinador") || User.IsInRole("Admin") ||User.IsInRole("Auxiliar") )
+                                @if (User.IsInRole("Coordinador") || User.IsInRole("Admin") ||User.IsInRole("Coordinador Auxiliar") )
                                 {
                                 <li><a class="dropdown-item" asp-area="" asp-controller="MesaDetalle"
                                         asp-action="Index">Detalle mesas</a>
@@ -202,7 +202,7 @@
                             </ul>
                         </li>
                         
-                        @if (User.IsInRole("Coordinador") || User.IsInRole("Admin"))
+                        @if (User.IsInRole("Coordinador") || User.IsInRole("Admin") || User.IsInRole("Coordinador Auxiliar"))
                         {
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="reportesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -241,7 +241,7 @@
                         }
 
                     </ul>
-                    @if (User.IsInRole("Coordinador") || User.IsInRole("Admin")||User.IsInRole("Auxiliar") || User.IsInRole("Maestro") )
+                    @if (User.IsInRole("Coordinador") || User.IsInRole("Admin")||User.IsInRole("Coordinador Auxiliar") || User.IsInRole("Maestro") )
                     {
                     <ul class="navbar-nav">
                         <li class="nav-item">

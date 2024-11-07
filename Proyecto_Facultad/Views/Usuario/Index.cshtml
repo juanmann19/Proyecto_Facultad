@@ -1,60 +1,53 @@
 @model List<Proyecto_Facultad.Models.Usuario>
 <style>
-    .custom-table {
-        width: 100%;
-        border-collapse: collapse;
+    .custom-table-container {
+        max-height: 400px; /* Define la altura máxima del contenedor */
+        overflow-y: auto; /* Habilita el desplazamiento vertical */
         margin: 20px 0;
-        font-size: 1em;
         box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
     }
 
-    .custom-table thead {
-        background-color: #343a40;
-        color: white;
+    .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 1em;
     }
+
+        .custom-table thead {
+            position: sticky;
+            top: 0;
+            background-color: #343a40; /* Fondo oscuro para el encabezado */
+            color: white;
+            z-index: 1;
+        }
+
+        .custom-table th,
+        .custom-table td {
+            padding: 12px 15px;
+            text-align: left;
+            white-space: nowrap; /* Evita que el contenido se extienda innecesariamente */
+            border: 1px solid #ddd; /* Añade bordes a las celdas */
+        }
+
+        .custom-table tbody tr {
+            transition: background-color 0.3s;
+        }
+
+            .custom-table tbody tr:hover {
+                background-color: #f2f2f2; /* Color de fondo al pasar el cursor */
+            }
 
     .btn-info-dark {
         background-color: #017a8a;
-        /* Un tono m�s oscuro de cian */
         border-color: #017a8a;
         color: white;
-        /* Mant�n el texto en blanco para el contraste */
-        .btn-info-dark: focus, .btn-info-dark:active
     }
 
-    .custom-table th,
-    .custom-table td {
-        padding: 12px 15px;
-        text-align: left;
-        white-space: nowrap;
-        /* Esto evitar� que el contenido se extienda innecesariamente */
-    }
-
-    .custom-table tbody tr {
-        transition: background-color 0.3s;
-    }
-
-    .custom-table tbody tr:hover {
-        background-color: #f2f2f2;
-    }
-
-    .custom-table a:hover {
-        text-decoration: underline;
-    }
-
-    /* Ajustamos el ancho de las columnas */
-    .custom-table th:nth-child(1),
-    .custom-table td:nth-child(1) {
-        width: 29%;
-        /* Ajusta seg�n sea necesario */
-    }
-
-    .custom-table th:nth-child(2),
-    .custom-table td:nth-child(2) {
-        width: 29%;
-        /* Ajusta seg�n sea necesario */
-    }
+        .btn-info-dark:focus, .btn-info-dark:active {
+            color: white;
+        }
 </style>
+
 <div class="container-fluid pt-4">
     @if (TempData["SuccessMessage"] != null)
     {
@@ -68,6 +61,7 @@
             @TempData["ErrorMessage"]
         </div>
     }
+
     <div class="row mb-3">
         <div class="col-6">
             <h2 class="text-primary">Listado de usuarios</h2>
@@ -78,44 +72,8 @@
             </a>
         </div>
     </div>
-    <style>
-        .custom-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            font-size: 1em;
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .custom-table thead {
-            background-color: #343a40;
-            color: white;
-        }
-
-        .custom-table th,
-        .custom-table td {
-            padding: 12px 15px;
-            text-align: left;
-        }
-
-        .custom-table tbody tr {
-            transition: background-color 0.3s;
-        }
-
-        .custom-table tbody tr:hover {
-            background-color: #f2f2f2;
-        }
-
-        .custom-table a {
-            color: #007bff;
-            text-decoration: none;
-        }
-
-        .custom-table a:hover {
-            text-decoration: underline;
-        }
-    </style>
-    <div class="table-responsive">
+   <div class="table-responsive">
+     <div class="custom-table-container">
         <table class="table table-bordered table-striped">
             <table class="table custom-table table-striped table-bordered">
                 <thead>
@@ -127,26 +85,24 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var usuario in Model.OrderBy(u => u.NombreUsuario))
+                    @foreach (var usuario in Model)
                     {
                         <tr>
                             <td>@usuario.NombreUsuario</td>
                             <td>@usuario.IdRolNavigation.NombreRol</td> <!-- Muestra el nombre del rol -->
                             <td>@(usuario.EstadoUsuario ? "Activo" : "Inactivo")</td>
-                            <td style="align-items: center;">
+                            <td>
                                 <div class="btn-group w-100" role="group">
                                     <div class="me-2">
                                         <a asp-controller="Usuario" asp-action="Edit" asp-route-id="@usuario.IdUsuario"
-                                            class="btn btn-warning btn-sm" style="padding: 8px 30px; color: white;">
+                                           class="btn btn-warning btn-sm" style="padding: 8px 30px; color: white;">
                                             <i class="bi bi-pencil-fill me-2"></i> Editar
                                         </a>
-
                                     </div>
                                     <div>
                                         <form asp-action="Deactivate" method="post" class="d-inline">
                                             <input type="hidden" name="id" value="@usuario.IdUsuario" />
-                                            <button type="submit" class="btn btn-info-dark btn-sm"
-                                                style="padding: 8px 30px;">
+                                            <button type="submit" class="btn btn-info-dark btn-sm" style="padding: 8px 30px;">
                                                 <i class="bi bi-power me-2"></i> Desactivar
                                             </button>
                                         </form>
@@ -162,7 +118,9 @@
                         </tr>
                     }
                 </tbody>
+
             </table>
         </table>
     </div>
+   </div>
 </div>

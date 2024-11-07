@@ -21,7 +21,6 @@ namespace Proyecto_Facultad.Controllers
         {
             _context = context;
         }
-
         // GET: AsistenciaStaffs
         public async Task<IActionResult> Index()
         {
@@ -52,9 +51,10 @@ namespace Proyecto_Facultad.Controllers
                 return NotFound("No se encontró el maestro relacionado con el usuario.");
             }
 
-            // Filtrar las asistencias del staff autenticado
+            // Filtrar las asistencias del staff autenticado y ordenar por fecha descendente
             var bdfflContext = _context.AsistenciaStaffs
                 .Where(a => a.IdStaff == staff.IdStaff)  // Solo las asistencias del staff actual
+                .OrderByDescending(a => a.FechaClase)    // Ordenar por FechaClase en orden descendente
                 .Include(a => a.IdBimestreNavigation)
                 .Include(a => a.IdLeccionNavigation)
                 .Include(a => a.IdMesaNavigation)
