@@ -122,7 +122,8 @@ namespace Proyecto_Facultad.Controllers
                     {
                         return NotFound();
                     }
-
+                    string nombreAnterior = existingUser.NombreUsuario;
+                   
                     existingUser.NombreUsuario = usuario.NombreUsuario;
                     existingUser.IdRol = usuario.IdRol;
 
@@ -134,8 +135,8 @@ namespace Proyecto_Facultad.Controllers
 
                         _context.Update(existingUser);
                         await _context.SaveChangesAsync();
-                        TempData["SuccessMessage"] = "Usuario actualizado correctamente";
-                        //return RedirectToAction(nameof(Index));
+                        TempData["SuccessMessage"] = $"Usuario {nombreAnterior} actualizado correctamente";
+                        return RedirectToAction(nameof(Index));
                     }
                 }
                 catch (DbUpdateConcurrencyException)

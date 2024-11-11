@@ -85,11 +85,24 @@ namespace Proyecto_Facultad.Controllers
 
             return View(asistenciaStaff);
         }
+        [HttpGet]
+        public IActionResult GetMesasPorMaestro(int idStaff)
+{
+             // Consulta que obtiene las mesas asignadas al maestro seleccionado
+             var mesas = _context.AsignacionMaestros
+                        .Where(a => a.IdStaff == idStaff) // Filtra las asignaciones por el Id del maestro
+                        .Select(a => new {
+                            idMesa = a.IdMesaNavigation.IdMesa, // Obtén el ID de la mesa
+                            mesaDescripcion = $"Mesa {a.IdMesaNavigation.IdMesa} - Jornada: {a.IdMesaNavigation.IdJornadaNavigation.DiaSemana} - {a.IdMesaNavigation.IdJornadaNavigation.Horario}" // Usa DiaSemana y Horario
+                        })
+                        .ToList();
+
+             return Json(mesas); // Devolver las mesas como JSON
+        }
 
         // GET: AsistenciaStaffs/Create
         public IActionResult Create()
         {
-            // Obtener el nombre del usuario autenticado.
             var userName = User.Identity.Name;
 
             if (string.IsNullOrEmpty(userName))
@@ -97,44 +110,52 @@ namespace Proyecto_Facultad.Controllers
                 return Unauthorized("Usuario no autenticado.");
             }
 
-            // Buscar el usuario basado en su nombre.
+            // Obtener el usuario autenticado y su información
             var usuario = _context.Usuarios.FirstOrDefault(u => u.NombreUsuario == userName);
-
             if (usuario == null)
             {
                 return NotFound("Usuario no encontrado.");
             }
 
-            // Buscar el staff (maestro) basado en el IdUsuario.
-            var staff = _context.Staff.FirstOrDefault(s => s.IdUsuario == usuario.IdUsuario);
-
-            if (staff == null)
+            // Obtener el staff (maestro) del usuario autenticado
+            var staffActual = _context.Staff.FirstOrDefault(s => s.IdUsuario == usuario.IdUsuario);
+            if (staffActual == null)
             {
                 return NotFound("No se encontró el maestro relacionado con el usuario.");
             }
 
-            // Obtener las mesas asignadas al maestro.
+            // Pasar el nombre del maestro autenticado a la vista
+            ViewData["NombreMaestroActual"] = $"{staffActual.PrimerNombreStaff} {staffActual.PrimerApellidoStaff}";
+
+            // Cargar todos los maestros en el sistema, marcando al maestro actual como seleccionado por defecto
+            var maestros = _context.Staff.Select(s => new SelectListItem
+            {
+                Value = s.IdStaff.ToString(),
+                Text = $"{s.PrimerNombreStaff} {s.PrimerApellidoStaff}",
+                Selected = s.IdStaff == staffActual.IdStaff // Seleccionar por defecto el maestro autenticado
+            }).ToList();
+
+            // Cargar las mesas asignadas al maestro autenticado por defecto
             var mesasAsignadas = _context.AsignacionMaestros
-                .Where(am => am.IdStaff == staff.IdStaff)
-                .Select(am => new
+                .Where(am => am.IdStaff == staffActual.IdStaff)
+                .Select(am => new SelectListItem
                 {
-                    am.IdMesa,
-                    MesaDescripcion = $"{am.IdMesaNavigation.IdMesa} - {am.IdMesaNavigation.NombreSedeNavigation.NombreSede} - {am.IdMesaNavigation.IdJornadaNavigation.DiaSemana} {am.IdMesaNavigation.IdJornadaNavigation.Horario}"
+                    Value = am.IdMesa.ToString(),
+                    Text = $"{am.IdMesaNavigation.IdMesa} - {am.IdMesaNavigation.NombreSedeNavigation.NombreSede} - {am.IdMesaNavigation.IdJornadaNavigation.DiaSemana} {am.IdMesaNavigation.IdJornadaNavigation.Horario}"
                 })
                 .ToList();
 
-            // Enviar el nombre del maestro a la vista.
-            ViewData["NombreMaestro"] = $"{staff.PrimerNombreStaff} {staff.PrimerApellidoStaff}";
+            // Pasar las listas de maestros y mesas a la vista
+            ViewData["IdStaff"] = new SelectList(maestros, "Value", "Text", staffActual.IdStaff);
+            ViewData["IdMesa"] = new SelectList(mesasAsignadas, "Value", "Text");
 
-            // Crear un SelectList con las mesas asignadas.
-            ViewData["IdMesa"] = new SelectList(mesasAsignadas, "IdMesa", "MesaDescripcion");
-
-            // Otros datos necesarios para el formulario.
+            // Otras listas desplegables
             ViewData["IdLeccion"] = new SelectList(_context.Leccions, "IdLeccion", "Descripcion");
             ViewData["IdBimestre"] = new SelectList(_context.Bimestres, "IdBimestre", "NombreBimestre");
 
             return View();
         }
+
 
         // POST: AsistenciaStaffs/Create
         [HttpPost]

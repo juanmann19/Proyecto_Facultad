@@ -36,5 +36,5 @@ public partial class AsistenciaStaff
     public virtual Mesa IdMesaNavigation { get; set; }
 
     public virtual Staff IdStaffNavigation { get; set; }
-    
+
 }

@@ -9,9 +9,9 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <label class="control-label">Nombre maestro</label>
-                <!-- Campo de solo lectura con el nombre del maestro -->
-                <input type="text" class="form-control" value="@ViewData["Nombremaestro"]" readonly />
-
+                <select asp-for="IdStaff" id="IdStaff" class="form-control" asp-items="@(ViewData["IdStaff"] as SelectList)">
+                    <option value="">Seleccione un maestro</option>
+                </select>
             </div>
         </div>
 
@@ -26,8 +26,7 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <label asp-for="IdMesa" class="form-label">Mesa</label>
-                <!-- Mostrar solo las mesas asignadas al maestro -->
-                <select asp-for="IdMesa" class="form-control" asp-items="ViewBag.IdMesa">
+                <select asp-for="IdMesa" id="IdMesa" class="form-control">
                     <option value="">Seleccione</option>
                 </select>
             </div>
@@ -44,26 +43,26 @@
 
         <div class="row mb-3">
             <div class="col-md-6">
-                <label asp-for="IdBimestre" class="form-label">Bimestre</label>
+                <label asp-for="IdBimestre" class="form-label"></label>
                 <select asp-for="IdBimestre" class="form-control" asp-items="ViewBag.IdBimestre">
                     <option value="">Seleccione</option>
                 </select>
             </div>
         </div>
 
+
         <div class="row mb-3">
             <div class="col-md-6">
-                <div class="from-group">
-                    <label asp-for="Ausencia" class="form-label">Asistencia</label>
-                    <select asp-for="Ausencia" class="form-control">
-                        <option value="">Seleccionar</option>
-                        <option value="Presente">Asistió</option>
-                        <option value="Ausente">Inasistencia</option>
-                        <option value="Examen">Examen</option>
-                        <option value="Bautizo">Acompañar a bautizo</option>
-                        <option value="Enfermedad">Enfermedad</option>
-                    </select>
-                </div>
+                <label asp-for="Ausencia" class="form-label">Asistencia</label>
+                <select asp-for="Ausencia" class="form-control">
+                    <option value="">Seleccionar</option>
+                    <option value="Presente">Asistió</option>
+                    <option value="Ausente">Inasistencia</option>
+                    <option value="Examen">Examen</option>
+                    <option value="Bautizo">Acompañar a bautizo</option>
+                    <option value="Enfermedad">Enfermedad</option>
+                    <option value="Sustitución">Sustitución de maestro</option>
+                </select>
             </div>
         </div>
 
@@ -80,4 +79,37 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Cuando el usuario cambia de maestro
+            $('#IdStaff').on('change', function () {
+                var selectedStaffId = $(this).val();
+                if (selectedStaffId) {
+                    $.ajax({
+                        url: '@Url.Action("GetMesasPorMaestro", "AsistenciaStaffs")',
+                        type: 'GET',
+                        data: { idStaff: selectedStaffId },
+                        success: function (data) {
+                            var mesaDropdown = $('#IdMesa');
+                            mesaDropdown.empty(); // Limpiar opciones anteriores
+                            mesaDropdown.append('<option value="">Seleccione una mesa</option>');
+                            $.each(data, function (index, item) {
+                                mesaDropdown.append('<option value="' + item.idMesa + '">' + item.mesaDescripcion + '</option>');
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            console.log("Error al cargar las mesas: " + error);
+                        }
+                    });
+                } else {
+                    $('#IdMesa').empty().append('<option value="">Seleccione una mesa</option>');
+                }
+            });
+
+            // Simula el cambio de maestro para cargar mesas del maestro autenticado por defecto
+            $('#IdStaff').trigger('change');
+        });
+    </script>
 }
+
