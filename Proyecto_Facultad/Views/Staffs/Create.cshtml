@@ -202,7 +202,7 @@
     </div>
 
     <div class="form-group d-flex justify-content-end">
-        <button type="submit" class="btn text-white me-2" style="background-color: #00B6A6; padding: 8px 20px;">
+        <button id="saveButton" type="submit" class="btn text-white me-2" style="background-color: #00B6A6; padding: 8px 20px;">
             <i class="bi bi-save me-2"></i> Guardar
         </button>
         <a asp-action="Index" class="btn btn-danger" style="padding: 8px 20px;">
@@ -213,7 +213,18 @@
 @section scripts {
     @* Incluye el script de validación *@
     <partial name="_ValidationScriptsPartial" />
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Manejar el envío del formulario
+            $('form').submit(function () {
+                // Deshabilitar el botón al enviar el formulario
+                $('#saveButton').prop('disabled', true);
+                // Cambiar el texto del botón para indicar que se está procesando
+                $('#saveButton').html('<i class="bi bi-hourglass-split me-2"></i> Guardando...');
+            });
+        });
+    </script>
     <script>
         document.querySelector('form').addEventListener('submit', function (event) {
             var fechaNacimientoInput = document.getElementById('fechaNacimiento');

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace Proyecto_Facultad.Models;
-
 public partial class AsignacionMaestro
 {
     public int IdAsignacionmaestros { get; set; }

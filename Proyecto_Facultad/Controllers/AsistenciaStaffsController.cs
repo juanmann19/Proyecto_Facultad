@@ -21,7 +21,6 @@ namespace Proyecto_Facultad.Controllers
         {
             _context = context;
         }
-        // GET: AsistenciaStaffs
         public async Task<IActionResult> Index()
         {
             // Obtener el nombre del usuario autenticado
@@ -55,12 +54,18 @@ namespace Proyecto_Facultad.Controllers
             var bdfflContext = _context.AsistenciaStaffs
                 .Where(a => a.IdStaff == staff.IdStaff)  // Solo las asistencias del staff actual
                 .OrderByDescending(a => a.FechaClase)    // Ordenar por FechaClase en orden descendente
-                .Include(a => a.IdBimestreNavigation)
+                .Include(a => a.IdBimestreNavigation)    // Incluir relaciones adicionales según sea necesario
                 .Include(a => a.IdLeccionNavigation)
                 .Include(a => a.IdMesaNavigation)
-                .Include(a => a.IdStaffNavigation);
+                .Include(a => a.IdStaffNavigation)  // El staff original
+                .Include(a => a.IdMaestroSustitutoNavigation); // Incluir la relación con el maestro sustituto
 
-            return View(await bdfflContext.ToListAsync());
+            // Ejecutar la consulta y pasar los resultados a la vista
+            var asistenciaStaffList = await bdfflContext.ToListAsync();
+
+            // Aquí puedes procesar los resultados, si es necesario
+
+            return View(asistenciaStaffList);
         }
 
 
@@ -101,7 +106,7 @@ namespace Proyecto_Facultad.Controllers
         }
 
         // GET: AsistenciaStaffs/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             var userName = User.Identity.Name;
 
@@ -160,8 +165,9 @@ namespace Proyecto_Facultad.Controllers
         // POST: AsistenciaStaffs/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FechaClase,IdMesa,IdLeccion,IdBimestre,Ausencia")] AsistenciaStaff asistenciaStaff)
+        public async Task<IActionResult> Create([Bind("IdStaff,FechaClase,IdMesa,IdLeccion,IdBimestre,Ausencia")] AsistenciaStaff asistenciaStaff)
         {
+            asistenciaStaff.IdMaestroSustituto = asistenciaStaff.IdStaff;
             // Obtener el nombre del usuario autenticado.
             var userName = User.Identity.Name;
 
@@ -186,7 +192,7 @@ namespace Proyecto_Facultad.Controllers
 
             // Asignar el IdStaff al objeto AsistenciaStaff.
             asistenciaStaff.IdStaff = staff.IdStaff;
-
+            
             // Generar un nuevo IdAsistenciaStaff.
             var ultimaAsistencia = await _context.AsistenciaStaffs.OrderByDescending(a => a.IdAsistenciaStaff).FirstOrDefaultAsync();
             asistenciaStaff.IdAsistenciaStaff = (ultimaAsistencia != null) ? ultimaAsistencia.IdAsistenciaStaff + 1 : 1;
@@ -204,7 +210,6 @@ namespace Proyecto_Facultad.Controllers
             }
             return View(asistenciaStaff);
         }
-
         private async Task LoadViewData(int staffId)
         {
             var mesasAsignadas = await _context.AsignacionMaestros
@@ -370,3 +375,5 @@ namespace Proyecto_Facultad.Controllers
         }
     }
 }
+
+

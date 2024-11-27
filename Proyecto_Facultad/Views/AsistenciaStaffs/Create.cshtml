@@ -67,13 +67,14 @@
         </div>
 
         <div class="form-group text-end">
-            <button type="submit" class="btn btn-sm text-white" style="background-color: #00B6A6; padding: 8px 20px;">
+            <button id="saveButton" type="submit" class="btn btn-sm text-white" style="background-color: #00B6A6; padding: 8px 20px;">
                 <i class="bi bi-save me-2"></i> Guardar
             </button>
             <a asp-action="Index" class="btn btn-danger btn-sm" style="padding: 8px 20px;">
                 <i class="bi bi-x me-2"></i> Cancelar
             </a>
         </div>
+
     </form>
 </div>
 
@@ -81,35 +82,52 @@
     <partial name="_ValidationScriptsPartial" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function () {
-            // Cuando el usuario cambia de maestro
-            $('#IdStaff').on('change', function () {
-                var selectedStaffId = $(this).val();
-                if (selectedStaffId) {
-                    $.ajax({
-                        url: '@Url.Action("GetMesasPorMaestro", "AsistenciaStaffs")',
-                        type: 'GET',
-                        data: { idStaff: selectedStaffId },
-                        success: function (data) {
-                            var mesaDropdown = $('#IdMesa');
-                            mesaDropdown.empty(); // Limpiar opciones anteriores
-                            mesaDropdown.append('<option value="">Seleccione una mesa</option>');
-                            $.each(data, function (index, item) {
-                                mesaDropdown.append('<option value="' + item.idMesa + '">' + item.mesaDescripcion + '</option>');
-                            });
-                        },
-                        error: function (xhr, status, error) {
-                            console.log("Error al cargar las mesas: " + error);
-                        }
+       $(document).ready(function () {
+    // Manejar el envío del formulario
+    $('form').submit(function () {
+        // Deshabilitar el botón al enviar el formulario
+        $('#saveButton').prop('disabled', true);
+        // Cambiar el texto del botón para indicar que se está procesando
+        $('#saveButton').html('<i class="bi bi-hourglass-split me-2"></i> Guardando...');
+    });
+
+    // Cargar mesas dinámicamente según el maestro seleccionado
+    $('#IdStaff').change(function () {
+        var idStaff = $(this).val();
+        if (idStaff) {
+            $.ajax({
+                url: '/AsistenciaStaffs/GetMesasPorMaestro',
+                type: 'GET',
+                data: { idStaff: idStaff },
+                success: function (mesas) {
+                    var mesaSelect = $('#IdMesa');
+                    mesaSelect.empty();
+                    mesaSelect.append(new Option("Seleccione", ""));
+                    $.each(mesas, function (index, mesa) {
+                        mesaSelect.append(new Option(mesa.mesaDescripcion, mesa.idMesa));
                     });
-                } else {
-                    $('#IdMesa').empty().append('<option value="">Seleccione una mesa</option>');
+                },
+                error: function () {
+                    alert('Error al cargar las mesas. Intente nuevamente.');
                 }
             });
+        } else {
+            $('#IdMesa').empty();
+            $('#IdMesa').append(new Option("Seleccione", ""));
+        }
+    });
 
-            // Simula el cambio de maestro para cargar mesas del maestro autenticado por defecto
-            $('#IdStaff').trigger('change');
-        });
+    // Forzar la carga inicial de mesas si ya hay un maestro seleccionado
+    var idStaffInicial = $('#IdStaff').val();
+    if (idStaffInicial) {
+        $('#IdStaff').trigger('change');
+    }
+});
+
     </script>
 }
+
+
+
+
 

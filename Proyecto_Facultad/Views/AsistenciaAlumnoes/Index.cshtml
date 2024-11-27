@@ -12,6 +12,7 @@
         border-collapse: collapse;
         font-size: 1em;
     }
+
         .custom-table thead {
             position: sticky;
             top: 0;
@@ -46,16 +47,11 @@
         }
 </style>
 <div class="container-fluid pt-4">
-    <div class="row mb-3">
-        <div class="col-6">
-            <h2 class="text-primary">Asistencia de alumnos</h2>
+        <div class="row mb-3">
+            <div class="col-6">
+                <h2 class="text-primary">Asistencia de alumnos</h2>
+            </div>
         </div>
-       @*  <div class="col-6 text-end">
-            <a asp-action="Create" class="btn btn-primary">
-                <i class="bi bi-plus-circle"></i> Agregar asistencia alumnos
-            </a>
-        </div> *@
-    </div>
 
     @* Mostrar mensaje de éxito *@
     @if (TempData["SuccessMessage"] != null)
@@ -76,36 +72,50 @@
     <div class="table-responsive">
         <div class="custom-table-container">
             <table class="table custom-table table-striped table-bordered">
-            <thead>
-                   <tr class="table">
-                    <th>Nombre alumno</th>
-                    <th>Asistencia</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.IdAlumnoNavigation.NombreCompleto</td>
-                        <td>@item.Ausencia</td>
-                        <td>
-                            <div class="btn-group w-100" role="group">
-                                <a asp-action="Edit" asp-route-id="@item.IdAsistenciaAlumno" class="btn btn-warning flex-grow-1">
-                                    <i class="bi bi-pencil-fill"></i> Editar
-                                </a>
-                                @* Puedes agregar un botón para eliminar si es necesario *@
-                                @* <form asp-action="Delete" asp-route-id="@item.IdAsistenciaAlumno" method="post" class="d-inline">
-                            <button type="submit" class="btn btn-danger flex-grow-1" onclick="return confirm('¿Estás seguro de que deseas eliminar esta asistencia?');">
-                            <i class="bi bi-trash-fill"></i> Eliminar
-                            </button>
-                            </form> *@
-                            </div>
-                        </td>
+                <thead>
+                    <tr class="table">
+                        <th>No.</th>
+                        <th>Nombre alumno</th>
+                        <th>Maestro en Sustitución</th>
+                        <th>Asistencia</th>
+                        <th>Acciones</th>
                     </tr>
-                }
-            </tbody>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.IdAlumnoNavigation.NombreCompleto</td>
+                            <td>
+                                    @if (item.IdAsistenciaStaffNavigation.IdMaestroSustitutoNavigation != null)
+                                    {
+                                        // Verificar si el maestro sustituto es el mismo que el maestro original
+                                        if (item.IdAsistenciaStaffNavigation.IdMaestroSustitutoNavigation.IdStaff == item.IdAsistenciaStaffNavigation.IdStaffNavigation.IdStaff)
+                                        {
+                                        <em>No hay maestro a sustituir</em>
+                                        }
+                                        else
+                                        {
+                                            @($"{item.IdAsistenciaStaffNavigation.IdMaestroSustitutoNavigation.PrimerNombreStaff} {item.IdAsistenciaStaffNavigation.IdMaestroSustitutoNavigation.PrimerApellidoStaff}")
+                                        }
+                                    }
+                                    else
+                                    {
+                                    <em>No hay maestro a sustituir</em>
+                                    }
+                            </td>
+                            <td>@item.Ausencia</td>
+                            <td>
+                                <div class="btn-group w-100" role="group">
+                                    <a asp-action="Edit" asp-route-id="@item.IdAsistenciaAlumno" class="btn btn-warning flex-grow-1">
+                                        <i class="bi bi-pencil-fill"></i> Editar
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
             </table>
         </div>
-    </div>
-</div>
+     </div>
+  </div>

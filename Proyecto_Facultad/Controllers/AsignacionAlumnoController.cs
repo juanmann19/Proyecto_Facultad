@@ -27,7 +27,7 @@ namespace Proyecto_Facultad.Controllers
             var asignacionAlumnos = await _context.AsignacionAlumnos
                  .Include(a => a.IdAlumnoNavigation)
                  .Include(a => a.IdMesaNavigation)
-                 .Include(m => m.IdMesaNavigation.NombreSedeNavigation) 
+                 .Include(m => m.IdMesaNavigation.NombreSedeNavigation)
                  .Include(m => m.IdMesaNavigation.IdJornadaNavigation)
                  .Include(m => m.IdMesaNavigation.AsignacionMaestros)
                  .ThenInclude(am => am.IdStaffNavigation)
@@ -36,7 +36,7 @@ namespace Proyecto_Facultad.Controllers
                      a.IdAsignacionalumnos,
                      NombreCompletoAlumno = a.IdAlumnoNavigation.PrimerNombreAlumno + " " + a.IdAlumnoNavigation.PrimerApellidoAlumno,
                      Mesa = a.IdMesaNavigation.IdMesa,
-                     Sede = a.IdMesaNavigation.NombreSedeNavigation.NombreSede, 
+                     Sede = a.IdMesaNavigation.NombreSedeNavigation.NombreSede,
                      Jornada = $"{a.IdMesaNavigation.IdJornadaNavigation.DiaSemana} {a.IdMesaNavigation.IdJornadaNavigation.Horario}",
                      NombreCompletoMaestro = a.IdMesaNavigation.AsignacionMaestros
                  .Select(am => $"{am.IdStaffNavigation.PrimerNombreStaff} {am.IdStaffNavigation.PrimerApellidoStaff}")
@@ -46,8 +46,6 @@ namespace Proyecto_Facultad.Controllers
 
             return View(asignacionAlumnos);
         }
-
-
         // GET: AsignacionAlumno/Details/5
         public async Task<IActionResult> Details(int? id)
         {

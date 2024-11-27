@@ -27,6 +27,12 @@ public partial class AsistenciaStaff
 
     public string Ausencia { get; set; }
 
+    [Column("id_maestro_sustituto")]
+
+    public int? IdMaestroSustituto { get; set; }
+
+    [ForeignKey("IdMaestroSustituto")]
+    public virtual Staff IdMaestroSustitutoNavigation { get; set; }
     public virtual ICollection<AsistenciaAlumno> AsistenciaAlumnos { get; set; } = new List<AsistenciaAlumno>();
 
     public virtual Bimestre IdBimestreNavigation { get; set; }
@@ -38,3 +44,5 @@ public partial class AsistenciaStaff
     public virtual Staff IdStaffNavigation { get; set; }
 
 }
+
+

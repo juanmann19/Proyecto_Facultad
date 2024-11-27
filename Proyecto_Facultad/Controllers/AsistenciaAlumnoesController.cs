@@ -20,9 +20,6 @@ namespace Proyecto_Facultad.Controllers
             _context = context;
         }
 
-        // GET: AsistenciaAlumnoes
-       
-
         // GET: AsistenciaAlumnoes/Create
         public async Task<IActionResult> Create(int idAsistenciaStaff)
         {
@@ -50,7 +47,7 @@ namespace Proyecto_Facultad.Controllers
 
             // Obtener el registro de AsistenciaStaff
             var asistenciaStaff = await _context.AsistenciaStaffs
-                .FirstOrDefaultAsync(a => a.IdAsistenciaStaff == idAsistenciaStaff && a.IdStaff == staff.IdStaff);
+                .FirstOrDefaultAsync(a => a.IdAsistenciaStaff == idAsistenciaStaff);
 
             if (asistenciaStaff == null)
             {
@@ -110,7 +107,7 @@ namespace Proyecto_Facultad.Controllers
 
             // Buscar el registro de AsistenciaStaff
             var asistenciaStaff = await _context.AsistenciaStaffs
-                .FirstOrDefaultAsync(a => a.IdAsistenciaStaff == idAsistenciaStaff && a.IdStaff == staff.IdStaff);
+                .FirstOrDefaultAsync(a => a.IdAsistenciaStaff == idAsistenciaStaff);
 
             if (asistenciaStaff == null)
             {
@@ -189,15 +186,16 @@ namespace Proyecto_Facultad.Controllers
             var asistencias = await _context.AsistenciaAlumnos
                 .Include(a => a.IdAlumnoNavigation)
                 .Include(a => a.IdAsistenciaStaffNavigation)
+                .Include(a => a.IdAsistenciaStaffNavigation.IdMaestroSustitutoNavigation)
                 .Where(a => a.IdAsistenciaStaffNavigation.IdStaff == staff.IdStaff)
                 .ToListAsync();
 
             return View(asistencias);
         }
-   
 
-// GET: AsistenciaAlumnoes/Edit/5
-public async Task<IActionResult> Edit(int? id)
+
+        // GET: AsistenciaAlumnoes/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -271,4 +269,5 @@ public async Task<IActionResult> Edit(int? id)
 
     }
 }
+
 

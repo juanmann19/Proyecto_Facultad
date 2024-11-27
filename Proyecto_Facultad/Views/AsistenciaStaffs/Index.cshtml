@@ -45,20 +45,47 @@
         .btn-info-dark:focus, .btn-info-dark:active {
             color: white;
         }
+
+    <style >
+    .custom-table th, .custom-table td {
+        padding: 12px 15px;
+        text-align: left;
+        white-space: nowrap;
+        border: 1px solid #ddd;
+    }
+
+    .custom-table tbody tr {
+        transition: background-color 0.3s;
+    }
+
+        .custom-table tbody tr:hover {
+            background-color: #f2f2f2;
+        }
+
+    .btn-info-dark {
+        background-color: #017a8a;
+        border-color: #017a8a;
+        color: white;
+    }
+
+        .btn-info-dark:focus, .btn-info-dark:active {
+            color: white;
+        }
 </style>
+
 <div class="container-fluid pt-4">
-    @if (TempData["SuccessMessage"] != null)
-    {
+        @if (TempData["SuccessMessage"] != null)
+        {
         <div class="alert alert-success">
-            @TempData["SuccessMessage"]
+                @TempData["SuccessMessage"]
         </div>
-    }
-    @if (TempData["ErrorMessage"] != null)
-    {
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
         <div class="alert alert-danger">
-            @TempData["ErrorMessage"]
+                @TempData["ErrorMessage"]
         </div>
-    }
+        }
 
     <div class="row mb-3">
         <div class="col-6">
@@ -71,42 +98,69 @@
         </div>
     </div>
 </div>
-    <div class="table-responsive">
-      <div class="custom-table-container">      
-          <table class="table custom-table table-striped table-bordered">
+
+<div class="table-responsive">
+    <div class="custom-table-container">
+        <table class="table custom-table table-striped table-bordered">
             <thead>
                 <tr>
+                    <th>No.</th>
                     <th>Fecha de clase</th>
                     <th>Bimestre</th>
                     <th>Lección</th>
                     <th>Mesa</th>
                     <th>Nombre</th>
                     <th>Apellido</th>
-                    <th>Asistencia</th>
-                    <th>Acciones</th>
+                    <th>Asistencia</th> <!-- Columna para asistencia -->
+                    <th>Maestro en Sustitución</th> <!-- Columna para maestro sustituto -->
+                    <th>Acciones</th> <!-- Columna para acciones (Editar) -->
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
-                {
+                    @{
+                        int asistenciaCount = 1; // Contador de asistencia
+                    }
+                    @foreach (var item in Model)
+                    {
                     <tr>
+                        <td>@asistenciaCount</td> <!-- Mostrar el número de asistencia -->
                         <td>@item.FechaClase</td>
                         <td>@item.IdBimestreNavigation?.NombreBimestre</td>
                         <td>@item.IdLeccionNavigation?.Descripcion</td>
                         <td>@item.IdMesaNavigation?.IdMesa</td>
                         <td>@item.IdStaffNavigation?.PrimerNombreStaff</td>
                         <td>@item.IdStaffNavigation?.PrimerApellidoStaff</td>
-                        <td>@item.Ausencia</td>
+                        <td>@item.Ausencia</td> <!-- Columna de asistencia -->
+                        <td>
+                                @if (item.IdMaestroSustitutoNavigation != null)
+                                {
+                                    // Verificar si el maestro sustituto es el mismo que el maestro original
+                                    if (item.IdStaffNavigation?.IdStaff == item.IdMaestroSustitutoNavigation?.IdStaff)
+                                    {
+                                    <em>No hay maestro a sustituir</em>
+                                    }
+                                    else
+                                    {
+                                        @($"{item.IdMaestroSustitutoNavigation.PrimerNombreStaff} {item.IdMaestroSustitutoNavigation.PrimerApellidoStaff}")
+                                    }
+                                }
+                                else
+                                {
+                                <em>No hay maestro a sustituir</em>
+                                }
+                        </td> 
                         <td>
                             <div class="btn-group w-100" role="group">
                                 <a asp-action="Edit" asp-route-id="@item.IdAsistenciaStaff" class="btn btn-warning w-100">
                                     <i class="bi bi-pencil-fill"></i> Editar
                                 </a>
                             </div>
-                        </td>
+                        </td> 
                     </tr>
-                }
+                        asistenciaCount++; // Incrementar el contador
+                    }
             </tbody>
-          </table>
-      </div>
+        </table>
     </div>
+</div>
+

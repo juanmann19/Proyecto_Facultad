@@ -23,35 +23,35 @@
                 {
                     for (var i = 0; i < Model.Count; i++)
                     {
-                        <tr>
-                            <td>@Model[i].IdAlumnoNavigation?.NombreCompleto</td>
-                            <td>
-                                <select asp-for="@Model[i].Ausencia" class="form-control">
-                                    <option value="">Seleccionar</option>
-                                    <option value="Presente">Asistió</option>
-                                    <option value="Inasistencia">Inasistencia</option>
-                                    <option value="Examen">Examen</option>
-                                    <option value="Bautismo">Bautizo</option>
-                                    <option value="Enfermedad">Enfermedad</option>
-                                </select>
-                            </td>
-                            <td>
-                                <input type="hidden" asp-for="@Model[i].IdAlumno" />
-                            </td>
-                        </tr>
+                                <tr>
+                                    <td>@Model[i].IdAlumnoNavigation?.NombreCompleto</td>
+                                    <td>
+                                        <select asp-for="@Model[i].Ausencia" class="form-control">
+                                            <option value="">Seleccionar</option>
+                                            <option value="Presente">Asistió</option>
+                                            <option value="Inasistencia">Inasistencia</option>
+                                            <option value="Examen">Examen</option>
+                                            <option value="Bautismo">Bautizo</option>
+                                            <option value="Enfermedad">Enfermedad</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="hidden" asp-for="@Model[i].IdAlumno" />
+                                    </td>
+                                </tr>
                     }
                 }
                 else
                 {
-                    <tr>
-                        <td colspan="2">No hay alumnos asignados.</td>
-                    </tr>
+                        <tr>
+                            <td colspan="2">No hay alumnos asignados.</td>
+                        </tr>
                 }
             </tbody>
         </table>
 
         <div class="form-group text-end">
-            <button type="submit" class="btn btn-sm text-white" style="background-color: #00B6A6; padding: 8px 20px;">
+            <button id="saveButton" type="submit" class="btn btn-sm text-white" style="background-color: #00B6A6; padding: 8px 20px;">
                 <i class="bi bi-save me-2"></i> Guardar
             </button>
             <a asp-action="Index" class="btn btn-danger btn-sm" style="padding: 8px 20px;">
@@ -59,8 +59,24 @@
             </a>
         </div>
     </form>
-</div>
 
+</div>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Manejar el envío del formulario
+            $('form').submit(function () {
+                // Deshabilitar el botón al enviar el formulario
+                $('#saveButton').prop('disabled', true);
+                // Cambiar el texto del botón para indicar que se está procesando
+                $('#saveButton').html('<i class="bi bi-hourglass-split me-2"></i> Guardando...');
+            });
+        });
+    </script>
 }
+
+
+
+
