@@ -6,10 +6,8 @@
     <h3>Maestro: @ViewData["NombreMaestro"]</h3>
     <form asp-action="Create" method="post">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
         <!-- Campo oculto para IdAsistenciaStaff -->
         <input type="hidden" name="idAsistenciaStaff" value="@ViewData["IdAsistenciaStaff"]" />
-
         <!-- Tabla para la lista de alumnos -->
         <table class="table table-bordered table-striped">
             <thead>
@@ -49,7 +47,6 @@
                 }
             </tbody>
         </table>
-
         <div class="form-group text-end">
             <button id="saveButton" type="submit" class="btn btn-sm text-white" style="background-color: #00B6A6; padding: 8px 20px;">
                 <i class="bi bi-save me-2"></i> Guardar

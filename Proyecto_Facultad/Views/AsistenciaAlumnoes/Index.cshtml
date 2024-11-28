@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<Proyecto_Facultad.Models.AsistenciaAlumno>
+
 <style>
     .custom-table-container {
         max-height: 400px;
@@ -35,40 +36,26 @@
             .custom-table tbody tr:hover {
                 background-color: #f2f2f2;
             }
-
-    .btn-info-dark {
-        background-color: #017a8a;
-        border-color: #017a8a;
-        color: white;
-    }
-
-        .btn-info-dark:focus, .btn-info-dark:active {
-            color: white;
-        }
 </style>
-<div class="container-fluid pt-4">
-        <div class="row mb-3">
-            <div class="col-6">
-                <h2 class="text-primary">Asistencia de alumnos</h2>
-            </div>
-        </div>
 
-    @* Mostrar mensaje de éxito *@
+<div class="container-fluid pt-4">
+    <div class="row mb-3">
+        <div class="col-6">
+            <h2 class="text-primary">Asistencia de alumnos</h2>
+        </div>
+    </div>
     @if (TempData["SuccessMessage"] != null)
     {
         <div class="alert alert-success">
             @TempData["SuccessMessage"]
         </div>
     }
-
-    @* Mostrar mensaje de error *@
     @if (TempData["ErrorMessage"] != null)
     {
         <div class="alert alert-danger">
             @TempData["ErrorMessage"]
         </div>
     }
-
     <div class="table-responsive">
         <div class="custom-table-container">
             <table class="table custom-table table-striped table-bordered">
@@ -82,29 +69,33 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @{
+                        int contador = 1;
+                    }
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td>@item.IdAlumnoNavigation.NombreCompleto</td>
+                            <td>@contador</td> 
+                            <td>@item.IdAlumnoNavigation?.NombreCompleto</td> 
                             <td>
-                                    @if (item.IdAsistenciaStaffNavigation.IdMaestroSustitutoNavigation != null)
+                                @if (item.IdAsistenciaStaffNavigation?.IdMaestroSustitutoNavigation != null)
+                                {
+                                    if (item.IdAsistenciaStaffNavigation.IdMaestroSustitutoNavigation.IdStaff ==
+                                    item.IdAsistenciaStaffNavigation.IdStaffNavigation.IdStaff)
                                     {
-                                        // Verificar si el maestro sustituto es el mismo que el maestro original
-                                        if (item.IdAsistenciaStaffNavigation.IdMaestroSustitutoNavigation.IdStaff == item.IdAsistenciaStaffNavigation.IdStaffNavigation.IdStaff)
-                                        {
                                         <em>No hay maestro a sustituir</em>
-                                        }
-                                        else
-                                        {
-                                            @($"{item.IdAsistenciaStaffNavigation.IdMaestroSustitutoNavigation.PrimerNombreStaff} {item.IdAsistenciaStaffNavigation.IdMaestroSustitutoNavigation.PrimerApellidoStaff}")
-                                        }
                                     }
                                     else
                                     {
-                                    <em>No hay maestro a sustituir</em>
+                                        @($"{item.IdAsistenciaStaffNavigation.IdMaestroSustitutoNavigation.PrimerNombreStaff} {item.IdAsistenciaStaffNavigation.IdMaestroSustitutoNavigation.PrimerApellidoStaff}")
                                     }
+                                }
+                                else
+                                {
+                                    <em>No hay maestro a sustituir</em>
+                                }
                             </td>
-                            <td>@item.Ausencia</td>
+                            <td>@item.Ausencia</td> 
                             <td>
                                 <div class="btn-group w-100" role="group">
                                     <a asp-action="Edit" asp-route-id="@item.IdAsistenciaAlumno" class="btn btn-warning flex-grow-1">
@@ -113,9 +104,11 @@
                                 </div>
                             </td>
                         </tr>
+                        contador++;
                     }
                 </tbody>
             </table>
         </div>
-     </div>
-  </div>
+    </div>
+</div>
+
